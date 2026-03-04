@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase"
 
 export default function Home() {
   const { user } = useContext(AuthContext)
+  const { profile } = useContext(AuthContext)
 
   const handleSignout = async () => {
     await supabase.auth.signOut()
@@ -32,6 +33,10 @@ export default function Home() {
             {user?.email}
           </p>
         </div>
+
+        <h1 className="mt-8 text-2xl font-bold">
+          Welcome, {profile?.username || "User"}!
+        </h1>
       </div>
     </div>
   )
