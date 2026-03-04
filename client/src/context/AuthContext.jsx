@@ -3,44 +3,55 @@ import { supabase } from "../lib/supabase"
 
 export const AuthContext = createContext()
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Get current session
     const getSession = async () => {
       const { data } = await supabase.auth.getSession()
-      const sessionUser = data.session?.user ?? null
-      setUser(sessionUser)
-
-      if (sessionUser) {
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", sessionUser.id)
-          .single()
-
-        setProfile(profileData)
-      }
-
+      setUser(data.session?.user || null)
       setLoading(false)
     }
 
     getSession()
 
+    // Listen for auth changes
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null)
+      async (_event, session) => {
+        const currentUser = session?.user || null
+        setUser(currentUser)
+
+        if (currentUser) {
+          fetchProfile(currentUser.id)
+        } else {
+          setProfile(null)
+        }
       }
     )
 
-    return () => listener.subscription.unsubscribe()
+    return () => {
+      listener.subscription.unsubscribe()
+    }
   }, [])
+
+  const fetchProfile = async (userId) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single()
+
+    if (!error) {
+      setProfile(data)
+    }
+  }
 
   return (
     <AuthContext.Provider value={{ user, profile, loading }}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   )
 }
