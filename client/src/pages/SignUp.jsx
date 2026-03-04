@@ -22,25 +22,9 @@ export default function Signup() {
       }
     })
 
-    if (error) return setError(error.message)
-
-    const user = data.user
-
-    if (user) {
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .insert({
-          id: user.id,
-          email: user.email,
-          username: username,
-          role: "user"
-        })
-
-      if (profileError) {
-        console.error("Profile insert error:", profileError.message)
-        setError(profileError.message)
-        return
-      }
+    if (error) {
+      setError(error.message)
+      return
     }
 
     navigate("/home")
