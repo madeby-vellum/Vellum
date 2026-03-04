@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function Signup() {
   const navigate = useNavigate()
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -14,6 +15,11 @@ export default function Signup() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          username: username
+        }
+      }
     })
 
     if (error) return setError(error.message)
@@ -21,11 +27,20 @@ export default function Signup() {
     const user = data.user
 
     if (user) {
-      await supabase.from("profiles").insert({
-        id: user.id,
-        email: user.email,
-        role: "user"
-      })
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.id,
+          email: user.email,
+          username: username,
+          role: "user"
+        })
+
+      if (profileError) {
+        console.error("Profile insert error:", profileError.message)
+        setError(profileError.message)
+        return
+      }
     }
 
     navigate("/home")
@@ -43,6 +58,14 @@ export default function Signup() {
         )}
 
         <form onSubmit={handleSignup} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Username"
+            className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+
           <input
             type="email"
             placeholder="Email"
