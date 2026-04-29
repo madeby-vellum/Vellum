@@ -98,18 +98,18 @@ export default function AuthPage() {
 
           {/* Fields */}
           {mode === "signup" && (
-            <Field label="Name" placeholder="your name"
+            <Field label="Username" placeholder=""
               value={form.name}
               onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
             />
           )}
 
-          <Field label="Email" type="email" placeholder="you@example.com"
+          <Field label="Email" type="email" placeholder=""
             value={form.email}
             onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
           />
 
-          <Field label="Password" type="password" placeholder="••••••••"
+          <Field label="Password" type="password" placeholder=""
             value={form.password}
             onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
           />
