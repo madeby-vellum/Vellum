@@ -63,8 +63,8 @@ export default function SpreadCanvas({ spread, editMode, actionsRef, onSelect, o
     const canvasElement = canvasEl.current;
     if (!wrap || !canvasElement) return;
 
-    const W = wrap.clientWidth || 880;
-    const H = wrap.clientHeight || 600;
+    const W = 880;
+const H = 580;
     if (W <= 0 || H <= 0) return; // Wait for proper sizing
 
     fabricLib.current = fabric;
@@ -76,6 +76,7 @@ export default function SpreadCanvas({ spread, editMode, actionsRef, onSelect, o
       isDrawingMode: false,
       preserveObjectStacking: true,
     });
+    canvas.setDimensions({ width: "100%", height: "100%" }, { cssOnly: true });
 
     fabric.Object.prototype.set({
       cornerColor:"#374375", cornerSize:8, cornerStyle:"circle",
