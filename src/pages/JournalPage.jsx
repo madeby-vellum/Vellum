@@ -146,10 +146,13 @@ export default function JournalPage({
 
         {!isCover && spread && (
           <div key={spread.id} className="fi" style={{ width:"100%",display:"flex",flexDirection:"column",alignItems:"center",flex:1,minHeight:0 }}>
-            <div style={{  boxShadow: "var(--sh-lg)", width: "min(880px, calc(100vw - 200px))", aspectRatio: "880 / 580", overflow: "hidden", cursor: "pointer" }}
-              onClick={()=>onEditSpread(spread)}>
-              <SpreadCanvas spread={spread} editMode={false} actionsRef={{ current:null }} />
-            </div>
+            <div style={{ cursor:"pointer", flexShrink:0,
+            width:880, height:500,
+            transform:"scale(0.85)", transformOrigin:"top center",
+            marginBottom:"-150px" }}
+            onClick={()=>onEditSpread(spread)}>
+            <SpreadCanvas spread={spread} editMode={false} actionsRef={{ current:null }} />
+          </div>
             <div style={{ display:"flex",alignItems:"baseline",gap:12 }}>
               {renamingSpread?.id === spread.id
                 ? <input autoFocus value={renamingSpread.title}
