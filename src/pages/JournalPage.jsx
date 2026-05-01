@@ -145,8 +145,8 @@ export default function JournalPage({
         )}
 
         {!isCover && spread && (
-          <div key={spread.id} className="fi" style={{ width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:12,flex:1,minHeight:0 }}>
-            <div style={{ boxShadow:"var(--sh-lg)",width:"min(880px, calc(100vw - 200px))",flex:1,minHeight:0,borderRadius:0,overflow:"hidden",flexShrink:0,cursor:"pointer" }}
+          <div key={spread.id} className="fi" style={{ width:"100%",display:"flex",flexDirection:"column",alignItems:"center",flex:1,minHeight:0 }}>
+            <div style={{  boxShadow: "var(--sh-lg)", width: "min(880px, calc(100vw - 200px))", aspectRatio: "880 / 580", overflow: "hidden", cursor: "pointer" }}
               onClick={()=>onEditSpread(spread)}>
               <SpreadCanvas spread={spread} editMode={false} actionsRef={{ current:null }} />
             </div>
