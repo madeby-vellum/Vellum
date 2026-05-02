@@ -3,38 +3,39 @@ const HELP_TABS = [
   {
     id: "getting-started", label: "Getting Started",
     steps: [
-      { heading: "Create Your First Journal", body: "Tap '+ New Journal' on the shelf page to begin. Give your journal a title and choose a cover — a preset colour or your own photo.", image: null },
-      { heading: "Choose a Cover", body: "Pick from six preset cover colours or upload any image from your device. Your cover is always editable from the journal options menu.", image: null },
-      { heading: "Opening a Journal", body: "Click any journal card on the shelf to open it. You'll land on the cover page first — use the arrows at the bottom to move between spreads.", image: null },
+      { heading: "Create Your First Journal", body: "Tap '+ New Journal' on the shelf page to begin.", image: "/images/start-1.png" },
+      { heading: "Choose a Title and a Cover", body: "Give your journal a title and choose a cover — a preset colour or your own photo.", image: "/images/start-2.png" },
+      { heading: "Opening a Journal", body: "Click any journal card on the shelf to open it. You'll land on the cover page first.", image: "/images/start-3.png" },
     ],
   },
   {
     id: "journal", label: "The Journal",
     steps: [
-      { heading: "Navigating Spreads", body: "Use the ← → arrows at the bottom to flip between your cover and spreads. You can also use the arrow keys on your keyboard.", image: null },
-      { heading: "Adding a Spread", body: "Press the + button in the bottom bar to add a new spread. You'll be prompted to choose a template first.", image: null },
-      { heading: "Renaming & Deleting", body: "Click the spread title beneath the page to rename it inline. Use the trash icon in the bottom bar to delete the current spread.", image: null },
-      { heading: "Editing a Spread", body: "Click the pencil icon or tap anywhere on the spread preview to open it in the editor.", image: null },
+      { heading: "Adding a Spread", body: "Press the + button in the bottom bar to add a new spread.", image: "/images/journal-1.png" },
+      { heading: "Choosing a Template", body: "Select a template to be applied to the new spread.", image: "/images/journal-2.png" },
+      { heading: "Navigating Spreads", body: "Use the ← → arrows at the bottom to flip between your cover and spreads.", image: "/images/journal-3.png" },
+      { heading: "Deleting", body: "Use the trash icon in the bottom bar to delete the current spread.", image: "/images/journal-4.png" },
+      { heading: "Editing a Spread", body: "Click the pencil icon or tap anywhere on the spread to open it in the editor.", image: "/images/journal-5.png" },
     ],
   },
   {
     id: "editor", label: "The Editor",
     steps: [
-      { heading: "Drawing", body: "Select the pen tool in the left toolbar. Choose your brush size and colour from the floating panel that appears. Switch to the eraser to remove strokes.", image: null },
-      { heading: "Adding Text", body: "Select the text tool (T) and click anywhere on the spread to place a text box. Double-click any existing text to edit it.", image: null },
-      { heading: "Adding Images", body: "Click the image tool to upload a photo from your device. Once placed, you can resize, reposition, crop, and flip it.", image: null },
-      { heading: "Selecting & Editing Objects", body: "Use the select tool to tap any object. A context panel appears with options for opacity, colour, and more. Use the layer buttons to move objects forward or back.", image: null },
-      { heading: "Undo & Redo", body: "Use the undo/redo buttons in the toolbar, or ⌘Z / ⌘⇧Z on your keyboard. Changes are tracked per session.", image: null },
-      { heading: "Saving", body: "Press '✓ Save' in the top-right to save your spread and return to the journal view. Navigating away without saving will discard unsaved changes.", image: null },
+      { heading: "Drawing", body: "Select the pen tool. Choose your brush size and colour.", image: "/images/editor-1.png" },
+      { heading: "Text", body: "Select the text tool and click anywhere to place a text box.", image: "/images/editor-2.png" },
+      { heading: "Images", body: "Select the image tool to upload from Unsplash, your device or from the library.", image: "/images/editor-3.png" },
+      { heading: "Layers", body: "Use the layer buttons to move objects forward or back.", image: "/images/editor-4.png" },
+      { heading: "Undo & Redo", body: "Use the undo/redo buttons in the toolbar.", image: "/images/editor-5.png" },
+      { heading: "Saving", body: "Press '✓ Save' in the top-right to save your spread and return to the journal view.", image: "/images/editor-6.png" },
     ],
   },
   {
     id: "tiers", label: "Free vs Pro",
     steps: [
-      { heading: "Free Plan", body: "Create up to 3 journals. Access all four basic templates: Blank, Dotted, Grid, and Lined. Full use of the drawing, text, and image tools.", image: null },
-      { heading: "Free Pack Redemption", body: "Every new account can redeem one free Pro template pack — choose from Planner, Cooking Journal, Reading Journal, Movie Journal, or Tracker.", image: null },
-      { heading: "Pro Plan", body: "Unlimited journals and access to all template categories including Planner, Cooking Journal, Reading Journal, Movie Journal, and Tracker.", image: null },
-      { heading: "Upgrading", body: "Tap '✦ Upgrade to Pro' in the nav bar or inside the template picker to see pricing and unlock all features.", image: null },
+      { heading: "Free Plan", body: "Create up to 3 journals. Access basic templates. Full use of editor tools.", image: "/images/tier-1.png" },
+      { heading: "Free Pack Redemption", body: "Every new account can redeem one Pro template pack for free.", image: "/images/tier-2.png" },
+      { heading: "Pro Plan", body: "Unlimited journals and access to all Premium template packs.", image: "/images/tier-3.png" },
+      { heading: "Upgrading", body: "Tap '✦ Upgrade to Pro' in the nav bar to see pricing and unlock all features.", image: "/images/tier-4.png" },
     ],
   },
 ];
@@ -86,14 +87,8 @@ export function HelpModal({ onClose, initialTab = 0 }) {
           </div>
         </div>
 
-        <div style={{ margin:"24px 28px 0",background:"rgba(186,189,226,0.12)",border:"1px dashed rgba(186,189,226,0.45)",height:188,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden" }}>
-          {step.image
-            ? <img src={step.image} alt={step.heading} style={{ width:"100%",height:"100%",objectFit:"cover" }} />
-            : <div style={{ textAlign:"center",userSelect:"none" }}>
-                <div style={{ fontSize:28,marginBottom:6,opacity:0.2 }}>◻</div>
-                <div style={{ fontSize:9,letterSpacing:"0.12em",textTransform:"uppercase",color:"var(--periwinkle)" }}>image placeholder</div>
-              </div>
-          }
+        <div style={{ margin:"24px 28px 0",height:228,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden" }}>
+          <img src={step.image} alt={step.heading} style={{ width:"auto",height:"100%",objectFit:"contain", border:"1px solid var(--navy)"} } />
         </div>
 
         <div style={{ padding:"20px 28px 4px",flex:1,minHeight:0,overflowY:"auto" }}>
