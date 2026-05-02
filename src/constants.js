@@ -56,11 +56,22 @@ export const TEMPLATES = [
 
 export const PRO_CATEGORIES = ["Planner", "Cooking", "Reading", "Movie", "Tracker", "Academic", "Mood", "Todo"];
 
-export const getCoverStyle = (j) => {
-  if (j.coverType === "image" && j.coverImg)
-    return { backgroundImage:`url(${j.coverImg})`, backgroundSize:"cover", backgroundPosition:"center" };
-  return PRESET_COVERS.find(c => c.id === j.coverId)?.style || {};
-};
+export function getCoverStyle(j) {
+  if (j.coverType === "preset") {
+    const preset = PRESET_COVERS.find(c => c.id === j.coverId);
+    return preset?.style || {};
+  }
+  if (j.coverType === "image" || j.coverType === "unsplash") {
+    return j.coverImg
+      ? {
+          backgroundImage: `url(${j.coverImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center"
+        }
+      : {};
+  }
+  return {};
+}
 
 export const PACK_DETAILS = {
   "Planner": {
