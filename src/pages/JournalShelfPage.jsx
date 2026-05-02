@@ -5,7 +5,6 @@ import Modal from "../components/Modal.jsx";
 import Field from "../components/Field.jsx";
 import Pill from "../components/Pill.jsx";
 import { PRESET_COVERS, getCoverStyle, uid, now } from "../constants.js";
-
 import { HelpModal, HelpButton } from "../components/HelpModal.jsx";
 
 /* ─── JournalShelfPage ─────────────────────────────────────── */
