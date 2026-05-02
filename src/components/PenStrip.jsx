@@ -1,3 +1,4 @@
+import { Pen, Eraser } from "lucide-react";
 import { PaletteIcon } from "./Pill.jsx";
 
 export const VDivider = () => (
@@ -45,25 +46,13 @@ export function ColorCol({ value, onChange }) {
 }
 
 export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush, onColorChange, onSizeChange }) {
-  const PenIco = () => (
-    <svg width="14" height="14" viewBox="0 0 13 13" fill="none">
-      <path d="M8.8 2.2l2 2-6.5 6.5-2.3.5.5-2.3 6.3-6.7z" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-    </svg>
-  );
-  const EraserIco = () => (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <path d="M2.5 11.5l3-3 4-4 2.5 2.5-4 4-2.5.5-3-3z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
-      <path d="M5.5 8.5l2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-      <path d="M2 13h11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  );
 
   const isEraser = activeBrush === "eraser";
 
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"8px 5px", gap:3 }}>
-      <IBtn active={activeBrush==="pen"}    onClick={()=>onSwitchBrush("pen")}    title="Pen"><PenIco /></IBtn>
-      <IBtn active={isEraser} onClick={()=>onSwitchBrush("eraser")} title="Eraser"><EraserIco /></IBtn>
+      <IBtn active={activeBrush==="pen"}    onClick={()=>onSwitchBrush("pen")}    title="Pen"><Pen size={14} /></IBtn>
+      <IBtn active={isEraser} onClick={()=>onSwitchBrush("eraser")} title="Eraser"><Eraser size={15} /></IBtn>
 
       <VDivider />
 
