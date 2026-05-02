@@ -1,3 +1,5 @@
+import { Pencil, Trash2, Plus } from "lucide-react";
+
 import { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import SpreadCanvas from "../components/SpreadCanvas.jsx";
@@ -174,24 +176,18 @@ export default function JournalPage({
         {!isCover && spread && (
           <button onClick={()=>onEditSpread(spread)} title="Edit spread" className="pill pill-light"
             style={{ width:38,height:38,padding:0,display:"flex",alignItems:"center",justifyContent:"center" }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M9.5 2.5l2 2-7 7-2.5.5.5-2.5 7-7z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
-            </svg>
+             <Pencil size={14} />
           </button>
         )}
         {!isCover && spread && (
           <button onClick={()=>setConfirmSpread(spread)} title="Delete spread" className="pill pill-light"
             style={{ width:38,height:38,padding:0,display:"flex",alignItems:"center",justifyContent:"center" }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2.5 4h9M5.5 4V3h3v1M4.5 4l.5 7.5h4l.5-7.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <Trash2 size={14} />
           </button>
         )}
         <button onClick={()=>setShowTemplatePicker(true)} title="Add spread" className="pill pill-light"
           style={{ width:38,height:38,padding:0,display:"flex",alignItems:"center",justifyContent:"center" }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 2.5v9M2.5 7h9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-          </svg>
+          <Plus size={14} />
         </button>
         {navBtn("→", goRight, journalPage===total-1)}
       </div>
