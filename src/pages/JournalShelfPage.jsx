@@ -197,11 +197,13 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                     onClick={()=>onOpenJournal(j)}
                     onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-5px)";e.currentTarget.style.boxShadow="var(--sh-lg)";}}
                     onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="var(--sh)";}}>
+                    <div style={{ position:"absolute",bottom:20,left:18,right:12 }}>
+                      
+                    </div>
                   </div>
                   <div style={{ marginTop:9,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6 }}>
                     <div style={{ cursor:"pointer",minWidth:0 }} onClick={()=>onOpenJournal(j)}>
                       <div style={{ fontSize:12,color:"var(--navy)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>{j.title}</div>
-                      <div style={{ fontSize:10,color:"var(--periwinkle)",marginTop:2 }}>{j.created}</div>
                     </div>
                     <div style={{ position:"relative",flexShrink:0 }}>
                       <button onClick={e=>{ e.stopPropagation(); setMenuOpen(menuOpen===j.id?null:j.id); }}
@@ -222,6 +224,10 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                         </div>
                       )}
                     </div>
+                  </div>
+                  <div style={{display:"flex", flexDirection:"row",justifyContent:"space-between"}}>
+                    <div style={{ fontSize:10,color:"var(--periwinkle)",letterSpacing:"0.1em" }}>{j.spreads.length} spreads</div>
+                    <div style={{ fontSize:10,color:"var(--periwinkle)"}}>{j.created}</div>
                   </div>
                 </div>
               ))}
