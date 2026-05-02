@@ -12,9 +12,9 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
         <button onClick={onClose} className="modal-close modal-close--light">✕</button>
         <div className="modal-header">
           <div className="modal-title">Pack Already Redeemed</div>
-          <div className="modal-copy" style={{ marginTop: 10, marginBottom: 6 }}>You've unlocked the</div>
-          <div className="modal-feature-title" style={{ marginBottom: 24, color: "var(--navy)", textTransform: "uppercase" }}>{unlockedCategory} Pack</div>
-          <div className="modal-copy" style={{ color: "rgba(55,67,117,0.6)", marginTop: 0, lineHeight: 1.6 }}>Each new account gets one free pack. Upgrade to Pro to unlock all template categories.</div>
+          <div className="modal-copy" style={{ marginTop: 10, marginBottom: 6, color:"var(--periwinkle)" }}>You've unlocked the</div>
+          <div className="modal-feature-title" style={{ marginBottom: 24, color: "var(--cloud)", textTransform: "uppercase" }}>{unlockedCategory} Pack</div>
+          <div className="modal-copy" style={{ color:"var(--periwinkle)" , marginTop: 0, lineHeight: 1.6 }}>Each new account gets one free pack. Upgrade to Pro to unlock all template categories.</div>
         </div>
       </div>
     </div>
