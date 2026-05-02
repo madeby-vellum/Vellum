@@ -197,10 +197,6 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                     onClick={()=>onOpenJournal(j)}
                     onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-5px)";e.currentTarget.style.boxShadow="var(--sh-lg)";}}
                     onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="var(--sh)";}}>
-                    <div style={{ position:"absolute",bottom:20,left:18,right:12 }}>
-                      <div style={{ fontSize:14,fontWeight:500,color:"#fff",textShadow:"0 1px 8px rgba(0,0,0,0.4)",lineHeight:1.3,letterSpacing:"0.02em" }}>{j.title}</div>
-                      <div style={{ fontSize:9,color:"rgba(255,255,255,0.65)",marginTop:4,letterSpacing:"0.1em" }}>{j.spreads.length} spreads</div>
-                    </div>
                   </div>
                   <div style={{ marginTop:9,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:6 }}>
                     <div style={{ cursor:"pointer",minWidth:0 }} onClick={()=>onOpenJournal(j)}>
