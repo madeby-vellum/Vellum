@@ -135,9 +135,8 @@ export default function JournalPage({
         {isCover && (
           <div key="cover" className="fi" style={{ width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:24,flex:1,minHeight:0 }}>
             <div style={{ position:"relative",height:"100%",aspectRatio:"2/3",...getCoverStyle(journal),borderRadius:0,boxShadow:"var(--sh-lg), 4px 0 10px rgba(0,0,0,0.18)" }}>
-              <div style={{ position:"absolute",left:0,top:0,bottom:0,width:16,background:"rgba(0,0,0,0.2)" }} />
               <div style={{ position:"absolute",inset:0,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"22px 18px 22px 26px" }}>
-                <div style={{ fontSize:17,fontWeight:500,color:"#fff",textShadow:"0 2px 12px rgba(0,0,0,0.5)",lineHeight:1.25,letterSpacing:"0.02em" }}>{journal.title}</div>
+                <div style={{ fontSize:17,fontWeight:500,color:"#fff",textShadow:"0 3px 12px rgba(0,0,0,0.6)",lineHeight:1.25,letterSpacing:"0.02em" }}>{journal.title}</div>
                 <div style={{ fontSize:9,color:"rgba(255,255,255,0.5)",marginTop:5,letterSpacing:"0.12em" }}>{journal.created}</div>
               </div>
             </div>
