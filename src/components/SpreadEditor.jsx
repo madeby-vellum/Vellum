@@ -1,3 +1,5 @@
+import { MousePointer2, Pen, Image, Undo2, Redo2, BringToFront, SendToBack, Trash2, 
+  Upload, Search, Smile, Crop, FlipHorizontal2, FlipVertical2, ZoomIn, ZoomOut} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import SpreadCanvas from "./SpreadCanvas.jsx";
 import PenStrip from "./PenStrip.jsx";
@@ -31,11 +33,7 @@ function StickerPickerPopup({ onClose, actionsRef }) {
         <div style={{ flex:1,overflowY:"auto",padding:"12px" }}>
           {STICKERS.length === 0 ? (
             <div style={{ display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:160,gap:10,color:"var(--periwinkle)" }}>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <circle cx="16" cy="16" r="13" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M11 13a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm10 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" fill="currentColor"/>
-                <path d="M10 20s1.5 3 6 3 6-3 6-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
+               <Smile size={32} strokeWidth={1.5} />
               <span style={{ fontSize:10,letterSpacing:"0.1em",textTransform:"uppercase",textAlign:"center",lineHeight:1.6 }}>
                 No stickers yet.<br/>Add your image URLs to the<br/><code style={{fontFamily:"monospace",fontSize:9}}>STICKERS</code> array in constants.js
               </span>
@@ -96,10 +94,7 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
         style={{ background:"var(--cloud)",width:600,maxWidth:"95vw",maxHeight:"85vh",display:"flex",flexDirection:"column",
           boxShadow:"0 4px 64px rgba(55,67,117,0.22)",border:"1px solid rgba(186,189,226,0.35)" }}>
         <div style={{ padding:"18px 20px 14px",borderBottom:"1px solid rgba(186,189,226,0.25)",display:"flex",alignItems:"center",gap:10,flexShrink:0 }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color:"var(--periwinkle)",flexShrink:0 }}>
-            <circle cx="6" cy="6" r="4.2" stroke="currentColor" strokeWidth="1.4"/>
-            <path d="M9.5 9.5l2.8 2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-          </svg>
+          <Search size={14} style={{ color: "var(--periwinkle)", flexShrink: 0 }} />
           <input ref={inputRef} value={query} onChange={e=>setQuery(e.target.value)}
             onKeyDown={e=>{ if(e.key==="Enter") search(query); }}
             placeholder="Search photos…"
@@ -146,58 +141,20 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
 
 /* ─── ImageStrip ─────────────────────────────────────────────── */
 function ImageStrip({ actionsRef, onOpenUnsplash, onOpenStickers, hasImageSelected, imgOpacity, onImgOpacity, isCropping, onCrop, onFlipH, onFlipV }) {
-  const UploadIco = () => (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <rect x="1" y="2" width="13" height="11" rx="1.2" stroke="currentColor" strokeWidth="1.3"/>
-      <path d="M7.5 9.5V5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-      <path d="M5.5 7.5l2-2 2 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-  const SearchIco = () => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <circle cx="6" cy="6" r="4" stroke="currentColor" strokeWidth="1.3"/>
-      <path d="M9.2 9.2l2.6 2.6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-      <path d="M4.5 6h3M6 4.5v3" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.7"/>
-    </svg>
-  );
-  const StickerIco = () => (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <circle cx="7.5" cy="7.5" r="6" stroke="currentColor" strokeWidth="1.3"/>
-      <circle cx="5.2" cy="6.2" r="0.9" fill="currentColor"/>
-      <circle cx="9.8" cy="6.2" r="0.9" fill="currentColor"/>
-      <path d="M5 9.5c.6 1.2 4.4 1.2 5 0" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  );
-  const CropIco = () => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M3 1v9h9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-      <path d="M1 3h9v9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.55"/>
-    </svg>
-  );
-  const FlipHIco = () => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 2v10M2 5l3 2-3 2M12 5l-3 2 3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-    </svg>
-  );
-  const FlipVIco = () => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M2 7h10M5 2l2 3-2 3M9 2l-2 3 2 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-    </svg>
-  );
-
+  
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"8px 5px", gap:3 }}>
-      <IBtn onClick={onOpenUnsplash} title="Search Unsplash photos"><SearchIco /></IBtn>
+      <IBtn onClick={onOpenUnsplash} title="Search Unsplash photos"><Search size={14} /></IBtn>
       <VDivider />
-      <IBtn onClick={()=>actionsRef.current?.uploadImage()} title="Upload from device"><UploadIco /></IBtn>
+      <IBtn onClick={()=>actionsRef.current?.uploadImage()} title="Upload from device"><Upload size={15} /></IBtn>
       <VDivider />
-      <IBtn onClick={onOpenStickers} title="Add sticker"><StickerIco /></IBtn>
+      <IBtn onClick={onOpenStickers} title="Add sticker"><Sticker size={15} /></IBtn>
 
       {hasImageSelected && <>
         <VDivider />
-        <IBtn active={isCropping} onClick={onCrop} title={isCropping ? "Apply crop" : "Crop image"}><CropIco /></IBtn>
-        <IBtn onClick={onFlipH} title="Flip horizontal"><FlipHIco /></IBtn>
-        <IBtn onClick={onFlipV} title="Flip vertical"><FlipVIco /></IBtn>
+        <IBtn active={isCropping} onClick={onCrop} title={isCropping ? "Apply crop" : "Crop image"}><Crop size={14} /></IBtn>
+        <IBtn onClick={onFlipH} title="Flip horizontal"><FlipHorizontal2 size={14} /></IBtn>
+        <IBtn onClick={onFlipV} title="Flip vertical"><FlipVertical2 size={14} /></IBtn>
         <VDivider />
         <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
           <input type="range" min={0} max={1} step={0.05} value={imgOpacity ?? 1}
@@ -306,41 +263,6 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     backdropFilter:"blur(8px)",
   };
 
-  const SelectIco = () => <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 1.5l7.5 4.2-3.8.95-1.88 4.25L1.5 1.5z" fill="currentColor"/></svg>;
-  const PenIco    = () => <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M8.8 2.2l2 2-6.5 6.5-2.3.5.5-2.3 6.3-6.7z" stroke="currentColor" strokeWidth="1.4" fill="none"/></svg>;
-  const ImgIco    = () => (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <rect x="1" y="2" width="13" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
-      <path d="M1 10l3.5-3.5 2.5 2.5 2-2 4 4" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
-      <circle cx="10.5" cy="5.5" r="1.2" fill="currentColor"/>
-    </svg>
-  );
-  const UndoIco = () => (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <path d="M2.5 6.5H9a3.5 3.5 0 010 7H5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M2.5 6.5L5 4M2.5 6.5L5 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-  const RedoIco = () => (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <path d="M12.5 6.5H6a3.5 3.5 0 000 7h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12.5 6.5L10 4M12.5 6.5L10 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-  const FrontIco = () => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 2.5v9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-      <path d="M3.5 6L7 2.5 10.5 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-  const BackIco = () => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 11.5v-9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-      <path d="M3.5 8L7 11.5 10.5 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-  const TrashIco  = () => <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5h3v1M4 3.5l.5 7h4l.5-7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>;
-
   return (
     <div className="fi" style={{ display:"flex", flexDirection:"column", height:"100%" }}>
       <div style={{ flex:1, position:"relative", overflow:"hidden" }}>
@@ -354,19 +276,19 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
 
         {/* Main toolbar */}
         <div style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", display:"flex", flexDirection:"column", alignItems:"center", padding:"8px 5px", gap:2, zIndex:10, ...floatCard }}>
-          <IBtn active={false}        onClick={()=>selectTool("select")} title="Select"><SelectIco /></IBtn>
-          <IBtn active={tool==="pen"} onClick={()=>selectTool("pen")}    title="Draw"><PenIco /></IBtn>
+          <IBtn active={false}        onClick={()=>selectTool("select")} title="Select"><MousePointer2 size={13} /></IBtn>
+          <IBtn active={tool==="pen"} onClick={()=>selectTool("pen")}    title="Draw"><Pen size={13} /></IBtn>
           <IBtn active={tool==="text"} onClick={()=>selectTool("text")}  title="Text"
             style={{ fontFamily:"'Libre Baskerville',serif", fontWeight:700, fontSize:17 }}>T</IBtn>
-          <IBtn active={tool==="image"} onClick={()=>selectTool("image")} title="Image"><ImgIco /></IBtn>
+          <IBtn active={tool==="image"} onClick={()=>selectTool("image")} title="Image"><Im size={13} /></IBtn>
           <VDivider />
-          <IBtn onClick={()=>actionsRef.current?.undo()} title="Undo (⌘Z)"><UndoIco /></IBtn>
-          <IBtn onClick={()=>actionsRef.current?.redo()} title="Redo (⌘⇧Z)"><RedoIco /></IBtn>
+          <IBtn onClick={()=>actionsRef.current?.undo()} title="Undo (⌘Z)"><Undo2 size={15} /></IBtn>
+          <IBtn onClick={()=>actionsRef.current?.redo()} title="Redo (⌘⇧Z)"><Redo2 size={15} /></IBtn>
           <VDivider />
-          <IBtn disabled={!hasSelection} onClick={()=>actionsRef.current?.bringToFront()} title="Move forward one layer"><FrontIco /></IBtn>
-          <IBtn disabled={!hasSelection} onClick={()=>actionsRef.current?.sendToBack()}   title="Move back one layer"><BackIco /></IBtn>
+          <IBtn disabled={!hasSelection} onClick={()=>actionsRef.current?.bringToFront()} title="Move forward one layer"><BringToFront size={14} /></IBtn>
+          <IBtn disabled={!hasSelection} onClick={()=>actionsRef.current?.sendToBack()}   title="Move back one layer"><SendToBack size={14} /></IBtn>
           <VDivider />
-          <IBtn disabled={!hasSelection} danger onClick={()=>actionsRef.current?.deleteSelected()} title="Delete selected"><TrashIco /></IBtn>
+          <IBtn disabled={!hasSelection} danger onClick={()=>actionsRef.current?.deleteSelected()} title="Delete selected"><Trash2 size={13} /></IBtn>
         </div>
 
         {/* Context panel */}
@@ -419,22 +341,14 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
         <div style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
           display:"flex", flexDirection:"column", alignItems:"center", padding:"8px 5px", gap:2, zIndex:10, ...floatCard }}>
           <IBtn onClick={zoomIn} title="Zoom in" disabled={zoom >= 3}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="6" cy="6" r="4.2" stroke="currentColor" strokeWidth="1.3"/>
-              <path d="M4.5 6h3M6 4.5v3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-              <path d="M9.5 9.5l2.5 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-            </svg>
+            <ZoomIn size={14} />
           </IBtn>
           <div style={{ fontSize:8, color:"var(--periwinkle)", fontFamily:"'Inter',sans-serif",
             padding:"2px 0", letterSpacing:"0.04em", textAlign:"center", minWidth:28 }}>
             {Math.round(zoom * 100)}%
           </div>
           <IBtn onClick={zoomOut} title="Zoom out" disabled={zoom <= 0.3}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="6" cy="6" r="4.2" stroke="currentColor" strokeWidth="1.3"/>
-              <path d="M4.5 6h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-              <path d="M9.5 9.5l2.5 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-            </svg>
+            <ZoomOut size={14} />
           </IBtn>
           <VDivider />
           <IBtn onClick={()=>setZoom(1)} title="Reset zoom"
