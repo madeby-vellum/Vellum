@@ -2,8 +2,8 @@ import "./Modal.css";
 
 export default function ProUpgradeModal({ onClose, onUpgrade, userTier }) {
   const features = [
-    { icon:"✦", label:"Unlimited journals", desc:"Create as many journals as you need, forever." },
-    { icon:"◈", label:"Premium templates", desc:"Planners, recipe pages, reading logs, film reviews & more." },
+    { icon: "✦", label: "Unlimited journals",  desc: "Create as many journals as you need, forever." },
+    { icon: "◈", label: "Premium templates",   desc: "Planners, recipe pages, reading logs, film reviews & more." },
   ];
 
   return (

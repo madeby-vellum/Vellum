@@ -1,0 +1,12 @@
+.field-container {
+  margin-bottom: 16px;
+}
+
+.field-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--periwinkle);
+  margin-bottom: 6px;
+}

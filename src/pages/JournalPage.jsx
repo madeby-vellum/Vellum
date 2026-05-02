@@ -9,6 +9,7 @@ import { HelpModal, HelpButton } from "../components/HelpModal.jsx";
 import { getCoverStyle, uid, now, TEMPLATES } from "../constants.js";
 import { supabase } from "../lib/supabase";
 import { deleteSpread as deleteSpreadDB } from "../lib/spreads";
+import "./JournalPage.css";
 
 export default function JournalPage({
   journals, setJournals, activeJournal, setActiveJournal, setActiveSpread, setJournalPage, navigate,
@@ -48,13 +49,10 @@ export default function JournalPage({
     const newSpread = {
       journal_id: activeJournal.id,
       user_id: user.id,
-
       name: `Spread ${activeJournal.spreads.length + 1}`,
-
       template_id: tmpl.id,
       template_class: tmpl.tier || "free",
       template_image: tmpl.path,
-
       canvas: null
     };
 
@@ -69,7 +67,6 @@ export default function JournalPage({
       return;
     }
 
-    // update local state
     const updated = {
       ...activeJournal,
       spreads: [...activeJournal.spreads, data]
@@ -78,11 +75,9 @@ export default function JournalPage({
     setJournals(p => p.map(j => j.id === activeJournal.id ? updated : j));
     setActiveJournal(updated);
     setActiveSpread(data);
-
     setJournalPage(updated.spreads.length);
     setShowTemplatePicker(false);
 
-    // IMPORTANT: open editor immediately
     navigate(`/shelf/journal/${activeJournal.id}/spread/${data.id}`);
   };
 
@@ -95,7 +90,7 @@ export default function JournalPage({
 
   const deleteSpread = async (id) => {
     try {
-      await deleteSpreadDB(id); // 🔥 ACTUAL DELETE
+      await deleteSpreadDB(id);
 
       const updated = {
         ...activeJournal,
@@ -112,97 +107,109 @@ export default function JournalPage({
   };
 
   const navBtn = (label, onClick, disabled) => (
-    <button onClick={onClick} disabled={disabled}
-      style={{ width:38,height:38,borderRadius:0,border:"1px solid rgba(55,67,117,0.25)",background:"transparent",color:"var(--navy)",fontSize:15,
-        display:"flex",alignItems:"center",justifyContent:"center",cursor:disabled?"not-allowed":"pointer",opacity:disabled?0.3:1,transition:"all 0.15s" }}>
+    <button onClick={onClick} disabled={disabled} className="journal-nav-btn">
       {label}
     </button>
   );
 
   return (
-    <div style={{ height:"100vh",display:"flex",flexDirection:"column",background:"var(--cloud)",position:"relative",overflow:"hidden" }}>
-      <nav className="nav-bar" style={{ justifyContent:"space-between" }}>
-        <div style={{ display:"flex",alignItems:"center",gap:14 }}>
-          <button onClick={onGoHome} style={{ background:"none",border:"none",fontSize:13,fontWeight:600,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--navy)",cursor:"pointer",transition:"opacity 0.14s",padding:0,fontFamily:"'Inter',sans-serif" }}
-            onMouseEnter={e=>e.currentTarget.style.opacity="0.6"}
-            onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-            title="Back to home">← Shelf</button>
-          <span style={{ color:"rgba(55,67,117,0.3)" }}>/</span>
-          <span style={{ fontSize:13,fontWeight:500,color:"var(--navy)",letterSpacing:"0.04em",fontFamily:"'Inter',sans-serif" }}>{journal.title}</span>
+    <div className="journal-page">
+      <nav className="nav-bar journal-nav">
+        <div className="journal-nav-left">
+          <button
+            onClick={onGoHome}
+            className="journal-back-btn"
+            title="Back to home"
+          >
+            ← Shelf
+          </button>
+          <span className="journal-nav-separator">/</span>
+          <span className="journal-nav-title">{journal.title}</span>
         </div>
-        <HelpButton onOpen={()=>setShowHelp(true)} />
+        <HelpButton onOpen={() => setShowHelp(true)} />
       </nav>
 
-      <div style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"32px 100px 0",overflow:"visible",gap:16 }}>
+      <div className="journal-content">
         {isCover && (
-          <div key="cover" className="fi" style={{ width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:24,flex:1,minHeight:0 }}>
-            <div style={{ position:"relative",height:"100%",aspectRatio:"2/3",...getCoverStyle(journal),borderRadius:0,boxShadow:"var(--sh-lg), 4px 0 10px rgba(0,0,0,0.18)" }}>
-              <div style={{ position:"absolute",inset:0,display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"22px 18px 22px 26px" }}>
-                <div style={{ fontSize:17,fontWeight:500,color:"#fff",textShadow:"0 3px 12px rgba(0,0,0,0.6)",lineHeight:1.25,letterSpacing:"0.02em" }}>{journal.title}</div>
-                <div style={{ fontSize:9,color:"rgba(255,255,255,0.5)",marginTop:5,letterSpacing:"0.12em" }}>{journal.created}</div>
+          <div key="cover" className="fi journal-cover-wrapper">
+            <div
+              className="journal-cover-book"
+              style={getCoverStyle(journal)}
+            >
+              <div className="journal-cover-info">
+                <div className="journal-cover-title">{journal.title}</div>
+                <div className="journal-cover-date">{journal.created}</div>
               </div>
             </div>
           </div>
         )}
 
         {!isCover && spread && (
-          <div key={spread.id} className="fi" style={{ width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:12,flex:1,minHeight:0 }}>
-            <div style={{ boxShadow:"var(--sh-lg)",height:"min(580px, calc(100vh - 200px))",maxWidth:"100%",aspectRatio:"880/580",borderRadius:0,overflow:"hidden",flexShrink:0,cursor:"pointer" }}
-              onClick={()=>onEditSpread(spread)}>
-              <SpreadCanvas spread={spread} editMode={false} actionsRef={{ current:null }} />
+          <div key={spread.id} className="fi journal-spread-wrapper">
+            <div
+              className="journal-spread-canvas"
+              onClick={() => onEditSpread(spread)}
+            >
+              <SpreadCanvas spread={spread} editMode={false} actionsRef={{ current: null }} />
             </div>
-            <div style={{ display:"flex",alignItems:"baseline",gap:12 }}>
+            <div className="journal-spread-meta">
               {renamingSpread?.id === spread.id
-                ? <input autoFocus value={renamingSpread.title}
-                    onChange={e=>setRenamingSpread(r=>({...r,title:e.target.value}))}
-                    onBlur={()=>{ renameSpread(renamingSpread.id,renamingSpread.title); setRenamingSpread(null); }}
-                    onKeyDown={e=>{ if(e.key==="Enter"){ renameSpread(renamingSpread.id,renamingSpread.title); setRenamingSpread(null); } if(e.key==="Escape") setRenamingSpread(null); }}
-                    style={{ fontSize:12,color:"var(--navy)",border:"none",borderBottom:"1px solid var(--periwinkle)",background:"transparent",outline:"none",fontFamily:"'Inter',sans-serif",padding:"2px 0",minWidth:80 }} />
-                : <span onClick={()=>setRenamingSpread({id:spread.id,title:spread.title})} title="Click to rename"
-                    style={{ fontSize:12,color:"var(--navy)",cursor:"text",borderBottom:"1px solid transparent",transition:"border-color 0.12s" }}
-                    onMouseEnter={e=>e.currentTarget.style.borderBottom="1px solid rgba(186,189,226,0.5)"}
-                    onMouseLeave={e=>e.currentTarget.style.borderBottom="1px solid transparent"}>
+                ? <input
+                    autoFocus
+                    value={renamingSpread.title}
+                    onChange={e => setRenamingSpread(r => ({ ...r, title: e.target.value }))}
+                    onBlur={() => { renameSpread(renamingSpread.id, renamingSpread.title); setRenamingSpread(null); }}
+                    onKeyDown={e => {
+                      if (e.key === "Enter") { renameSpread(renamingSpread.id, renamingSpread.title); setRenamingSpread(null); }
+                      if (e.key === "Escape") setRenamingSpread(null);
+                    }}
+                    className="journal-spread-name-input"
+                  />
+                : <span
+                    onClick={() => setRenamingSpread({ id: spread.id, title: spread.title })}
+                    title="Click to rename"
+                    className="journal-spread-name"
+                  >
                     {spread.title}
                   </span>
               }
-              <span style={{ fontSize:10,color:"var(--periwinkle)",letterSpacing:"0.06em" }}>{spread.date}</span>
+              <span className="journal-spread-date">{spread.date}</span>
             </div>
           </div>
         )}
       </div>
 
-      <div style={{ padding:"16px 32px 24px",display:"flex",alignItems:"center",justifyContent:"center",gap:10,flexShrink:0 }}>
-        {navBtn("←", goLeft, journalPage===0)}
+      <div className="journal-controls">
+        {navBtn("←", goLeft, journalPage === 0)}
         {!isCover && spread && (
-          <button onClick={()=>onEditSpread(spread)} title="Edit spread" className="pill pill-light"
-            style={{ width:38,height:38,padding:0,display:"flex",alignItems:"center",justifyContent:"center" }}>
-             <Pencil size={14} />
+          <button onClick={() => onEditSpread(spread)} title="Edit spread" className="pill pill-light journal-icon-btn">
+            <Pencil size={14} />
           </button>
         )}
         {!isCover && spread && (
-          <button onClick={()=>setConfirmSpread(spread)} title="Delete spread" className="pill pill-light"
-            style={{ width:38,height:38,padding:0,display:"flex",alignItems:"center",justifyContent:"center" }}>
+          <button onClick={() => setConfirmSpread(spread)} title="Delete spread" className="pill pill-light journal-icon-btn">
             <Trash2 size={14} />
           </button>
         )}
-        <button onClick={()=>setShowTemplatePicker(true)} title="Add spread" className="pill pill-light"
-          style={{ width:38,height:38,padding:0,display:"flex",alignItems:"center",justifyContent:"center" }}>
+        <button onClick={() => setShowTemplatePicker(true)} title="Add spread" className="pill pill-light journal-icon-btn">
           <Plus size={14} />
         </button>
-        {navBtn("→", goRight, journalPage===total-1)}
+        {navBtn("→", goRight, journalPage === total - 1)}
       </div>
 
       {confirmSpread && (
-        <Modal title="Delete Spread" onClose={()=>setConfirmSpread(null)}>
-          <p style={{ fontSize:13,color:"var(--navy)",marginBottom:8,lineHeight:1.6 }}>
+        <Modal title="Delete Spread" onClose={() => setConfirmSpread(null)}>
+          <p className="journal-modal-body">
             Are you sure you want to delete <strong>{confirmSpread.title}</strong>?
           </p>
-          <p style={{ fontSize:11,color:"var(--periwinkle)",marginBottom:28 }}>All drawings and content on this spread will be lost.</p>
-          <div style={{ display:"flex",gap:10,justifyContent:"flex-end" }}>
-            <button onClick={()=>setConfirmSpread(null)}
-              style={{ padding:"10px 24px",borderRadius:0,border:"1px solid rgba(186,189,226,0.4)",background:"transparent",fontSize:11,letterSpacing:"0.08em",textTransform:"uppercase",cursor:"pointer",color:"var(--navy)" }}>cancel</button>
-            <button onClick={()=>{ deleteSpread(confirmSpread.id); setConfirmSpread(null); }}
-              style={{ padding:"10px 24px",borderRadius:0,border:"none",background:"var(--navy)",color:"var(--cloud)",fontSize:11,letterSpacing:"0.08em",textTransform:"uppercase",cursor:"pointer" }}>delete</button>
+          <p className="journal-modal-warning">All drawings and content on this spread will be lost.</p>
+          <div className="journal-modal-actions">
+            <button onClick={() => setConfirmSpread(null)} className="journal-modal-cancel">
+              cancel
+            </button>
+            <button onClick={() => { deleteSpread(confirmSpread.id); setConfirmSpread(null); }} className="journal-modal-delete">
+              delete
+            </button>
           </div>
         </Modal>
       )}
@@ -212,12 +219,12 @@ export default function JournalPage({
           userTier={userTier}
           onToggleTier={onToggleTier}
           onSelect={createSpread}
-          onClose={()=>setShowTemplatePicker(false)}
+          onClose={() => setShowTemplatePicker(false)}
           onShowUpgrade={onShowUpgrade}
           unlockedCategory={unlockedCategory}
         />
       )}
-      {showHelp && <HelpModal onClose={()=>setShowHelp(false)} initialTab={1} />}
+      {showHelp && <HelpModal onClose={() => setShowHelp(false)} initialTab={1} />}
     </div>
   );
 }

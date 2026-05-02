@@ -1,794 +1,8 @@
 import { ChevronDown, BookOpen, ArrowUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import "./HomePage.css";
 // import { AuthContext } from "../context/AuthContext";
-
-const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy:       #374375;
-    --navy-dim:   #2a3260;
-    --cloud:      #FFFCF5;
-    --periwinkle: #BABDE2;
-    --maroon:     #895159;
-    --peach:      #DFAEA1;
-    --sh:         0 4px 24px rgba(55,67,117,0.10);
-    --sh-lg:      0 16px 64px rgba(55,67,117,0.16);
-    --body-pad: 48px;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--cloud);
-    font-family: 'Inter', sans-serif;
-    color: var(--navy);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  .cg { font-family: 'Libre Baskerville', serif; letter-spacing: 0.1em; }
-
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-thumb { background: rgba(186,189,226,0.5); }
-
-  /* ─── NAVBAR ─── */
-  .navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: var(--periwinkle);
-    padding: 16px 40px;
-    height: 68px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(55,67,117,0.08);
-  }
-
-  .navbar-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-
-  .navbar-links {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .navbar-links a {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(55,67,117,0.7);
-    text-decoration: none;
-    transition: color 0.14s;
-  }
-
-  .navbar-links a:hover { color: var(--navy); }
-
-  .journal-btn {
-    padding: 8px 20px;
-    background: var(--navy);
-    color: var(--cloud);
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.14s;
-  }
-
-  .journal-btn:hover { background: var(--navy-dim); }
-
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-  }
-
-  .hamburger span {
-    display: block;
-    width: 22px; height: 1.5px;
-    background: var(--navy);
-  }
-
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    background: var(--periwinkle);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 100px var(--body-pad) 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(55,67,117,0.08) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-
-  .hero-inner {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    max-width: 700px;
-  }
-
-  .hero-tagline {
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(55,67,117,0.55);
-    margin-bottom: 24px;
-  }
-
-  .hero-title {
-    font-family: 'Libre Baskerville', serif;
-    font-size: clamp(64px, 12vw, 104px);
-    font-weight: 300;
-    line-height: 1;
-    color: var(--navy);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 20px;
-  }
-
-  .hero-sub {
-    font-size: 13px;
-    line-height: 1.7;
-    color: rgba(55,67,117,0.7);
-    max-width: 420px;
-    margin: 0 auto 44px;
-  }
-
-  .btn-primary {
-    padding: 14px 40px;
-    background: var(--navy);
-    color: var(--cloud);
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.16s;
-  }
-
-  .btn-primary:hover { background: var(--navy-dim); }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 36px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: rgba(55,67,117,0.4);
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    animation: bounce 2s ease-in-out infinite;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%       { transform: translateX(-50%) translateY(6px); }
-  }
-
-  /* ─── SECTIONS ─── */
-  section { padding: 100px var(--body-pad); }
-
-  .section-inner {
-    max-width: 960px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 9px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(55,67,117,0.45);
-    margin-bottom: 16px;
-  }
-
-  .section-title {
-    font-family: 'Libre Baskerville', serif;
-    font-size: clamp(28px, 4.5vw, 48px);
-    font-weight: 400;
-    line-height: 1.15;
-    color: var(--navy);
-    letter-spacing: 0.04em;
-    margin-bottom: 20px;
-  }
-
-  .section-body {
-    font-size: 14px;
-    line-height: 1.8;
-    color: rgba(55,67,117,0.65);
-    max-width: 500px;
-  }
-
-  .divider-line {
-    width: 40px;
-    height: 1px;
-    background: rgba(186,189,226,0.6);
-    margin: 24px 0;
-  }
-
-  /* ─── ABOUT ─── */
-  #about { background: var(--cloud); }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-  }
-
-  .about-img {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 0 0 30px;
-  }
-
-  /* ─── FEATURES ─── */
-  #features { background: var(--periwinkle); }
-
-  .features-grid {
-    margin-top: 64px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-
-  .feature-card {
-    background: var(--cloud);
-    padding: 40px 32px;
-    transition: background 0.14s;
-  }
-
-  .feature-card:hover { background: rgba(255,252,245,0.85); }
-
-  .feature-icon {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: var(--navy);
-  }
-
-  .feature-title {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 17px;
-    color: var(--navy);
-    letter-spacing: 0.04em;
-    margin-bottom: 12px;
-  }
-
-  .feature-desc {
-    font-size: 13px;
-    line-height: 1.75;
-    color: rgba(55,67,117,0.65);
-  }
-
-  /* ─── PRICING ─── */
-  #pricing { background: var(--cloud); }
-
-  .pricing-grid {
-    margin-top: 64px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    width: 100%;
-  }
-
-  .pricing-card {
-    padding: 48px 40px;
-    border: 1px solid rgba(186,189,226,0.3);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .pricing-card.pro {
-    background: var(--navy);
-    border-color: var(--navy);
-  }
-
-  .pricing-badge {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    background: rgba(186,189,226,0.2);
-    color: rgba(55,67,117,0.7);
-    margin-bottom: 28px;
-    width: fit-content;
-  }
-
-  .pricing-card.pro .pricing-badge {
-    background: rgba(186,189,226,0.15);
-    color: var(--periwinkle);
-  }
-
-  .pricing-price {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 48px;
-    font-weight: 400;
-    color: var(--navy);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .pricing-card.pro .pricing-price { color: var(--cloud); }
-
-  .pricing-price span {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: rgba(55,67,117,0.5);
-  }
-
-  .pricing-card.pro .pricing-price span { color: rgba(255,252,245,0.4); }
-
-  .pricing-desc {
-    font-size: 12px;
-    color: rgba(55,67,117,0.5);
-    margin-bottom: 36px;
-    letter-spacing: 0.04em;
-  }
-
-  .pricing-card.pro .pricing-desc { color: rgba(255,252,245,0.5); }
-
-  .pricing-divider {
-    height: 1px;
-    background: rgba(186,189,226,0.25);
-    margin-bottom: 28px;
-  }
-
-  .pricing-card.pro .pricing-divider { background: rgba(255,252,245,0.1); }
-
-  .pricing-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 40px;
-    flex: 1;
-  }
-
-  .pricing-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 13px;
-    color: rgba(55,67,117,0.7);
-    line-height: 1.5;
-  }
-
-  .pricing-card.pro .pricing-features li { color: rgba(255,252,245,0.7); }
-
-  .pricing-check {
-    color: var(--periwinkle);
-    font-size: 12px;
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-
-  .pricing-footer { margin-top: auto; }
-
-  .pricing-cta {
-    width: 100%;
-    padding: 14px;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1px solid rgba(186,189,226,0.4);
-    background: transparent;
-    color: var(--navy);
-    transition: all 0.14s;
-  }
-
-  .pricing-cta:hover {
-    background: rgba(186,189,226,0.15);
-    border-color: var(--periwinkle);
-  }
-
-  .pricing-card.pro .pricing-cta {
-    background: var(--periwinkle);
-    border-color: var(--periwinkle);
-    color: var(--navy);
-  }
-
-  .pricing-card.pro .pricing-cta:hover {
-    background: #a8abce;
-    border-color: #a8abce;
-  }
-
-  .pricing-trial {
-    font-size: 10px;
-    color: rgba(255,252,245,0.35);
-    text-align: center;
-    margin-top: 12px;
-    letter-spacing: 0.06em;
-  }
-
-  /* ─── STUDENT DISCOUNT BOX ─── */
-  .student-box {
-    margin-top: 40px;
-    border: 1px solid rgba(186,189,226,0.3);
-    background: rgba(186,189,226,0.06);
-    display: flex;
-    align-items: stretch;
-    overflow: hidden;
-  }
-
-  .student-img-col {
-    flex: 0 0 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(186,189,226,0.13);
-    border-right: 1px solid rgba(186,189,226,0.25);
-    padding: 36px 20px;
-  }
-
-  .student-placeholder {
-    width: 110px;
-    height: 110px;
-    background: rgba(186,189,226,0.18);
-    border: 1.5px dashed rgba(186,189,226,0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 8px;
-    color: rgba(186,189,226,0.65);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-align: center;
-  }
-
-  .student-text-col {
-    flex: 1;
-    padding: 32px 36px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .student-title {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--navy);
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-
-  .student-body {
-    font-size: 13px;
-    line-height: 1.75;
-    color: rgba(55,67,117,0.65);
-  }
-
-  .student-body a {
-    color: var(--navy);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  .student-body a:hover { opacity: 0.75; }
-
-  /* ─── FAQ ─── */
-  #faq { background: var(--periwinkle); }
-
-  .faq-list {
-    margin-top: 64px;
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid rgba(55,67,117,0.12);
-  }
-
-  .faq-item { border-bottom: 1px solid rgba(55,67,117,0.12); }
-
-  .faq-q {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--navy);
-    text-align: left;
-    gap: 20px;
-  }
-
-  .faq-chevron {
-    font-size: 20px;
-    color: rgba(55,67,117,0.4);
-    flex-shrink: 0;
-    transition: transform 0.2s;
-    line-height: 1;
-  }
-
-  .faq-item.open .faq-chevron { transform: rotate(180deg); }
-
-  .faq-a {
-    font-size: 13px;
-    line-height: 1.8;
-    color: rgba(55,67,117,0.65);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-  }
-
-  .faq-item.open .faq-a {
-    max-height: 220px;
-    padding-bottom: 24px;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--navy);
-    padding: 40px 40px 28px;
-    color: rgba(255,252,245,0.5);
-  }
-
-  .footer-inner {
-    max-width: 960px;
-    margin: 0 auto;
-  }
-
-  .footer-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-  }
-
-  .footer-logo-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .footer-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 14px;
-  }
-
-  .footer-contact-note {
-    font-size: 12px;
-    color: rgba(255,252,245,0.4);
-    text-align: right;
-    line-height: 1.65;
-  }
-
-  .footer-contact-note a {
-    color: var(--periwinkle);
-    text-decoration: none;
-    transition: color 0.14s;
-  }
-
-  .footer-contact-note a:hover { color: #d0d3ee; }
-
-  .footer-socials {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .social-icon {
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(255,252,245,0.4);
-    text-decoration: none;
-    transition: all 0.14s;
-    cursor: pointer;
-  }
-
-  .social-icon:hover {
-    border-color: rgba(255,252,245,0.3);
-    color: rgba(255,252,245,0.8);
-  }
-
-  .footer-bottom {
-    border-top: 1px solid rgba(255,252,245,0.06);
-    padding-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .footer-bottom-left {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .back-to-top {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    color: rgba(255,252,245,0.4);
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.14s;
-  }
-
-  .back-to-top:hover { color: rgba(255,252,245,0.75); }
-  .back-to-top svg { transition: transform 0.14s; }
-  .back-to-top:hover svg { transform: translateY(-2px); }
-
-  /* ─── MODAL ─── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(55,67,117,0.45);
-    backdrop-filter: blur(4px);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .modal-overlay.active { display: flex; }
-
-  .modal-box {
-    background: var(--cloud);
-    padding: 48px 40px;
-    max-width: 340px;
-    width: 100%;
-    text-align: center;
-    box-shadow: var(--sh-lg);
-    animation: fadeUp 0.25s ease both;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .modal-icon { font-size: 28px; margin-bottom: 20px; }
-
-  .modal-box h3 {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 22px;
-    color: var(--navy);
-    letter-spacing: 0.04em;
-    margin-bottom: 12px;
-  }
-
-  .modal-box p {
-    font-size: 13px;
-    line-height: 1.75;
-    color: rgba(55,67,117,0.6);
-    margin-bottom: 32px;
-  }
-
-  .modal-close-btn {
-    padding: 11px 32px;
-    background: var(--periwinkle);
-    color: var(--navy);
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.14s;
-  }
-
-  .modal-close-btn:hover { background: #a8abce; }
-
-  /* Mobile nav */
-  .mobile-nav {
-    display: none;
-    position: fixed;
-    top: 58px; left: 0; right: 0;
-    background: var(--periwinkle);
-    border-top: 1px solid rgba(55,67,117,0.1);
-    padding: 20px;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 99;
-  }
-
-  .mobile-nav.open { display: flex; }
-
-  .mobile-nav a {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(55,67,117,0.7);
-    text-decoration: none;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(55,67,117,0.08);
-  }
-
-  .mobile-nav a:last-child { border-bottom: none; }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    .student-img-col { flex: 0 0 140px; }
-  }
-
-  @media (max-width: 600px) {
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .pricing-grid  { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 767px) {
-    .navbar { padding: 16px 20px; }
-    .navbar-links { display: none; }
-    .journal-btn { display: none; }
-    .hamburger { display: flex; }
-
-    section { padding: 72px 20px; }
-    .hero { padding: 100px 20px 80px; }
-
-    .student-box { flex-direction: column; }
-    .student-img-col {
-      display: none;
-    }
-    .student-text-col { padding: 24px 20px; }
-
-    footer { padding: 36px 20px 24px; }
-    .footer-main  { flex-direction: column; }
-    .footer-right { align-items: flex-start; }
-    .footer-contact-note { text-align: left; }
-    .footer-socials { justify-content: flex-start; }
-    .footer-bottom { flex-direction: column; align-items: flex-start; }
-  }
-`;
 
 const features = [
   {
@@ -856,12 +70,10 @@ const JournalIcon = ({ width = 18, height = 18, opacity = "0.4" }) => (
 
 export function Logo({ size = 48 }) {
   return (
-    <div style={{
-      width: size, height: size, flexShrink: 0,
-      background: "rgba(55,67,117,0.12)",
-      border: "1.5px dashed rgba(55,67,117,0.25)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-    }}>
+    <div
+      className="logo-box"
+      style={{ width: size, height: size }}
+    >
       <svg width={size * 0.5} height={size * 0.5} viewBox="0 0 24 24" fill="none">
         <rect x="3" y="3" width="18" height="18" rx="1" stroke="rgba(55,67,117,0.35)" strokeWidth="1.2"/>
         <path d="M3 9h18M9 9v12" stroke="rgba(55,67,117,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
@@ -871,6 +83,7 @@ export function Logo({ size = 48 }) {
 }
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
@@ -886,7 +99,7 @@ export default function HomePage() {
       e.preventDefault();
       setModalOpen(true);
     } else {
-      navigate("/auth")
+      navigate("/auth");
     }
   };
 
@@ -896,12 +109,10 @@ export default function HomePage() {
 
   return (
     <>
-      <style>{styles}</style>
-
       {/* NAVBAR */}
       <nav className="navbar">
         <a href="/" className="navbar-logo">
-          <img src="/logo/blue-logo.png" alt="Vellum" style={{ height:36, width:"auto", display:"block" }} />
+          <img src="/logo/blue-logo.png" alt="Vellum" className="navbar-logo-img" />
         </a>
 
         <div className="navbar-links">
@@ -945,7 +156,7 @@ export default function HomePage() {
           </a>
         </div>
         <div className="hero-scroll">
-          <ChevronDown size={14} strokeWidth={1.5} style={{ color: "rgba(55,67,117,0.4)" }} />
+          <ChevronDown size={14} strokeWidth={1.5} />
           scroll
         </div>
       </section>
@@ -954,7 +165,7 @@ export default function HomePage() {
       <section id="about">
         <div className="section-inner">
           <div className="about-grid">
-            <img className="about-img" src="/images/vehluhm.png" alt="Vellum" style={{ height:300, width:"auto", display:"block" }} />
+            <img className="about-img" src="/images/vehluhm.png" alt="Vellum" />
             <div>
               <div className="section-label">About Vellum</div>
               <h2 className="section-title cg">
@@ -973,7 +184,7 @@ export default function HomePage() {
       <section id="features">
         <div className="section-inner">
           <div className="section-label">What's Inside</div>
-          <h2 className="section-title cg" style={{ color: "var(--navy)" }}>
+          <h2 className="section-title cg">
             Everything you need<br />to journal well
           </h2>
           <p className="section-body">
@@ -1061,9 +272,7 @@ export default function HomePage() {
           {/* Student Discount */}
           <div className="student-box">
             <div className="student-img-col">
-              <img src="/images/discount.png" alt="Student Discount" style={{ height:120, width:"auto", display:"block" }} />
-              {/* <div className="student-placeholder">
-              </div> */}
+              <img src="/images/discount.png" alt="Student Discount" />
             </div>
             <div className="student-text-col">
               <div className="student-title">Are you a student?</div>
@@ -1102,7 +311,7 @@ export default function HomePage() {
         <div className="footer-inner">
           <div className="footer-main">
             <div className="footer-logo-row">
-              <img src="/logo/periwinkle-logo.png" alt="Vellum" style={{ height:48, width:"auto", display:"block" }} />
+              <img src="/logo/periwinkle-logo.png" alt="Vellum" />
             </div>
 
             <div className="footer-right">
@@ -1111,20 +320,20 @@ export default function HomePage() {
                 Reach us at <a href="mailto:madeby.vellum@gmail.com">madeby.vellum@gmail.com</a>
               </p>
               <div className="footer-socials">
-                <a href="https://www.instagram.com/madeby.vellum/" className="social-icon" aria-label="Instagram" target="_blank">
-                  <img src="/images/icon_ig.png" alt="Instagram" style={{ height:24, width:"auto", display:"block" }} />
+                <a href="https://www.instagram.com/madeby.vellum/" className="social-icon" aria-label="Instagram" target="_blank" rel="noreferrer">
+                  <img src="/images/icon_ig.png" alt="Instagram" />
                 </a>
-                <a href="https://www.threads.com/@madeby.vellum" className="social-icon" aria-label="Threads" target="_blank">
-                  <img src="/images/icon_threads.png" alt="Threads" style={{ height:24, width:"auto", display:"block" }} />
+                <a href="https://www.threads.com/@madeby.vellum" className="social-icon" aria-label="Threads" target="_blank" rel="noreferrer">
+                  <img src="/images/icon_threads.png" alt="Threads" />
                 </a>
-                <a href="https://bsky.app/profile/madeby-vellum.bsky.social" className="social-icon" aria-label="Bluesky" target="_blank">
-                  <img src="/images/icon_bluesky.png" alt="Bluesky" style={{ height:24, width:"auto", display:"block" }} />
+                <a href="https://bsky.app/profile/madeby-vellum.bsky.social" className="social-icon" aria-label="Bluesky" target="_blank" rel="noreferrer">
+                  <img src="/images/icon_bluesky.png" alt="Bluesky" />
                 </a>
-                <a href="https://www.youtube.com/@madeby.vellum" className="social-icon" aria-label="YouTube" target="_blank">
-                  <img src="/images/icon_yt.png" alt="YouTube" style={{ height:24, width:"auto", display:"block" }} />
+                <a href="https://www.youtube.com/@madeby.vellum" className="social-icon" aria-label="YouTube" target="_blank" rel="noreferrer">
+                  <img src="/images/icon_yt.png" alt="YouTube" />
                 </a>
-                <a href="https://linktr.ee/madeby.vellum" className="social-icon" aria-label="Linktree" target="_blank">
-                  <img src="/images/icon_linktree.png" alt="Linktree" style={{ height:24, width:"auto", display:"block" }} />
+                <a href="https://linktr.ee/madeby.vellum" className="social-icon" aria-label="Linktree" target="_blank" rel="noreferrer">
+                  <img src="/images/icon_linktree.png" alt="Linktree" />
                 </a>
               </div>
             </div>

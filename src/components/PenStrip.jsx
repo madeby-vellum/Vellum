@@ -1,27 +1,23 @@
 import { Pen, Eraser } from "lucide-react";
 import { PaletteIcon } from "./Pill.jsx";
+import "./PenStrip.css";
 
-export const VDivider = () => (
-  <div style={{ width:24, height:1, background:"rgba(186,189,226,0.35)", margin:"6px auto" }} />
-);
+export const VDivider = () => <div className="pen-strip-divider" />;
 
-export function IBtn({ children, active, disabled, onClick, title, danger, style={} }) {
-  const base = {
-    width:34, height:34, border:"none", borderRadius:0, cursor: disabled ? "default" : "pointer",
-    display:"flex", alignItems:"center", justifyContent:"center",
-    background: active ? "var(--periwinkle)" : "transparent",
-    color: disabled ? "rgba(186,189,226,0.4)"
-         : danger   ? "var(--maroon)"
-         : active   ? "var(--navy)"
-         :            "rgba(55,67,117,0.6)",
-    transition:"all 0.12s",
-    opacity: disabled ? 0.45 : 1,
-    ...style,
-  };
+export function IBtn({ children, active, disabled, onClick, title, danger }) {
+  const classes = [
+    "pen-ibtn",
+    active   ? "active"   : "",
+    disabled ? "disabled" : "",
+    danger   ? "danger"   : "",
+  ].filter(Boolean).join(" ");
+
   return (
-    <button onClick={disabled ? undefined : onClick} title={title} style={base}
-      onMouseEnter={e=>{ if(!active&&!disabled){ e.currentTarget.style.background="rgba(186,189,226,0.22)"; e.currentTarget.style.color= danger ? "var(--maroon)" : "var(--navy)"; } }}
-      onMouseLeave={e=>{ if(!active&&!disabled){ e.currentTarget.style.background="transparent"; e.currentTarget.style.color= danger ? "var(--maroon)" : "rgba(55,67,117,0.6)"; } }}>
+    <button
+      onClick={disabled ? undefined : onClick}
+      title={title}
+      className={classes}
+    >
       {children}
     </button>
   );
@@ -29,39 +25,46 @@ export function IBtn({ children, active, disabled, onClick, title, danger, style
 
 export function ColorCol({ value, onChange }) {
   return (
-    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:5 }}>
-      <div style={{ width:22, height:22, borderRadius:"50%", background:value,
-        border:"2px solid var(--navy)", boxShadow:"0 0 0 2px rgba(255,255,255,0.8)" }} />
-      <label style={{ width:30, height:30, display:"flex", alignItems:"center", justifyContent:"center",
-        borderRadius:0, border:"1px solid rgba(186,189,226,0.45)", background:"transparent",
-        cursor:"pointer", position:"relative", transition:"border-color 0.12s" }}
-        onMouseEnter={e=>e.currentTarget.style.borderColor="var(--navy)"}
-        onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(186,189,226,0.45)"}>
+    <div className="pen-color-col">
+      <div className="pen-color-swatch" style={{ background: value }} />
+      <label className="pen-color-label">
         <PaletteIcon />
-        <input type="color" value={value} onChange={e=>onChange(e.target.value)}
-          style={{ position:"absolute", inset:0, opacity:0, width:"100%", height:"100%", cursor:"pointer", border:"none" }} />
+        <input
+          type="color"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="pen-color-input"
+        />
       </label>
     </div>
   );
 }
 
-export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush, onColorChange, onSizeChange }) {
+const SIZES = [
+  { s: 1, d: 6 },
+  { s: 2, d: 9 },
+  { s: 4, d: 13 },
+  { s: 8, d: 18 },
+];
 
+export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush, onColorChange, onSizeChange }) {
   const isEraser = activeBrush === "eraser";
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"8px 5px", gap:3 }}>
-      <IBtn active={activeBrush==="pen"}    onClick={()=>onSwitchBrush("pen")}    title="Pen"><Pen size={14} /></IBtn>
-      <IBtn active={isEraser} onClick={()=>onSwitchBrush("eraser")} title="Eraser"><Eraser size={15} /></IBtn>
+    <div className="pen-strip">
+      <IBtn active={activeBrush === "pen"} onClick={() => onSwitchBrush("pen")} title="Pen">
+        <Pen size={14} />
+      </IBtn>
+      <IBtn active={isEraser} onClick={() => onSwitchBrush("eraser")} title="Eraser">
+        <Eraser size={15} />
+      </IBtn>
 
       <VDivider />
 
       {isEraser ? (
-        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:5, opacity:0.35, pointerEvents:"none" }}>
-          <div style={{ width:22, height:22, borderRadius:"50%", background:"#ccc",
-            border:"2px solid var(--navy)", boxShadow:"0 0 0 2px rgba(255,255,255,0.8)" }} />
-          <div style={{ width:30, height:30, display:"flex", alignItems:"center", justifyContent:"center",
-            borderRadius:0, border:"1px solid rgba(186,189,226,0.45)", background:"transparent" }}>
+        <div className="pen-color-col--disabled">
+          <div className="pen-color-swatch--disabled" />
+          <div className="pen-color-label--disabled">
             <PaletteIcon />
           </div>
         </div>
@@ -71,13 +74,14 @@ export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush
 
       <VDivider />
 
-      {[{s:1,d:6},{s:2,d:9},{s:4,d:13},{s:8,d:18}].map(({s,d})=>(
-        <div key={s} onClick={()=>onSizeChange(s)} title={`Size ${s}`}
-          style={{ width:d, height:d, borderRadius:"50%", background:"var(--navy)", cursor:"pointer",
-            opacity:penSize===s?1:0.2, transition:"opacity 0.12s,transform 0.1s",
-            display:"flex", alignItems:"center", justifyContent:"center" }}
-          onMouseEnter={e=>e.currentTarget.style.transform="scale(1.15)"}
-          onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"} />
+      {SIZES.map(({ s, d }) => (
+        <div
+          key={s}
+          onClick={() => onSizeChange(s)}
+          title={`Size ${s}`}
+          className={`pen-size-dot${penSize === s ? " active" : ""}`}
+          style={{ width: d, height: d }}
+        />
       ))}
     </div>
   );

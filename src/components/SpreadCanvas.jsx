@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import useFabricLib from "../hooks/useFabricLib.js";
+import "./SpreadCanvas.css";
 
 function generatePatternDataUrl(templateId, bg, W, H) {
   const c = document.createElement("canvas");
@@ -64,8 +65,8 @@ export default function SpreadCanvas({ spread, editMode, actionsRef, onSelect, o
     if (!wrap || !canvasElement) return;
 
     const W = 880;
-const H = 580;
-    if (W <= 0 || H <= 0) return; // Wait for proper sizing
+    const H = 580;
+    if (W <= 0 || H <= 0) return;
 
     fabricLib.current = fabric;
 
@@ -86,8 +87,8 @@ const H = 580;
     fc.current = canvas;
     window._fabricCanvas = canvas;
 
-    const canvasJSON = spread.canvas || spread.canvasJSON;
-    const templateId = spread.template_id || spread.templateId;
+    const canvasJSON    = spread.canvas || spread.canvasJSON;
+    const templateId    = spread.template_id || spread.templateId;
     const templateImage = spread.template_image || spread.templateImage;
 
     if (canvasJSON) {
@@ -97,8 +98,8 @@ const H = 580;
     } else if (templateId && templateId !== "blank") {
       const normalizedId = templateId.toLowerCase();
       const kind = normalizedId.startsWith("dotted") ? "dot"
-        : normalizedId.startsWith("grid") ? "grid"
-        : normalizedId.startsWith("lined") ? "lined"
+        : normalizedId.startsWith("grid")   ? "grid"
+        : normalizedId.startsWith("lined")  ? "lined"
         : null;
       if (kind) {
         const dataUrl = generatePatternDataUrl(kind, spread.pageColor, W, H);
@@ -285,10 +286,10 @@ const H = 580;
         img.set({ selectable: false, evented: false, hoverCursor: "default" });
 
         const dimStyle = { fill:"rgba(0,0,0,0.5)", selectable:false, evented:false, excludeFromExport:true };
-        const dimTop    = new fabric.Rect({ ...dimStyle, left:0,    top:0,     width:cW, height:iT });
-        const dimBottom = new fabric.Rect({ ...dimStyle, left:0,    top:iT+iH, width:cW, height:Math.max(0, cH - iT - iH) });
-        const dimLeft   = new fabric.Rect({ ...dimStyle, left:0,    top:iT,    width:iL, height:iH });
-        const dimRight  = new fabric.Rect({ ...dimStyle, left:iL+iW, top:iT,   width:Math.max(0, cW - iL - iW), height:iH });
+        const dimTop    = new fabric.Rect({ ...dimStyle, left:0,     top:0,     width:cW, height:iT });
+        const dimBottom = new fabric.Rect({ ...dimStyle, left:0,     top:iT+iH, width:cW, height:Math.max(0, cH - iT - iH) });
+        const dimLeft   = new fabric.Rect({ ...dimStyle, left:0,     top:iT,    width:iL, height:iH });
+        const dimRight  = new fabric.Rect({ ...dimStyle, left:iL+iW, top:iT,    width:Math.max(0, cW - iL - iW), height:iH });
         const dimRects  = [dimTop, dimBottom, dimLeft, dimRight];
         dimRects.forEach(r => { canvas.add(r); canvas.bringToFront(r); });
 
@@ -310,7 +311,7 @@ const H = 580;
           cropHandle.set({ left: hL, top: hT, scaleX: hW / cropHandle.width, scaleY: hH / cropHandle.height });
           dimTop.set({    top: 0,     height: hT,                         width: cW });
           dimBottom.set({ top: hT+hH, height: Math.max(0, cH - hT - hH), width: cW });
-          dimLeft.set({   top: hT,    height: hH, left: 0,   width: hL });
+          dimLeft.set({   top: hT,    height: hH, left: 0,    width: hL });
           dimRight.set({  top: hT,    height: hH, left: hL+hW, width: Math.max(0, cW - hL - hW) });
           canvas.renderAll();
         };
@@ -434,9 +435,11 @@ const H = 580;
   }, []);
 
   return (
-    <div ref={wrapRef} style={{ width:"100%", height:"100%", position:"relative", overflow:"hidden",
-      pointerEvents: editMode ? "auto" : "none" }}>
-      <canvas ref={canvasEl} style={{ position:"relative", zIndex:1 }} />
+    <div
+      ref={wrapRef}
+      className={`spread-canvas-wrap ${editMode ? "spread-canvas-wrap--edit" : "spread-canvas-wrap--view"}`}
+    >
+      <canvas ref={canvasEl} className="spread-canvas-el" />
     </div>
   );
 }
