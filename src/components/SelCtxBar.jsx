@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IBtn, VDivider, ColorCol } from "./PenStrip.jsx";
+import { Crop, FlipHorizontal2, FlipVertical2 } from "lucide-react";
 
 export default function SelCtxBar({ selType, penColor, drawWidth, drawOpacity, imgOpacity,
     textFont, textSize, textColor, actionsRef, isCropping, onCrop, onCropCancel,
@@ -50,20 +51,13 @@ export default function SelCtxBar({ selType, penColor, drawWidth, drawOpacity, i
 
       {selType==="image" && <>
         <IBtn active={isCropping} onClick={onCrop} title={isCropping ? "Apply crop" : "Crop image"}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 1v9h9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-            <path d="M1 3h9v9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.55"/>
-          </svg>
+          <Crop size={14} />
         </IBtn>
-        <IBtn onClick={()=>actionsRef.current?.flipH()} title="Flip horizontal">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 2v10M2 5l3 2-3 2M12 5l-3 2 3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-          </svg>
+        <IBtn onClick={() => actionsRef.current?.flipH()} title="Flip horizontal">
+          <FlipHorizontal2 size={14} />
         </IBtn>
-        <IBtn onClick={()=>actionsRef.current?.flipV()} title="Flip vertical">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 7h10M5 2l2 3-2 3M9 2l-2 3 2 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-          </svg>
+        <IBtn onClick={() => actionsRef.current?.flipV()} title="Flip vertical">
+          <FlipVertical2 size={14} />
         </IBtn>
 
         <VDivider />
