@@ -1,3 +1,4 @@
+import { ChevronDown, BookOpen, ArrowUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 // import { AuthContext } from "../context/AuthContext";
@@ -850,10 +851,7 @@ const faqs = [
 ];
 
 const JournalIcon = ({ width = 18, height = 18, opacity = "0.4" }) => (
-  <svg width={width} height={height} viewBox="0 0 24 24" fill="none">
-    <rect x="3" y="3" width="18" height="18" rx="1" stroke={`rgba(55,67,117,${opacity})`} strokeWidth="1.4" />
-    <path d="M3 9h18M9 9v12" stroke={`rgba(55,67,117,${opacity})`} strokeWidth="1.4" strokeLinecap="round" />
-  </svg>
+  <BookOpen size={18} strokeWidth={1.4} />
 );
 
 export function Logo({ size = 48 }) {
@@ -947,9 +945,7 @@ export default function HomePage() {
           </a>
         </div>
         <div className="hero-scroll">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M6 13l6 6 6-6" stroke="rgba(55,67,117,0.4)" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <ChevronDown size={14} strokeWidth={1.5} style={{ color: "rgba(55,67,117,0.4)" }} />
           scroll
         </div>
       </section>
@@ -1139,10 +1135,7 @@ export default function HomePage() {
               <span>© 2026 Vellum. All rights reserved.</span>
             </div>
             <a href="#home" className="back-to-top">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="9" opacity="0.35" />
-                <path d="M12 16V8M8.5 11.5l3.5-3.5 3.5 3.5" />
-              </svg>
+              <ArrowUp size={18} strokeWidth={1.5} />
               Back to top
             </a>
           </div>
