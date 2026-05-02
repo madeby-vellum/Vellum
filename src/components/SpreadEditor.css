@@ -1,0 +1,444 @@
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Editor root ── */
+.spread-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ── Canvas region ── */
+.spread-editor-stage {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Canvas centering wrapper ── */
+.spread-editor-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ── Zoomed canvas shell ── */
+.spread-editor-canvas-shell {
+  box-shadow: var(--sh-lg);
+  height: min(580px, calc(100vh - 100px));
+  width: min(880px, 100%);
+  flex-shrink: 0;
+  border-radius: 0;
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+
+/* ── Shared float card (toolbar, ctx panel, zoom panel, crop bar) ── */
+.float-card {
+  background: rgba(255,252,245,0.96);
+  border-radius: 0;
+  box-shadow: 0 2px 16px rgba(55,67,117,0.13), 0 0 0 1px rgba(186,189,226,0.35);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Main toolbar (left) ── */
+.editor-toolbar {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 5px;
+  gap: 2px;
+  z-index: 10;
+}
+
+/* ── Text tool button inside IBtn ── */
+.editor-tool-text {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+/* ── Context panel (left, beside toolbar) ── */
+.editor-ctx-panel {
+  position: absolute;
+  left: 62px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: calc(100% - 40px);
+  overflow-y: auto;
+  z-index: 10;
+  animation: fadeIn 0.18s ease both;
+}
+
+/* ── Zoom panel (right) ── */
+.editor-zoom-panel {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 5px;
+  gap: 2px;
+  z-index: 10;
+}
+
+.editor-zoom-label {
+  font-size: 8px;
+  color: var(--periwinkle);
+  font-family: 'Inter', sans-serif;
+  padding: 2px 0;
+  letter-spacing: 0.04em;
+  text-align: center;
+  min-width: 28px;
+}
+
+.editor-zoom-reset {
+  font-size: 8px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* ── Crop confirm bar (bottom-center) ── */
+.editor-crop-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+  padding: 6px 10px;
+  animation: fadeInUp 0.15s ease;
+}
+
+.editor-crop-btn-cancel {
+  padding: 5px 14px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(186,189,226,0.5);
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.editor-crop-btn-cancel:hover {
+  background: rgba(186,189,226,0.2);
+}
+
+.editor-crop-btn-apply {
+  padding: 5px 14px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  background: var(--periwinkle);
+  color: var(--navy);
+  cursor: pointer;
+  transition: opacity 0.12s;
+}
+
+.editor-crop-btn-apply:hover {
+  opacity: 0.85;
+}
+
+/* ── ImageStrip ── */
+.image-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 5px;
+  gap: 3px;
+}
+
+.image-strip-opacity-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.image-strip-opacity-slider {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 4px;
+  height: 60px;
+  accent-color: var(--periwinkle);
+  cursor: pointer;
+}
+
+.image-strip-opacity-label {
+  font-size: 8px;
+  color: var(--periwinkle);
+}
+
+/* ── StickerPickerPopup ── */
+.sticker-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(55,67,117,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.sticker-card {
+  background: var(--cloud);
+  width: 360px;
+  max-width: 95vw;
+  box-shadow: 0 4px 48px rgba(55,67,117,0.20);
+  border: 1px solid rgba(186,189,226,0.35);
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+}
+
+.sticker-header {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(186,189,226,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.sticker-header-label {
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.sticker-header-close {
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: var(--periwinkle);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+  transition: color 0.12s;
+}
+
+.sticker-header-close:hover {
+  color: var(--navy);
+}
+
+.sticker-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.sticker-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
+  gap: 10px;
+  color: var(--periwinkle);
+}
+
+.sticker-empty-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.sticker-empty-label code {
+  font-family: monospace;
+  font-size: 9px;
+}
+
+.sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.sticker-item {
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.12s;
+  padding: 4px;
+}
+
+.sticker-item:hover {
+  border-color: var(--periwinkle);
+  background: rgba(186,189,226,0.12);
+}
+
+.sticker-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.12s;
+}
+
+.sticker-item:hover img {
+  transform: scale(1.08);
+}
+
+/* ── UnsplashSearchPopup ── */
+.unsplash-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(55,67,117,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(6px);
+}
+
+.unsplash-card {
+  background: var(--cloud);
+  width: 600px;
+  max-width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 64px rgba(55,67,117,0.22);
+  border: 1px solid rgba(186,189,226,0.35);
+}
+
+.unsplash-search-bar {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid rgba(186,189,226,0.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.unsplash-search-icon {
+  color: var(--periwinkle);
+  flex-shrink: 0;
+}
+
+.unsplash-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--navy);
+  font-family: 'Inter', sans-serif;
+}
+
+.unsplash-search-btn {
+  padding: 5px 14px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(186,189,226,0.5);
+  background: transparent;
+  color: var(--periwinkle);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.12s;
+}
+
+.unsplash-search-btn:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.unsplash-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--periwinkle);
+  cursor: pointer;
+  padding: 0 0 0 6px;
+  flex-shrink: 0;
+  transition: color 0.12s;
+}
+
+.unsplash-close:hover {
+  color: var(--navy);
+}
+
+.unsplash-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.unsplash-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--periwinkle);
+}
+
+.unsplash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.unsplash-thumb {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+  transition: border-color 0.12s;
+}
+
+.unsplash-thumb:hover {
+  border-color: var(--periwinkle);
+}
+
+.unsplash-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.15s;
+}
+
+.unsplash-thumb:hover img {
+  transform: scale(1.04);
+}
+
+.unsplash-footer {
+  padding: 8px 16px;
+  border-top: 1px solid rgba(186,189,226,0.2);
+  flex-shrink: 0;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: rgba(55,67,117,0.4);
+  text-align: right;
+}

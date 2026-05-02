@@ -1,0 +1,26 @@
+.spread-editor-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.spread-editor-nav {
+  justify-content: space-between;
+}
+
+.spread-editor-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spread-editor-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spread-editor-canvas {
+  flex: 1;
+  overflow: hidden;
+}
