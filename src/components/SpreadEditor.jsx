@@ -86,7 +86,7 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
   useEffect(() => { search("nature"); inputRef.current?.focus(); }, []);
 
   const handlePick = (img) => {
-    actionsRef.current?.addImageFromURL(img.urls.regular);
+    actionsRef.current?.addImageFromURL(img.urls.small);
     onClose();
   };
 
