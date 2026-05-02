@@ -2,10 +2,12 @@ export const uid = () => Math.random().toString(36).slice(2, 9);
 export const now = () => new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
 
 export const PRESET_COVERS = [
-  { id:"book-cover", label:"Book Journal", style:{ backgroundImage:"url(/covers/book-journal.png)", backgroundSize:"cover", backgroundPosition:"center" } },
-  { id:"cooking-cover", label:"Cooking Journal", style:{ backgroundImage:"url(/covers/cooking-journal.png)", backgroundSize:"cover", backgroundPosition:"center" } },
-  { id:"movie-cover", label:"Movie Journal", style:{ backgroundImage:"url(/covers/movie-journal.png)", backgroundSize:"cover", backgroundPosition:"center" } },
-  { id:"todo-cover", label:"To-Do Journal", style:{ backgroundImage:"url(/covers/todo-journal.png)", backgroundSize:"cover", backgroundPosition:"center" } },
+  { id:"book-cover", label:"Book Journal", style:{ backgroundImage:"url(/covers/book-journal.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
+  { id:"cooking-cover", label:"Cooking Journal", style:{ backgroundImage:"url(/covers/cooking-journal.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
+  { id:"movie-cover", label:"Movie Journal", style:{ backgroundImage:"url(/covers/movie-journal.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
+  { id:"todo-cover", label:"To-Do Journal", style:{ backgroundImage:"url(/covers/todo-journal.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
+  { id:"marble-cover", label:"Marble Texture", style:{ backgroundImage:"url(/covers/marble.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
+  { id:"paint-cover", label:"Paint Splotches", style:{ backgroundImage:"url(/covers/paint.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
 ];
 
 export const TEMPLATES = [
