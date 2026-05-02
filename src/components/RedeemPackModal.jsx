@@ -28,7 +28,7 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
           <div className="modal-copy" style={{ marginTop: 10, marginBottom: 6, lineHeight: 1.6 }}>
             You are about to redeem your one free pack:
           </div>
-          <div className="modal-feature-title" style={{ marginBottom: 28, color: "var(--navy)", textTransform: "uppercase" }}>{selected} Pack</div>
+          <div className="modal-feature-title" style={{ marginBottom: 28, color: "var(--cloud)", textTransform: "uppercase" }}>{selected} Pack</div>
         </div>
         <div className="modal-footer modal-action-row">
           <button onClick={() => setConfirming(false)} className="modal-button modal-button--secondary">go back</button>
