@@ -57,12 +57,6 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
                 <div key={cat}
                   className={isSelected ? "redeem-card selected" : "redeem-card"}
                   onClick={() => setSelected(cat)}>
-                  <div className="redeem-card-top">
-                    {pack.templates.map(t => (
-                      <div key={t.id} className={t.previewClass}
-                        style={{ background: t.bg, borderRight: "1px solid rgba(186,189,226,0.2)" }} />
-                    ))}
-                  </div>
                   <div className="redeem-card-bottom">
                     <div>
                       <div className="redeem-card-title">{cat}</div>
