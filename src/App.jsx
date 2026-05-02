@@ -176,7 +176,7 @@ export default function App() {
   const [showTemplatePicker, setShowTemplatePicker] = useState(false);
   const [userTier,           setUserTier]           = useState("free");
   const [journalPage,        setJournalPage]        = useState(0);
-  const [journalForm,        setJournalForm]        = useState({ title:"", coverType:"upload", coverId:"upload", coverImg:null });
+  const [journalForm,        setJournalForm]        = useState({ title:"", coverType:"image", coverId:"upload", coverImg:null });
   const [menuOpen,           setMenuOpen]           = useState(null);
   const [renaming,           setRenaming]           = useState(null);
   const [confirmDelete,      setConfirmDelete]      = useState(null);
