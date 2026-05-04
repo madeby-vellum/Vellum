@@ -1,8 +1,6 @@
 import { supabase } from './supabase';
 
-/* =========================
-   CREATE JOURNAL
-========================= */
+// create a new journal for current user
 export async function createJournal({ title, coverType, coverId, coverImg }) {
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -24,14 +22,10 @@ export async function createJournal({ title, coverType, coverId, coverImg }) {
 
   if (error) throw error;
 
-  // normalize for frontend
   return normalizeJournal(data);
 }
 
-
-/* =========================
-   GET JOURNALS
-========================= */
+// get all journals for current user, including spreads
 export async function getJournals() {
   const { data, error } = await supabase
     .from('journals')
@@ -46,10 +40,7 @@ export async function getJournals() {
   return data.map(normalizeJournal);
 }
 
-
-/* =========================
-   RENAME JOURNAL
-========================= */
+// update journal title
 export async function renameJournal(id, title) {
   const { data, error } = await supabase
     .from('journals')
@@ -63,10 +54,7 @@ export async function renameJournal(id, title) {
   return normalizeJournal(data);
 }
 
-
-/* =========================
-   DELETE JOURNAL
-========================= */
+// delete journal and all associated spreads
 export async function deleteJournal(id) {
   const { error } = await supabase
     .from('journals')
@@ -76,10 +64,7 @@ export async function deleteJournal(id) {
   if (error) throw error;
 }
 
-
-/* =========================
-   NORMALIZER (CRUCIAL FIX)
-========================= */
+// normalize journal data for frontend
 function normalizeJournal(j) {
   return {
     id: j.id,
