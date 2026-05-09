@@ -82,6 +82,14 @@ export function Logo({ size = 48 }) {
   );
 }
 
+const inkOrbs = [
+  { width: 280, height: 280, top: "8%",   left: "4%",   dur: "14s", delay: "0s",   anim: "orbFloat"  },
+  { width: 160, height: 160, top: "55%",  left: "3%",   dur: "18s", delay: "2s",   anim: "orbFloat2" },
+  { width: 200, height: 200, top: "15%",  right: "6%",  dur: "12s", delay: "0.8s", anim: "orbFloat2" },
+  { width:  90, height:  90, top: "65%",  right: "5%",  dur: "16s", delay: "3.5s", anim: "orbFloat"  },
+  { width: 220, height: 220, bottom:"12%",right:"22%",  dur: "20s", delay: "1.2s", anim: "orbFloat"  },
+];
+
 export default function HomePage() {
   const navigate = useNavigate();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -145,6 +153,28 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className="hero" id="home">
+        <div className="hero-dots"></div>
+
+        {inkOrbs.map((orb, i) => (
+          <div
+            key={i}
+            className="ink-orb"
+            style={{
+              width:  orb.width,
+              height: orb.height,
+              top:    orb.top    ?? "auto",
+              left:   orb.left   ?? "auto",
+              right:  orb.right  ?? "auto",
+              bottom: orb.bottom ?? "auto",
+              animationName:     orb.anim,
+              animationDuration: orb.dur,
+              animationDelay:    orb.delay,
+              animationTimingFunction: "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+              animationIterationCount: "infinite",
+            }}
+          />
+        ))}
+
         <div className="hero-inner">
           <div className="hero-tagline">Welcome to</div>
           <h1 className="hero-title cg">Vellum</h1>
