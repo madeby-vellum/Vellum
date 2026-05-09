@@ -122,12 +122,42 @@ body {
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
+.hero-dots {
   position: absolute;
   inset: 0;
   background-image: radial-gradient(circle, rgba(55,67,117,0.08) 1px, transparent 1px);
   background-size: 28px 28px;
+  animation: dotDrift 24s linear infinite;
+}
+
+@keyframes dotDrift {
+  from { background-position: 0 0; }
+  to   { background-position: 56px 56px; }
+}
+
+/* ─── INK ORBS ─── */
+.ink-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(55, 67, 117, 0.055);
+  pointer-events: none;
+  animation: orbFloat ease-in-out infinite;
+}
+
+@keyframes orbFloat {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  25%  { transform: translate(18px, -32px) scale(1.05); }
+  50%  { transform: translate(-14px, -52px) scale(1.03); }
+  75%  { transform: translate(-24px, -28px) scale(1.06); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes orbFloat2 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  25%  { transform: translate(-20px, -28px) scale(1.04); }
+  50%  { transform: translate(16px, -48px) scale(1.06); }
+  75%  { transform: translate(22px, -18px) scale(1.03); }
+  100% { transform: translate(0px, 0px) scale(1); }
 }
 
 .hero-inner {
@@ -317,11 +347,21 @@ section { padding: 100px var(--body-pad); }
   position: relative;
   display: flex;
   flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(55,67,117,0.10);
 }
 
 .pricing-card.pro {
   background: var(--navy);
   border-color: var(--navy);
+}
+
+.pricing-card.pro:hover {
+  box-shadow: 0 16px 48px rgba(55,67,117,0.22);
 }
 
 .pricing-badge {
