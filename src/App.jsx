@@ -12,6 +12,7 @@ import AuthPage from "./pages/AuthPage.jsx";
 import JournalShelfPage from "./pages/JournalShelfPage.jsx";
 import JournalPage from "./pages/JournalPage.jsx";
 import SpreadEditorPage from "./pages/SpreadEditorPage.jsx";
+import PaymentPage from "./pages/PaymentPage.jsx";
 import ProUpgradeModal from "./components/ProUpgradeModal.jsx";
 import RedeemPackModal from "./components/RedeemPackModal.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -174,7 +175,6 @@ export default function App() {
   const [activeSpread,       setActiveSpread]       = useState(null);
   const [showNewJournal,     setShowNewJournal]     = useState(false);
   const [showTemplatePicker, setShowTemplatePicker] = useState(false);
-  const [userTier,           setUserTier]           = useState("free");
   const [journalPage,        setJournalPage]        = useState(0);
   const [journalForm,        setJournalForm]        = useState({ title:"", coverType:"image", coverId:"upload", coverImg:null });
   const [menuOpen,           setMenuOpen]           = useState(null);
@@ -188,6 +188,9 @@ export default function App() {
   const [unlockedCategory,   setUnlockedCategory]   = useState(null);
 
   const navigate = useNavigate();
+
+  // ── Derive tier from AuthContext (single source of truth = Supabase profiles) ──
+  const { user, tier: userTier } = useContext(AuthContext);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -207,7 +210,6 @@ export default function App() {
     navigate("/auth");
   };
 
-  const { user } = useContext(AuthContext);
   useEffect(() => {
     if (!user) {
       setJournals([]);
@@ -229,6 +231,16 @@ export default function App() {
     setTimeout(() => setShowRedeemPack(true), 50);
   };
 
+  // Navigate to payment page instead of directly upgrading
+  const handleShowUpgrade = () => {
+    setShowUpgradePro(true);
+  };
+
+  const handleGoToPayment = () => {
+    setShowUpgradePro(false);
+    navigate("/upgrade");
+  };
+
   const sharedShelfProps = {
     journals, setJournals, activeJournal, setActiveJournal,
     showNewJournal, setShowNewJournal, journalForm, setJournalForm,
@@ -237,25 +249,26 @@ export default function App() {
     onDeleteAccount: handleDeleteAccount,
     menuOpen, setMenuOpen, renaming, setRenaming,
     confirmDelete, setConfirmDelete,
-    onShowUpgrade: () => setShowUpgradePro(true),
+    onShowUpgrade: handleShowUpgrade,
     userTier,
     onShowRedeem: () => setShowRedeemPack(true),
     redeemUsed,
     showUpgradePro, setShowUpgradePro,
     showRedeemPack, setShowRedeemPack,
     unlockedCategory, handleRedeem,
-    onUpgrade: () => { setUserTier("pro"); setShowUpgradePro(false); },
+    // onUpgrade goes to payment page
+    onUpgrade: handleGoToPayment,
   };
 
   const sharedJournalProps = {
     journals, setJournals, activeJournal, setActiveJournal,
     setActiveSpread, setJournalPage, navigate, journalPage,
     showTemplatePicker, setShowTemplatePicker, userTier,
-    onToggleTier: () => setUserTier(t => t === "free" ? "pro" : "free"),
+    onToggleTier: () => {},   // no more local toggle
     confirmSpread, setConfirmSpread, renamingSpread, setRenamingSpread,
-    onShowUpgrade: () => setShowUpgradePro(true),
+    onShowUpgrade: handleShowUpgrade,
     showUpgradePro, setShowUpgradePro,
-    onUpgrade: () => { setUserTier("pro"); setShowUpgradePro(false); },
+    onUpgrade: handleGoToPayment,
     unlockedCategory,
   };
 
@@ -264,6 +277,11 @@ export default function App() {
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<AuthPage />} />
+
+      {/* Payment / upgrade route (protected) */}
+      <Route path="/upgrade" element={
+        <ProtectedRoute><PaymentPage /></ProtectedRoute>
+      } />
 
       {/* Protected routes */}
       <Route path="/shelf" element={
@@ -280,7 +298,7 @@ export default function App() {
             setActiveSpread={setActiveSpread} navigate={navigate}
             showUpgradePro={showUpgradePro} setShowUpgradePro={setShowUpgradePro}
             userTier={userTier}
-            onUpgrade={() => { setUserTier("pro"); setShowUpgradePro(false); }}
+            onUpgrade={handleGoToPayment}
           />
         </ProtectedRoute>
       } />
