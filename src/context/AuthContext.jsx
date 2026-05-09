@@ -56,8 +56,16 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // tier is derived from profile; fall back to "free"
+  const tier = profile?.tier ?? "free"
+
+  // Call this after a successful upgrade write to reload the profile
+  const refreshProfile = async () => {
+    if (user) await fetchProfile(user.id)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, profile, loading }}>
+    <AuthContext.Provider value={{ user, profile, tier, loading, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )
