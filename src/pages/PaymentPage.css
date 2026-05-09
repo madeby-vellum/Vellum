@@ -1,0 +1,354 @@
+/* ─────────────────────────────────────────
+   PaymentPage.css  – mockup payment page
+───────────────────────────────────────── */
+
+.pay-root {
+  min-height: 100vh;
+  background: var(--cloud);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 24px 16px;
+}
+
+/* ── Decorative blobs ── */
+.pay-bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+.pay-bg-blob--1 {
+  width: 500px;
+  height: 500px;
+  background: var(--periwinkle);
+  top: -120px;
+  right: -100px;
+}
+.pay-bg-blob--2 {
+  width: 400px;
+  height: 400px;
+  background: var(--navy);
+  bottom: -100px;
+  left: -80px;
+}
+
+/* ── Layout ── */
+.pay-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0;
+  width: 100%;
+  max-width: 860px;
+  box-shadow: 0 8px 64px rgba(55,67,117,0.18);
+  border: 1px solid rgba(186,189,226,0.3);
+}
+
+/* ── Left panel ── */
+.pay-summary {
+  background: var(--navy);
+  color: #fff;
+  padding: 48px 40px;
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+img.pay-logo {
+  font-family: var(--font-display, 'Georgia', serif);
+  height: 36px;
+  color: rgba(186,189,226,0.9);
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.pay-logo:hover { color: #fff; }
+
+.pay-plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(186,189,226,0.12);
+  color: var(--periwinkle, #babde2);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border: 1px solid rgba(186,189,226,0.25);
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.pay-plan-price {
+  font-size: 44px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.pay-plan-price span {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(186,189,226,0.6);
+}
+
+.pay-plan-trial {
+  font-size: 12px;
+  color: rgba(186,189,226,0.55);
+  margin-bottom: 32px;
+}
+
+.pay-plan-features {
+  list-style: none;
+  margin: 0 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pay-plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.82);
+}
+.pay-check {
+  color: var(--periwinkle, #babde2);
+  font-size: 13px;
+}
+
+.pay-secure {
+  margin-top: 36px;
+  font-size: 11px;
+  color: rgba(186,189,226,0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pay-lock { font-size: 12px; }
+
+/* ── Right panel ── */
+.pay-form-card {
+  background: var(--cloud);
+  flex: 1;
+  padding: 48px 44px;
+}
+
+.pay-form-header {
+  margin-bottom: 32px;
+}
+.pay-form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.pay-form-subtitle {
+  font-size: 13px;
+  color: rgba(55,67,117,0.5);
+}
+
+/* ── Form elements ── */
+.pay-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pay-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.pay-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.55;
+  font-weight: 600;
+}
+
+.pay-input {
+  background: #fff;
+  border: 1px solid rgba(186,189,226,0.6);
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--navy);
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+.pay-input:focus {
+  border-color: var(--periwinkle, #babde2);
+}
+.pay-input--readonly {
+  background: rgba(186,189,226,0.1);
+  color: rgba(55,67,117,0.5);
+  cursor: default;
+}
+.pay-input--card {
+  padding-right: 72px;
+}
+
+.pay-input-icon-wrap {
+  position: relative;
+}
+.pay-card-icons {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+}
+.pay-card-icon {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+.pay-card-icon--visa {
+  background: #1a1f71;
+  color: #fff;
+}
+
+.pay-row {
+  display: flex;
+  gap: 16px;
+}
+
+.pay-error {
+  color: #c0392b;
+  font-size: 13px;
+  background: rgba(192,57,43,0.06);
+  border: 1px solid rgba(192,57,43,0.2);
+  padding: 10px 14px;
+}
+
+.pay-submit {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 15px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  font-family: inherit;
+  margin-top: 4px;
+}
+.pay-submit:hover:not(:disabled) {
+  background: rgba(10,24,63,0.88);
+  transform: translateY(-1px);
+}
+.pay-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pay-terms {
+  font-size: 11px;
+  color: rgba(55,67,117,0.42);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ── Confirmation modal ── */
+.pay-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(55,67,117,0.55);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  animation: payFadeIn 0.2s ease;
+}
+
+@keyframes payFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.pay-modal {
+  background: var(--cloud);
+  width: 420px;
+  max-width: 94vw;
+  padding: 52px 48px;
+  text-align: center;
+  box-shadow: 0 8px 64px rgba(55,67,117,0.22);
+  border: 1px solid rgba(186,189,226,0.3);
+  animation: paySlideUp 0.25s ease;
+}
+
+@keyframes paySlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pay-modal-star {
+  font-size: 32px;
+  color: var(--periwinkle, #babde2);
+  margin-bottom: 20px;
+}
+
+.pay-modal-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+
+.pay-modal-body {
+  font-size: 14px;
+  color: rgba(55,67,117,0.65);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.pay-modal-btn {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  font-family: inherit;
+}
+.pay-modal-btn:hover {
+  background: rgba(10,24,63,0.88);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  .pay-container {
+    flex-direction: column;
+  }
+  .pay-summary {
+    width: auto;
+    padding: 32px 28px;
+  }
+  .pay-form-card {
+    padding: 32px 28px;
+  }
+}
