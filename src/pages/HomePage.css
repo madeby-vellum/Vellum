@@ -307,7 +307,7 @@ section { padding: 100px var(--body-pad); }
   margin-top: 64px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2px;
+  gap: 40px;
   width: 100%;
 }
 
