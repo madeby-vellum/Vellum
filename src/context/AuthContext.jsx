@@ -1,21 +1,30 @@
+// Authentication context using Supabase
 import { createContext, useEffect, useState } from "react"
 import { supabase } from "../lib/supabase"
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+
+  // Currently authenticated user
   const [user,    setUser]    = useState(null)
+
+  // Extended user profile from database
   const [profile, setProfile] = useState(null)
+
+  // Loading state for initial auth check
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get current session on mount
+
+    // Fetch current session on app mount
     const getSession = async () => {
       const { data } = await supabase.auth.getSession()
 
       const currentUser = data.session?.user || null
       setUser(currentUser)
 
+      // If logged in, fetch profile from DB
       if (currentUser) {
         await fetchProfile(currentUser.id)
       }
@@ -25,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
     getSession()
 
-    // Listen for auth state changes (, sign out, token refresh)
+    // Listen for login/logout/token refresh events
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         const currentUser = session?.user || null
@@ -39,11 +48,13 @@ export const AuthProvider = ({ children }) => {
       }
     )
 
+    // Cleanup auth listener on unmount
     return () => {
       listener.subscription.unsubscribe()
     }
   }, [])
 
+  // Fetch user profile from Supabase "profiles" table
   const fetchProfile = async (userId) => {
     const { data, error } = await supabase
       .from("profiles")
@@ -56,10 +67,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // tier is derived from profile; fall back to "free"
+  // Derived subscription tier (fallback to free if not set)
   const tier = profile?.tier ?? "free"
 
-  // Call this after a successful upgrade write to reload the profile
+  // Refresh profile manually (e.g. after upgrade)
   const refreshProfile = async () => {
     if (user) await fetchProfile(user.id)
   }
