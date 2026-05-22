@@ -1,4 +1,6 @@
-/* ── Strip wrapper ── */
+/* ───────────── Strip Wrapper ───────────── */
+
+/* Main vertical toolbar container */
 .pen-strip {
   display: flex;
   flex-direction: column;
@@ -7,7 +9,9 @@
   gap: 3px;
 }
 
-/* ── Vertical divider ── */
+/* ───────────── Divider ───────────── */
+
+/* Small horizontal divider between sections */
 .pen-strip-divider {
   width: 24px;
   height: 1px;
@@ -15,7 +19,9 @@
   margin: 6px auto;
 }
 
-/* ── Icon button ── */
+/* ───────────── Icon Buttons ───────────── */
+
+/* Base icon button styling */
 .pen-ibtn {
   width: 34px;
   height: 34px;
@@ -31,31 +37,38 @@
   opacity: 1;
 }
 
+/* Active tool button styling */
 .pen-ibtn.active {
   background: var(--periwinkle);
   color: var(--navy);
 }
 
+/* Disabled button appearance */
 .pen-ibtn.disabled {
   opacity: 0.45;
   cursor: default;
   color: rgba(186,189,226,0.4);
 }
 
+/* Danger button color (used for destructive actions) */
 .pen-ibtn.danger {
   color: var(--maroon);
 }
 
+/* Hover effect for enabled buttons */
 .pen-ibtn:not(.active):not(.disabled):hover {
   background: rgba(186,189,226,0.22);
   color: var(--navy);
 }
 
+/* Hover effect for danger buttons */
 .pen-ibtn.danger:not(.active):not(.disabled):hover {
   color: var(--maroon);
 }
 
-/* ── Color column ── */
+/* ───────────── Color Picker Section ───────────── */
+
+/* Vertical layout for color picker tools */
 .pen-color-col {
   display: flex;
   flex-direction: column;
@@ -63,6 +76,7 @@
   gap: 5px;
 }
 
+/* Circular preview of the selected color */
 .pen-color-swatch {
   width: 22px;
   height: 22px;
@@ -71,6 +85,7 @@
   box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
 }
 
+/* Button wrapper around color input */
 .pen-color-label {
   width: 30px;
   height: 30px;
@@ -85,10 +100,12 @@
   transition: border-color 0.12s;
 }
 
+/* Hover effect for color picker button */
 .pen-color-label:hover {
   border-color: var(--navy);
 }
 
+/* Invisible native color input covering the button */
 .pen-color-input {
   position: absolute;
   inset: 0;
@@ -99,7 +116,9 @@
   border: none;
 }
 
-/* ── Eraser disabled colour col ── */
+/* ───────────── Disabled Color Picker ───────────── */
+
+/* Disabled color picker layout */
 .pen-color-col--disabled {
   display: flex;
   flex-direction: column;
@@ -109,6 +128,7 @@
   pointer-events: none;
 }
 
+/* Disabled color preview circle */
 .pen-color-swatch--disabled {
   width: 22px;
   height: 22px;
@@ -118,6 +138,7 @@
   box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
 }
 
+/* Disabled color button */
 .pen-color-label--disabled {
   width: 30px;
   height: 30px;
@@ -129,7 +150,9 @@
   background: transparent;
 }
 
-/* ── Size dots ── */
+/* ───────────── Brush Size Dots ───────────── */
+
+/* Circular brush size selector */
 .pen-size-dot {
   border-radius: 50%;
   background: var(--navy);
@@ -141,10 +164,12 @@
   justify-content: center;
 }
 
+/* Highlight currently selected size */
 .pen-size-dot.active {
   opacity: 1;
 }
 
+/* Slight grow animation on hover */
 .pen-size-dot:hover {
   transform: scale(1.15);
 }

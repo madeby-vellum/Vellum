@@ -1,12 +1,40 @@
+// Import palette icon from lucide-react
 import { Palette } from "lucide-react";
 
+// Small reusable palette icon component
 export function PaletteIcon() {
-  return <Palette size={14} style={{ pointerEvents: "none", color: "var(--periwinkle)" }} />;
+  return (
+
+    // Prevent icon from blocking clicks
+    <Palette
+      size={14}
+      style={{
+        pointerEvents: "none",
+        color: "var(--periwinkle)"
+      }}
+    />
+  );
 }
 
-export default function Pill({ children, dark, onClick, style }) {
+// Reusable pill-style button component
+export default function Pill({
+  children,
+  dark,
+  onClick,
+  style
+}) {
   return (
-    <button onClick={onClick} className={dark ? "pill pill-dark" : "pill pill-light"} style={style}>
+    <button
+
+      // Click handler
+      onClick={onClick}
+
+      // Toggle between dark and light styles
+      className={dark ? "pill pill-dark" : "pill pill-light"}
+
+      // Optional inline styles
+      style={style}
+    >
       {children}
     </button>
   );

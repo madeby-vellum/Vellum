@@ -1,7 +1,9 @@
-.field-container {
+/* Container that wraps the label + input field */
+.field-container { 
   margin-bottom: 16px;
 }
 
+/* Small uppercase label shown above the input */
 .field-label {
   display: block;
   font-size: 10px;
