@@ -1,6 +1,4 @@
-/* ─────────────────────────────────────────
-   PaymentPage.css  – mockup payment page
-───────────────────────────────────────── */
+/* Stylesheet for mockup payment page */
 
 .pay-root {
   min-height: 100vh;
@@ -61,6 +59,7 @@
   gap: 0;
 }
 
+/* Logo */
 img.pay-logo {
   font-family: var(--font-display, 'Georgia', serif);
   height: 36px;
@@ -70,6 +69,7 @@ img.pay-logo {
 }
 .pay-logo:hover { color: #fff; }
 
+/* Plan Badge */
 .pay-plan-badge {
   display: inline-flex;
   align-items: center;
@@ -85,6 +85,7 @@ img.pay-logo {
   width: fit-content;
 }
 
+/* Plan Price */
 .pay-plan-price {
   font-size: 44px;
   font-weight: 700;
@@ -98,12 +99,14 @@ img.pay-logo {
   color: rgba(186,189,226,0.6);
 }
 
+/* Plan Trial */
 .pay-plan-trial {
   font-size: 12px;
   color: rgba(186,189,226,0.55);
   margin-bottom: 32px;
 }
 
+/* Plan Features */
 .pay-plan-features {
   list-style: none;
   margin: 0 0 auto;
@@ -124,6 +127,7 @@ img.pay-logo {
   font-size: 13px;
 }
 
+/* Secure Payment */
 .pay-secure {
   margin-top: 36px;
   font-size: 11px;
@@ -239,6 +243,7 @@ img.pay-logo {
   padding: 10px 14px;
 }
 
+/* Submit Button */
 .pay-submit {
   background: var(--navy);
   color: #fff;
@@ -261,6 +266,7 @@ img.pay-logo {
   cursor: not-allowed;
 }
 
+/* Payment Terms */
 .pay-terms {
   font-size: 11px;
   color: rgba(55,67,117,0.42);
@@ -281,11 +287,13 @@ img.pay-logo {
   animation: payFadeIn 0.2s ease;
 }
 
+/* Fade In Animation */
 @keyframes payFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
+/* Confirmation Modal */
 .pay-modal {
   background: var(--cloud);
   width: 420px;
@@ -297,11 +305,13 @@ img.pay-logo {
   animation: paySlideUp 0.25s ease;
 }
 
+/* Slide Up Animation */
 @keyframes paySlideUp {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Confirmation Modal Star */
 .pay-modal-star {
   font-size: 32px;
   color: var(--periwinkle, #babde2);
@@ -339,7 +349,7 @@ img.pay-logo {
   transform: translateY(-1px);
 }
 
-/* ── Responsive ── */
+/* Responsiveness */
 @media (max-width: 680px) {
   .pay-container {
     flex-direction: column;

@@ -1,7 +1,10 @@
+/* import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
+/* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Root Variables */
 :root {
   --navy:       #374375;
   --navy-dim:   #2a3260;
@@ -14,8 +17,10 @@
   --body-pad: 48px;
 }
 
+/* Scroll Behavior */
 html { scroll-behavior: smooth; }
 
+/* Body */
 body {
   background: var(--cloud);
   font-family: 'Inter', sans-serif;
@@ -24,8 +29,10 @@ body {
   overflow-x: hidden;
 }
 
+/* Custom Classes */
 .cg { font-family: 'Libre Baskerville', serif; letter-spacing: 0.1em; }
 
+/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: rgba(186,189,226,0.5); }
 
@@ -76,6 +83,7 @@ body {
 
 .navbar-links a:hover { color: var(--navy); }
 
+/* Journal Button */
 .journal-btn {
   padding: 8px 20px;
   background: var(--navy);
@@ -93,6 +101,7 @@ body {
 
 .journal-btn:hover { background: var(--navy-dim); }
 
+/* Hamburger - Mobile Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -130,6 +139,7 @@ body {
   animation: dotDrift 24s linear infinite;
 }
 
+/* Dot Drift Animation */
 @keyframes dotDrift {
   from { background-position: 0 0; }
   to   { background-position: 56px 56px; }
@@ -144,6 +154,7 @@ body {
   animation: orbFloat ease-in-out infinite;
 }
 
+/* Orb Float Animation */
 @keyframes orbFloat {
   0%   { transform: translate(0px, 0px) scale(1); }
   25%  { transform: translate(18px, -32px) scale(1.05); }
@@ -152,6 +163,7 @@ body {
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
+/* Orb Float Animation 2 */
 @keyframes orbFloat2 {
   0%   { transform: translate(0px, 0px) scale(1); }
   25%  { transform: translate(-20px, -28px) scale(1.04); }
@@ -160,6 +172,7 @@ body {
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
+/* Hero Inner */
 .hero-inner {
   position: relative;
   z-index: 1;
@@ -167,6 +180,7 @@ body {
   max-width: 700px;
 }
 
+/* Hero Tagline */
 .hero-tagline {
   font-size: 10px;
   letter-spacing: 0.22em;
@@ -175,6 +189,7 @@ body {
   margin-bottom: 24px;
 }
 
+/* Hero Title */
 .hero-title {
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(64px, 12vw, 104px);
@@ -186,6 +201,7 @@ body {
   margin-bottom: 20px;
 }
 
+/* Hero Subtitle */
 .hero-sub {
   font-size: 13px;
   line-height: 1.7;
@@ -194,6 +210,7 @@ body {
   margin: 0 auto 44px;
 }
 
+/* CTA button */
 .btn-primary {
   padding: 14px 40px;
   background: var(--navy);
@@ -211,6 +228,7 @@ body {
 
 .btn-primary:hover { background: var(--navy-dim); }
 
+/* Hero Scroll */
 .hero-scroll {
   position: absolute;
   bottom: 36px;
@@ -227,6 +245,7 @@ body {
   animation: bounce 2s ease-in-out infinite;
 }
 
+/* Bounce Animation */
 @keyframes bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50%       { transform: translateX(-50%) translateY(6px); }
@@ -559,7 +578,7 @@ section { padding: 100px var(--body-pad); }
 
 .student-body a:hover { opacity: 0.75; }
 
-/* ─── FAQ ─── */
+/* ─── FAQs ─── */
 #faq { background: var(--periwinkle); }
 
 .faq-list {
@@ -710,6 +729,7 @@ footer {
   flex-wrap: wrap;
 }
 
+/* ─── BACK TO TOP ─── */
 .back-to-top {
   display: flex;
   align-items: center;
@@ -726,7 +746,7 @@ footer {
 .back-to-top svg { transition: transform 0.14s; }
 .back-to-top:hover svg { transform: translateY(-2px); }
 
-/* ─── MODAL ─── */
+/* ─── MOBILE MODAL ─── */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -751,6 +771,7 @@ footer {
   animation: fadeUp 0.25s ease both;
 }
 
+/* Fade Up Animation */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -825,7 +846,7 @@ footer {
   flex-shrink: 0;
 }
 
-/* ─── RESPONSIVE ─── */
+/* ─── RESPONSIVENESS ─── */
 @media (max-width: 900px) {
   .student-img-col { flex: 0 0 140px; }
 }
