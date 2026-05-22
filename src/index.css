@@ -1,22 +1,6 @@
-/* ─────────────────────────────────────────────
-   Fonts
-   ───────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
-
-/* ─────────────────────────────────────────────
-   Global reset
-   ───────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-
-/* ─────────────────────────────────────────────
-   Design tokens (global theme variables)
-   ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --navy:       #374375;
   --navy-dim:   #2a3260;
@@ -24,369 +8,49 @@
   --periwinkle: #BABDE2;
   --maroon:     #895159;
   --peach:      #DFAEA1;
-
-  /* shadows */
   --sh:         0 4px 24px rgba(55,67,117,0.10);
   --sh-lg:      0 16px 64px rgba(55,67,117,0.16);
 }
-
-
-/* ─────────────────────────────────────────────
-   Base layout
-   ───────────────────────────────────────────── */
-body {
-  background: var(--cloud);
-  font-family: 'Inter', sans-serif;
-  color: var(--navy);
-  min-height: 100vh;
-}
-
-
-/* Serif utility class (for headings / decorative text) */
-.cg {
-  font-family: 'Libre Baskerville', serif;
-  letter-spacing: 0.1em;
-}
-
-
-/* ─────────────────────────────────────────────
-   Scrollbar styling
-   ───────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(186,189,226,0.5);
-}
-
-
-/* ─────────────────────────────────────────────
-   Animations
-   ───────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* Utility animation classes */
+body { background: var(--cloud); font-family: 'Inter', sans-serif; color: var(--navy); min-height: 100vh; }
+.cg  { font-family: 'Libre Baskerville', serif; letter-spacing: 0.1em; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(186,189,226,0.5); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 .fu { animation: fadeUp 0.35s ease both; }
 .fi { animation: fadeIn 0.25s ease both; }
-
-
-/* ─────────────────────────────────────────────
-   Background patterns
-   ───────────────────────────────────────────── */
-.dot-grid {
-  background-image: radial-gradient(circle,#BABDE2 1px,transparent 1px);
-  background-size: 20px 20px;
-}
-
-.lined {
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 27px,
-    #BABDE2 27px,
-    #BABDE2 28px
-  );
-}
-
-.grid-bg {
-  background-image:
-    linear-gradient(#BABDE2 1px,transparent 1px),
-    linear-gradient(90deg,#BABDE2 1px,transparent 1px);
-  background-size: 24px 24px;
-}
-
-
-/* ─────────────────────────────────────────────
-   Form elements (global defaults)
-   ───────────────────────────────────────────── */
-input,
-textarea,
-button {
-  font-family: 'Inter', sans-serif;
-  cursor: pointer;
-}
-
-
-/* ─────────────────────────────────────────────
-   Buttons
-   ───────────────────────────────────────────── */
-
-/* Ghost button (outlined minimal style) */
-.btn-ghost {
-  padding: 5px 14px;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  border: 1px solid rgba(186,189,226,0.5);
-  border-radius: 0;
-  background: transparent;
-  color: var(--periwinkle);
-
-  transition: all 0.14s;
-  cursor: pointer;
-}
-
-.btn-ghost:hover {
-  border-color: var(--periwinkle);
-  color: var(--navy);
-}
-
-
-/* Segmented control buttons */
-.seg-btn {
-  padding: 5px 14px;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  border: none;
-  cursor: pointer;
-  transition: all 0.12s;
-}
-
-.seg-btn.active {
-  background: var(--periwinkle);
-  color: var(--navy);
-}
-
-.seg-btn.inactive {
-  background: transparent;
-  color: var(--periwinkle);
-}
-
-.seg-btn.inactive:hover {
-  color: var(--periwinkle);
-}
-
-
-/* Icon buttons (square UI controls) */
-.icon-btn {
-  width: 34px;
-  height: 34px;
-
-  border-radius: 0;
-  border: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.12s;
-}
-
-.icon-btn.active {
-  background: var(--periwinkle);
-  color: var(--navy);
-}
-
-.icon-btn.inactive {
-  background: transparent;
-  color: var(--periwinkle);
-}
-
-.icon-btn.inactive:hover {
-  color: var(--periwinkle);
-}
-
-
-/* ─────────────────────────────────────────────
-   Templates
-   ───────────────────────────────────────────── */
-.template-card {
-  border: 1px solid rgba(186,189,226,0.35);
-  border-radius: 0;
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.12s;
-}
-
-.template-card:hover {
-  border-color: var(--periwinkle);
-}
-
-.template-card.locked {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.template-card.locked:hover {
-  border-color: rgba(186,189,226,0.35);
-}
-
-
-/* ─────────────────────────────────────────────
-   Navigation
-   ───────────────────────────────────────────── */
-.nav-link {
-  background: none;
-  border: none;
-
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  font-family: 'Inter', sans-serif;
-
-  color: rgba(55,67,117,0.65);
-  cursor: pointer;
-  transition: color 0.12s;
-}
-
-.nav-link:hover {
-  color: var(--navy);
-}
-
-.nav-bar {
-  padding: 14px 32px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  background: var(--periwinkle);
-  z-index: 10;
-  flex-shrink: 0;
-}
-
-
-/* ─────────────────────────────────────────────
-   Layout helpers
-   ───────────────────────────────────────────── */
-.divider {
-  width: 1px;
-  height: 20px;
-  background: rgba(186,189,226,0.3);
-  flex-shrink: 0;
-}
-
-
-/* ─────────────────────────────────────────────
-   Pills (CTA / tags)
-   ───────────────────────────────────────────── */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 10px 24px;
-  border-radius: 0;
-
-  font-size: 10px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-
-  transition: all 0.14s;
-  cursor: pointer;
-}
-
-.pill-dark {
-  background: var(--periwinkle);
-  color: var(--navy);
-  border: 1px solid var(--periwinkle);
-}
-
-.pill-dark:hover {
-  background: #a8abce;
-  border-color: #a8abce;
-}
-
-.pill-light {
-  background: transparent;
-  color: var(--navy);
-  border: 1px solid rgba(186,189,226,0.5);
-}
-
-.pill-light:hover {
-  border-color: var(--periwinkle);
-  background: rgba(186,189,226,0.15);
-}
-
-
-/* ─────────────────────────────────────────────
-   Destructive actions
-   ───────────────────────────────────────────── */
-.delete-btn {
-  padding: 4px 12px;
-  border-radius: 0;
-
-  border: 1px solid rgba(137,81,89,0.35);
-  background: transparent;
-  color: var(--navy);
-
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  cursor: pointer;
-  transition: all 0.12s;
-}
-
-.delete-btn:hover {
-  background: var(--periwinkle);
-  border-color: var(--periwinkle);
-}
-
-
-/* ─────────────────────────────────────────────
-   Inputs
-   ───────────────────────────────────────────── */
-.range-slider {
-  width: 70px;
-  accent-color: var(--periwinkle);
-  cursor: pointer;
-}
-
-.field-input {
-  width: 100%;
-  padding: 11px 12px;
-
-  border: 1px solid rgba(186,189,226,0.4);
-  background: transparent;
-  color: var(--navy);
-
-  font-size: 13px;
-  outline: none;
-
-  transition: border-color 0.14s;
-}
-
-.field-input:focus {
-  border-color: var(--periwinkle);
-}
-
-
-/* ─────────────────────────────────────────────
-   Context / toolbar bar
-   ───────────────────────────────────────────── */
-.ctx-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  padding: 8px 24px;
-  background: var(--cloud);
-
-  border-bottom: 1px solid rgba(186,189,226,0.25);
-  flex-wrap: wrap;
-}
-
-
-/* ─────────────────────────────────────────────
-   Shadows
-   ───────────────────────────────────────────── */
-.card-shadow {
-  box-shadow: var(--sh);
-}
-
-.card-shadow-lg {
-  box-shadow: var(--sh-lg);
-}
+.dot-grid { background-image: radial-gradient(circle,#BABDE2 1px,transparent 1px); background-size: 20px 20px; }
+.lined    { background-image: repeating-linear-gradient(transparent,transparent 27px,#BABDE2 27px,#BABDE2 28px); }
+.grid-bg  { background-image: linear-gradient(#BABDE2 1px,transparent 1px),linear-gradient(90deg,#BABDE2 1px,transparent 1px); background-size:24px 24px; }
+input, textarea, button { font-family: 'Inter', sans-serif; cursor: pointer; }
+.btn-ghost { padding:5px 14px; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; border:1px solid rgba(186,189,226,0.5); border-radius:0; background:transparent; color:var(--periwinkle); transition:all 0.14s; cursor:pointer; }
+.btn-ghost:hover { border-color:var(--periwinkle); color:var(--navy); }
+.seg-btn { padding:5px 14px; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; border:none; cursor:pointer; transition:all 0.12s; }
+.seg-btn.active   { background:var(--periwinkle); color:var(--navy); }
+.seg-btn.inactive { background:transparent; color:var(--periwinkle); }
+.seg-btn.inactive:hover { color:var(--periwinkle); }
+.icon-btn { width:34px; height:34px; border-radius:0; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13px; transition:all 0.12s; }
+.icon-btn.active   { background:var(--periwinkle); color:var(--navy); }
+.icon-btn.inactive { background:transparent; color:var(--periwinkle); }
+.icon-btn.inactive:hover { color:var(--periwinkle); }
+.template-card { border:1px solid rgba(186,189,226,0.35); border-radius:0; overflow:hidden; cursor:pointer; transition:border-color 0.12s; }
+.template-card:hover { border-color:var(--periwinkle); }
+.template-card.locked { opacity:0.4; cursor:default; }
+.template-card.locked:hover { border-color:rgba(186,189,226,0.35); }
+.nav-link { background:none; border:none; font-size:10px; letter-spacing:0.08em; color:rgba(55,67,117,0.65); cursor:pointer; transition:color 0.12s; font-family:'Inter',sans-serif; }
+.nav-link:hover { color:var(--navy); }
+.divider { width:1px; height:20px; background:rgba(186,189,226,0.3); flex-shrink:0; }
+.pill { display:inline-flex; align-items:center; gap:6px; padding:10px 24px; border-radius:0; font-size:10px; letter-spacing:0.13em; text-transform:uppercase; transition:all 0.14s; cursor:pointer; }
+.pill-dark  { background:var(--periwinkle); color:var(--navy); border:1px solid var(--periwinkle); }
+.pill-dark:hover  { background:#a8abce; border-color:#a8abce; }
+.pill-light { background:transparent; color:var(--navy); border:1px solid rgba(186,189,226,0.5); }
+.pill-light:hover { border-color:var(--periwinkle); color:var(--navy); background:rgba(186,189,226,0.15); }
+.delete-btn { padding:4px 12px; border-radius:0; border:1px solid rgba(137,81,89,0.35); background:transparent; color:var(--navy); font-size:9px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; flex-shrink:0; transition:all 0.12s; }
+.delete-btn:hover { background:var(--periwinkle); color:var(--navy); border-color:var(--periwinkle); }
+.range-slider { width:70px; accent-color:var(--periwinkle); cursor:pointer; }
+.nav-bar { padding:14px 32px; display:flex; align-items:center; gap:14px; border-bottom:none; background:var(--periwinkle); flex-shrink:0; z-index:10; }
+.field-input { width:100%; padding:11px 12px; border:1px solid rgba(186,189,226,0.4); border-radius:0; font-size:13px; background:transparent; outline:none; color:var(--navy); transition:border-color 0.14s; }
+.field-input:focus { border-color:var(--periwinkle); }
+.ctx-bar { display:flex; align-items:center; justify-content:center; gap:12px; padding:8px 24px; background:var(--cloud); border-bottom:1px solid rgba(186,189,226,0.25); flex-shrink:0; flex-wrap:wrap; }
+.card-shadow    { box-shadow:var(--sh); }
+.card-shadow-lg { box-shadow:var(--sh-lg); }

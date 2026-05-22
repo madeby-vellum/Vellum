@@ -1,10 +1,9 @@
-import { ChevronDown, BookOpen, ArrowUp } from "lucide-react"; // icons used across hero, FAQ, footer
-import { useNavigate } from "react-router-dom"; // routing for navigation to auth page
-import { useState, useEffect } from "react"; // state + lifecycle hooks
-import "./HomePage.css"; // page styles
-// import { AuthContext } from "../context/AuthContext"; // (unused) auth context import
+import { ChevronDown, BookOpen, ArrowUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import "./HomePage.css";
+// import { AuthContext } from "../context/AuthContext";
 
-// feature cards shown in “Features” section
 const features = [
   {
     icon: "✦",
@@ -38,7 +37,6 @@ const features = [
   },
 ];
 
-// FAQ data used in accordion section
 const faqs = [
   {
     q: "Is my journal really private?",
@@ -66,19 +64,16 @@ const faqs = [
   },
 ];
 
-// unused helper component (kept for potential future UI use)
 const JournalIcon = ({ width = 18, height = 18, opacity = "0.4" }) => (
   <BookOpen size={18} strokeWidth={1.4} />
 );
 
-// reusable SVG logo component used in About/footer-like areas
 export function Logo({ size = 48 }) {
   return (
     <div
       className="logo-box"
       style={{ width: size, height: size }}
     >
-      {/* simple grid-style logo mark */}
       <svg width={size * 0.5} height={size * 0.5} viewBox="0 0 24 24" fill="none">
         <rect x="3" y="3" width="18" height="18" rx="1" stroke="rgba(55,67,117,0.35)" strokeWidth="1.2"/>
         <path d="M3 9h18M9 9v12" stroke="rgba(55,67,117,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
@@ -87,39 +82,27 @@ export function Logo({ size = 48 }) {
   );
 }
 
-// decorative floating background elements in hero section
-const inkOrbs = [
-  { width: 280, height: 280, top: "8%",   left: "4%",   dur: "14s", delay: "0s",   anim: "orbFloat"  },
-  { width: 160, height: 160, top: "55%",  left: "3%",   dur: "18s", delay: "2s",   anim: "orbFloat2" },
-  { width: 200, height: 200, top: "15%",  right: "6%",  dur: "12s", delay: "0.8s", anim: "orbFloat2" },
-  { width:  90, height:  90, top: "65%",  right: "5%",  dur: "16s", delay: "3.5s", anim: "orbFloat"  },
-  { width: 220, height: 220, bottom:"12%",right:"22%",  dur: "20s", delay: "1.2s", anim: "orbFloat"  },
-];
-
 export default function HomePage() {
-  const navigate = useNavigate(); // used for programmatic routing
-  const [mobileNavOpen, setMobileNavOpen] = useState(false); // mobile menu toggle
-  const [modalOpen, setModalOpen] = useState(false); // small-screen warning modal
-  const [openFaq, setOpenFaq] = useState(null); // currently expanded FAQ item
+  const navigate = useNavigate();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
-  // close mobile nav on scroll for better UX
   useEffect(() => {
     const handleScroll = () => setMobileNavOpen(false);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // handles "Journal / Start journaling" clicks (redirect logic depends on screen size)
   const handleJournalClick = (e) => {
     if (window.innerWidth < 768) {
-      e.preventDefault(); // stop navigation on mobile
-      setModalOpen(true); // show UX guidance modal instead
+      e.preventDefault();
+      setModalOpen(true);
     } else {
-      navigate("/auth"); // direct auth navigation on larger screens
+      navigate("/auth");
     }
   };
 
-  // toggles FAQ accordion open/close state
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
@@ -142,7 +125,6 @@ export default function HomePage() {
           Journal
         </a>
 
-        {/* mobile hamburger menu toggle */}
         <button
           className="hamburger"
           aria-label="Menu"
@@ -161,31 +143,8 @@ export default function HomePage() {
         <a href="#pricing" onClick={() => setMobileNavOpen(false)}>Pricing</a>
       </div>
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="hero" id="home">
-        <div className="hero-dots"></div>
-
-        {/* floating decorative orbs */}
-        {inkOrbs.map((orb, i) => (
-          <div
-            key={i}
-            className="ink-orb"
-            style={{
-              width:  orb.width,
-              height: orb.height,
-              top:    orb.top    ?? "auto",
-              left:   orb.left   ?? "auto",
-              right:  orb.right  ?? "auto",
-              bottom: orb.bottom ?? "auto",
-              animationName:     orb.anim,
-              animationDuration: orb.dur,
-              animationDelay:    orb.delay,
-              animationTimingFunction: "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
-              animationIterationCount: "infinite",
-            }}
-          />
-        ))}
-
         <div className="hero-inner">
           <div className="hero-tagline">Welcome to</div>
           <h1 className="hero-title cg">Vellum</h1>
@@ -196,15 +155,13 @@ export default function HomePage() {
             Start Journaling
           </a>
         </div>
-
-        {/* scroll hint */}
         <div className="hero-scroll">
           <ChevronDown size={14} strokeWidth={1.5} />
           scroll
         </div>
       </section>
 
-      {/* ABOUT SECTION */}
+      {/* ABOUT */}
       <section id="about">
         <div className="section-inner">
           <div className="about-grid">
@@ -223,7 +180,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FEATURES SECTION */}
+      {/* FEATURES */}
       <section id="features">
         <div className="section-inner">
           <div className="section-label">What's Inside</div>
@@ -234,7 +191,6 @@ export default function HomePage() {
             Vellum brings together thoughtful tools for writing, planning, and tracking — all wrapped in a cohesive, quiet aesthetic.
           </p>
 
-          {/* feature grid */}
           <div className="features-grid">
             {features.map((f, i) => (
               <div className="feature-card" key={i}>
@@ -247,7 +203,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PRICING SECTION */}
+      {/* PRICING */}
       <section id="pricing">
         <div className="section-inner">
           <div className="section-label">Plans</div>
@@ -259,13 +215,12 @@ export default function HomePage() {
           </p>
 
           <div className="pricing-grid">
-            {/* FREE PLAN */}
+            {/* Free */}
             <div className="pricing-card">
               <div className="pricing-badge">Free</div>
               <div className="pricing-price">0 AED <span>/ forever</span></div>
               <p className="pricing-desc">Everything you need to get started.</p>
               <div className="pricing-divider"></div>
-
               <ul className="pricing-features">
                 {[
                   "Up to 3 journals",
@@ -280,7 +235,6 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-
               <div className="pricing-footer">
                 <button className="pricing-cta" onClick={handleJournalClick}>
                   Get started
@@ -288,13 +242,12 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* PRO PLAN */}
+            {/* Pro */}
             <div className="pricing-card pro">
               <div className="pricing-badge">Pro</div>
               <div className="pricing-price">10 AED <span>/ mo</span></div>
               <p className="pricing-desc">14-day free trial. No card required.</p>
               <div className="pricing-divider"></div>
-
               <ul className="pricing-features">
                 {[
                   "Everything in Free",
@@ -308,7 +261,6 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-
               <div className="pricing-footer">
                 <button className="pricing-cta" onClick={handleJournalClick}>
                   Try Pro &nbsp;&rarr;
@@ -317,7 +269,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* STUDENT DISCOUNT BANNER */}
+          {/* Student Discount */}
           <div className="student-box">
             <div className="student-img-col">
               <img src="/images/discount.png" alt="Student Discount" />
@@ -334,7 +286,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ SECTION */}
+      {/* FAQs */}
       <section id="faq">
         <div className="section-inner">
           <div className="section-label">FAQs</div>
@@ -367,8 +319,6 @@ export default function HomePage() {
                 Questions or feedback?<br />
                 Reach us at <a href="mailto:madeby.vellum@gmail.com">madeby.vellum@gmail.com</a>
               </p>
-
-              {/* social links */}
               <div className="footer-socials">
                 <a href="https://www.instagram.com/madeby.vellum/" className="social-icon" aria-label="Instagram" target="_blank" rel="noreferrer">
                   <img src="/images/icon_ig.png" alt="Instagram" />
@@ -389,12 +339,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* bottom bar */}
           <div className="footer-bottom">
             <div className="footer-bottom-left">
               <span>© 2026 Vellum. All rights reserved.</span>
             </div>
-
             <a href="#home" className="back-to-top">
               <ArrowUp size={18} strokeWidth={1.5} />
               Back to top
@@ -403,7 +351,7 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {/* MOBILE SCREEN INFO MODAL */}
+      {/* SMALL SCREEN MODAL */}
       <div
         className={`modal-overlay${modalOpen ? " active" : ""}`}
         onClick={(e) => e.target === e.currentTarget && setModalOpen(false)}

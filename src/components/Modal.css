@@ -1,11 +1,8 @@
-/* ─────────────────────────────────────────────
-   Stylesheet for all modals and popup windows
-───────────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   Modal.css  –  shared modal styles
+───────────────────────────────────────── */
 
-
-/* ───────────── Base Modal Backdrop ───────────── */
-
-/* Full-screen blurred overlay behind modal */
+/* ── Backdrop ── */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -17,10 +14,7 @@
   backdrop-filter: blur(8px);
 }
 
-
-/* ───────────── Base Modal Card ───────────── */
-
-/* Main modal container */
+/* ── Card ── */
 .modal-card {
   background: var(--cloud);
   border-radius: 0;
@@ -33,36 +27,26 @@
   position: relative;
 }
 
-
-/* Smaller modal variation */
 .modal-card--small {
   width: 460px;
   max-width: 95vw;
   text-align: center;
 }
 
-
-/* Larger modal variation */
 .modal-card--large {
   width: 700px;
   max-width: 96vw;
   max-height: 92vh;
 }
 
-
-/* ───────────── Modal Header ───────────── */
-
-/* Top section of modal */
+/* ── Header ── */
 .modal-header {
   background: var(--navy);
   padding: 36px 44px 32px;
   position: relative;
 }
 
-
-/* ───────────── Close Buttons ───────────── */
-
-/* Generic close button */
+/* ── Close button ── */
 .modal-close {
   position: absolute;
   top: 18px;
@@ -75,8 +59,6 @@
   line-height: 1;
 }
 
-
-/* Close button styling for dark/pro modals */
 .modal-close--pro {
   color: rgba(186,189,226,0.6);
 }
@@ -85,8 +67,6 @@
   color: #fff;
 }
 
-
-/* Close button styling for light modals */
 .modal-close--light {
   color: var(--periwinkle);
 }
@@ -95,10 +75,7 @@
   color: var(--navy);
 }
 
-
-/* ───────────── Header Typography ───────────── */
-
-/* Small uppercase tagline */
+/* ── Header copy ── */
 .modal-tagline {
   font-size: 9px;
   letter-spacing: 0.22em;
@@ -107,8 +84,6 @@
   margin-bottom: 10px;
 }
 
-
-/* Main modal title */
 .modal-title {
   font-size: 22px;
   font-weight: 600;
@@ -120,40 +95,28 @@
   font-family: 'Inter', sans-serif;
 }
 
-
-/* Supporting text under title */
 .modal-copy {
   font-size: 11px;
   color: rgba(186,189,226,0.7);
   letter-spacing: 0.04em;
 }
 
-
-/* ───────────── Body & Footer ───────────── */
-
-/* Main modal content area */
+/* ── Body / Footer ── */
 .modal-body {
   padding: 32px 44px 0;
 }
 
-
-/* Bottom section of modal */
 .modal-footer {
   padding: 28px 44px 40px;
 }
 
-
-/* ───────────── Feature List ───────────── */
-
-/* Wrapper for feature rows */
+/* ── Feature row ── */
 .modal-features {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-
-/* Individual feature row */
 .modal-feature {
   display: flex;
   gap: 18px;
@@ -161,8 +124,6 @@
   margin-bottom: 22px;
 }
 
-
-/* Feature icon container */
 .modal-feature-icon {
   width: 32px;
   height: 32px;
@@ -176,8 +137,6 @@
   color: var(--navy);
 }
 
-
-/* Feature title text */
 .modal-feature-title {
   font-size: 11px;
   font-weight: 600;
@@ -187,18 +146,13 @@
   margin-bottom: 3px;
 }
 
-
-/* Feature description text */
 .modal-feature-desc {
   font-size: 12px;
   color: rgba(55,67,117,0.65);
   line-height: 1.5;
 }
 
-
-/* ───────────── Pricing Summary ───────────── */
-
-/* Top pricing summary section */
+/* ── Pricing summary ── */
 .modal-summary {
   border-top: 1px solid rgba(186,189,226,0.25);
   padding-top: 24px;
@@ -208,8 +162,6 @@
   margin-bottom: 20px;
 }
 
-
-/* Plan price styling */
 .modal-plan {
   font-size: 30px;
   font-weight: 300;
@@ -218,15 +170,11 @@
   font-family: 'Inter', sans-serif;
 }
 
-
-/* Smaller text inside price */
 .modal-plan span {
   font-size: 14px;
   font-weight: 300;
 }
 
-
-/* Trial info container */
 .modal-trial {
   font-size: 10px;
   color: var(--periwinkle);
@@ -234,16 +182,12 @@
   text-align: right;
 }
 
-
-/* Trial title emphasis */
 .modal-trial-title {
   color: var(--navy);
   font-weight: 600;
   margin-bottom: 2px;
 }
 
-
-/* Pro membership badge */
 .modal-pro-badge {
   text-align: center;
   padding: 12px;
@@ -254,10 +198,7 @@
   color: var(--periwinkle);
 }
 
-
-/* ───────────── Buttons ───────────── */
-
-/* Shared modal button styling */
+/* ── Buttons ── */
 .modal-button {
   width: 100%;
   padding: 14px;
@@ -270,8 +211,6 @@
   transition: background 0.14s;
 }
 
-
-/* Primary action button */
 .modal-button--primary {
   background: var(--navy);
   color: var(--cloud);
@@ -281,8 +220,6 @@
   background: var(--navy-dim);
 }
 
-
-/* Disabled button state */
 .modal-button--disabled {
   background: rgba(186,189,226,0.3);
   color: rgba(55,67,117,0.4);
@@ -293,16 +230,12 @@
   background: rgba(186,189,226,0.3);
 }
 
-
-/* Row for grouped actions */
 .modal-action-row {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
 }
 
-
-/* Secondary action button */
 .modal-button--secondary {
   padding: 10px 24px;
   border-radius: 0;
@@ -320,8 +253,6 @@
   background: rgba(186,189,226,0.12);
 }
 
-
-/* Danger/destructive button */
 .modal-button--danger {
   padding: 10px 24px;
   border-radius: 0;
@@ -337,4 +268,416 @@
 
 .modal-button--danger:hover {
   background: var(--navy-dim);
+}
+
+/* ── Redeem pack grid ── */
+.redeem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.redeem-card {
+  border: 1.5px solid rgba(186,189,226,0.35);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.14s;
+  overflow: hidden;
+}
+
+.redeem-card.selected {
+  border-color: var(--navy);
+  background: rgba(55,67,117,0.04);
+}
+
+.redeem-card-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 72px;
+}
+
+.redeem-card-bottom {
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-top: 1px solid rgba(186,189,226,0.2);
+}
+
+.redeem-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.redeem-card-desc {
+  font-size: 10px;
+  color: rgba(55,67,117,0.55);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.redeem-card-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.redeem-card-check span {
+  color: var(--cloud);
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* ── Modal.jsx (generic wrapper) ── */
+.modal-generic-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(55,67,117,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-generic-card {
+  background: var(--cloud);
+  border-radius: 0;
+  padding: 48px 52px;
+  width: 460px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 48px rgba(55,67,117,0.12);
+  border: 1px solid rgba(186,189,226,0.3);
+}
+
+.modal-generic-card--wide {
+  width: 700px;
+}
+
+.modal-generic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.modal-generic-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  font-family: 'Inter', sans-serif;
+}
+
+.modal-generic-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--periwinkle);
+  padding: 0 0 0 16px;
+  cursor: pointer;
+  transition: color 0.12s;
+}
+
+.modal-generic-close:hover {
+  color: var(--navy);
+}
+
+/* ── HelpModal ── */
+.help-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(55,67,117,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  backdrop-filter: blur(5px);
+}
+
+.help-card {
+  background: var(--cloud);
+  width: 520px;
+  max-width: 95vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 64px rgba(55,67,117,0.2);
+  border: 1px solid rgba(186,189,226,0.3);
+}
+
+/* Help header */
+.help-header {
+  padding: 24px 28px 0;
+  border-bottom: 1px solid rgba(186,189,226,0.25);
+  flex-shrink: 0;
+}
+
+.help-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.help-header-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.help-header-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--periwinkle);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.12s;
+}
+
+.help-header-close:hover {
+  color: var(--navy);
+}
+
+/* Help tabs */
+.help-tabs {
+  display: flex;
+}
+
+.help-tab {
+  padding: 9px 0;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: rgba(186,189,226,0.7);
+  cursor: pointer;
+  transition: all 0.14s;
+  font-family: 'Inter', sans-serif;
+  flex: 1;
+}
+
+.help-tab.active {
+  border-bottom-color: var(--navy);
+  color: var(--navy);
+}
+
+/* Help image */
+.help-image-wrap {
+  margin: 24px 28px 0;
+  height: 228px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.help-image-wrap img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  border: 1px solid var(--navy);
+}
+
+/* Help body text */
+.help-body {
+  padding: 20px 28px 4px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.help-step-counter {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--periwinkle);
+  margin-bottom: 8px;
+}
+
+.help-step-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+
+.help-step-body {
+  font-size: 12px;
+  color: rgba(55,67,117,0.7);
+  line-height: 1.75;
+}
+
+/* Help footer */
+.help-footer {
+  padding: 16px 28px;
+  border-top: 1px solid rgba(186,189,226,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.help-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.help-dot {
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(186,189,226,0.45);
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 5px;
+}
+
+.help-dot.active {
+  width: 16px;
+  background: var(--navy);
+}
+
+.help-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.help-btn-prev {
+  padding: 6px 16px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(186,189,226,0.4);
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.help-btn-prev:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.help-btn-prev:not(:disabled):hover {
+  background: rgba(186,189,226,0.15);
+}
+
+.help-btn-next {
+  padding: 6px 16px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  background: var(--navy);
+  color: var(--cloud);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.help-btn-next:hover {
+  background: var(--navy-dim);
+}
+
+.help-btn-done {
+  padding: 6px 16px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  background: var(--periwinkle);
+  color: var(--navy);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.help-btn-done:hover {
+  background: #a8abce;
+}
+
+/* ── HelpButton ── */
+.help-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 0%;
+  border: 1px solid rgba(55,67,117,0.3);
+  background: var(--cloud);
+  color: var(--periwinkle);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.14s;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.help-button:hover {
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
+/* ── RedeemPackModal: "redeemed" state copy tweaks ── */
+.redeem-unlocked-label {
+  margin-top: 10px;
+  margin-bottom: 6px;
+  color: var(--periwinkle);
+}
+
+.redeem-unlocked-pack {
+  margin-bottom: 24px;
+  color: var(--cloud);
+  text-transform: uppercase;
+}
+
+.redeem-unlocked-copy {
+  color: var(--periwinkle);
+  margin-top: 0;
+  line-height: 1.6;
+}
+
+/* ── RedeemPackModal: confirm state copy tweaks ── */
+.redeem-confirm-copy {
+  margin-top: 10px;
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.redeem-confirm-pack {
+  margin-bottom: 28px;
+  color: var(--cloud);
+  text-transform: uppercase;
+}
+
+.modal-footer.modal-action-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 28px 44px 40px;
 }

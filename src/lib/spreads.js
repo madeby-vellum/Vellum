@@ -1,6 +1,5 @@
 import { supabase } from './supabase';
 
-// Get all spreads for a given journal
 export async function getSpreads(journalId) {
   const { data, error } = await supabase
     .from('spreads')
@@ -12,7 +11,6 @@ export async function getSpreads(journalId) {
   return data;
 }
 
-// Get a single spread by ID
 export async function saveSpread({ id, journal_id, name, canvas }) {
   if (id) {
     // update
@@ -32,7 +30,6 @@ export async function saveSpread({ id, journal_id, name, canvas }) {
   }
 }
 
-// delete a spread by ID
 export async function deleteSpread(id) {
   const { error } = await supabase
     .from('spreads')

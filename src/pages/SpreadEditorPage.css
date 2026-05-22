@@ -1,30 +1,25 @@
-/* Spread Editor Page */
 .spread-editor-page {
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Navigation */
 .spread-editor-nav {
   justify-content: space-between;
 }
 
-/* Navigation Left */
 .spread-editor-nav-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Navigation Right */
 .spread-editor-nav-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Canvas */
 .spread-editor-canvas {
   flex: 1;
   overflow: hidden;
