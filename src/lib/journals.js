@@ -2,10 +2,14 @@ import { supabase } from './supabase';
 
 // create a new journal for current user
 export async function createJournal({ title, coverType, coverId, coverImg }) {
+
+  // get current user
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
+  // if no user, throw error
   if (userError || !user) throw userError || new Error("No user found");
 
+  // insert new journal into database
   const { data, error } = await supabase
     .from("journals")
     .insert([
@@ -20,13 +24,16 @@ export async function createJournal({ title, coverType, coverId, coverImg }) {
     .select()
     .single();
 
+  // if error, throw it
   if (error) throw error;
 
+  // return normalized journal data
   return normalizeJournal(data);
 }
 
 // get all journals for current user, including spreads
 export async function getJournals() {
+  // get current user
   const { data, error } = await supabase
     .from('journals')
     .select(`
@@ -42,6 +49,7 @@ export async function getJournals() {
 
 // update journal title
 export async function renameJournal(id, title) {
+  // update journal name in database
   const { data, error } = await supabase
     .from('journals')
     .update({ name: title })
@@ -56,6 +64,7 @@ export async function renameJournal(id, title) {
 
 // delete journal and all associated spreads
 export async function deleteJournal(id) {
+  // delete journal from database (spreads will be deleted via foreign key constraint)
   const { error } = await supabase
     .from('journals')
     .delete()
@@ -67,6 +76,7 @@ export async function deleteJournal(id) {
 // normalize journal data for frontend
 function normalizeJournal(j) {
   return {
+    // Core fields
     id: j.id,
     user_id: j.user_id,
 
@@ -76,11 +86,12 @@ function normalizeJournal(j) {
     coverType: j.cover_type,
     coverImg: j.cover_image,
 
-    // derived
+    // timestamps
     created: j.created_at
       ? new Date(j.created_at).toLocaleDateString()
       : "",
-
-    spreads: j.spreads || []
+    updated: j.updated_at
+      ? new Date(j.updated_at).toLocaleDateString()
+      : "",
   };
 }
