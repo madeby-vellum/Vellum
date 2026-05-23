@@ -1,21 +1,26 @@
 import { useLayoutEffect } from "react";
 
+// loads the fabric library 
 export default function useFabricLib(onLoaded) {
+  // if the library is already loaded, call onLoaded immediately
   useLayoutEffect(() => {
     if (window.fabric) {
       onLoaded(window.fabric);
       return;
     }
 
+    // if the library is currently loading, wait for it to load and then call onLoaded
     if (window._fabricLoadingPromise) {
       window._fabricLoadingPromise.then(onLoaded);
       return;
     }
 
+    // otherwise, start loading the library and call onLoaded when it's ready
     window._fabricLoadingPromise = new Promise((resolve, reject) => {
       const existing = Array.from(document.head.querySelectorAll("script")).find(
         s => s.src && s.src.includes("fabric.min.js")
       );
+      // if a script tag for fabric.js already exists, wait for it to load and then call onLoaded
       if (existing) {
         existing.addEventListener("load", () => {
           resolve(window.fabric);
@@ -25,6 +30,7 @@ export default function useFabricLib(onLoaded) {
         return;
       }
 
+      // otherwise, create a new script tag to load fabric.js and call onLoaded when it's ready
       const s = document.createElement("script");
       s.src = "https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js";
       s.onload = () => {
