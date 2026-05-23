@@ -17,8 +17,7 @@ import ProUpgradeModal from "./components/ProUpgradeModal.jsx";
 import RedeemPackModal from "./components/RedeemPackModal.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-/* ─── Route components ──────────────────────────────────────── */
-
+// Shelf route also contains the upgrade modals
 function ShelfRoute({ journals, setJournals, activeJournal, setActiveJournal,
   showNewJournal, setShowNewJournal, journalForm, setJournalForm,
   onOpenJournal, onSignOut, onDeleteAccount, menuOpen, setMenuOpen,
@@ -26,10 +25,13 @@ function ShelfRoute({ journals, setJournals, activeJournal, setActiveJournal,
   onShowUpgrade, userTier, onShowRedeem, redeemUsed,
   showUpgradePro, setShowUpgradePro, showRedeemPack, setShowRedeemPack,
   unlockedCategory, handleRedeem, onUpgrade }) {
+  // AuthContext is needed here to get the user for the shelf page
   const { user, loading } = useContext(AuthContext);
+  // If AuthContext is still loading, don't render anything
   if (loading) return null;
   return (
     <>
+    {/* Journal Shelf Page */}
       <JournalShelfPage
         user={user}
         journals={journals}
@@ -54,10 +56,12 @@ function ShelfRoute({ journals, setJournals, activeJournal, setActiveJournal,
         onShowRedeem={onShowRedeem}
         redeemUsed={redeemUsed}
       />
+      {/* Pro Upgrade Modal */}
       {showUpgradePro && (
         <ProUpgradeModal userTier={userTier} onClose={() => setShowUpgradePro(false)}
           onUpgrade={onUpgrade} />
       )}
+      {/* Redeem Pack Modal */}
       {showRedeemPack && (
         <RedeemPackModal redeemUsed={redeemUsed} unlockedCategory={unlockedCategory}
           onClose={() => setShowRedeemPack(false)} onRedeem={handleRedeem} />
@@ -66,33 +70,34 @@ function ShelfRoute({ journals, setJournals, activeJournal, setActiveJournal,
   );
 }
 
+// Journal route also contains the upgrade modal and template picker
 function JournalRoute({ journals, setJournals, activeJournal, setActiveJournal, setActiveSpread, setJournalPage,
   navigate, journalPage, showTemplatePicker, setShowTemplatePicker, userTier, onToggleTier,
   confirmSpread, setConfirmSpread, renamingSpread, setRenamingSpread, onShowUpgrade,
   showUpgradePro, setShowUpgradePro, onUpgrade, unlockedCategory }) {
   const { journalId } = useParams();
   const journal = journals.find(j => j.id === journalId);
-
+  // Load spreads for this journal if not already loaded 
   useEffect(() => {
     if (!journal) return;
-
+    // If spreads are already loaded, no need to fetch again
     const loadSpreads = async () => {
       const spreads = await getSpreads(journal.id);
-
+      // Update the journal with its spreads and update state
       const updatedJournal = {
         ...journal,
         spreads
       };
-
+      // If the active journal is the one we just updated, update it in state as well
       setActiveJournal(updatedJournal);
       setJournals(p =>
         p.map(j => j.id === journal.id ? updatedJournal : j)
       );
     };
-
+    // Only load spreads if they haven't been loaded before
     loadSpreads();
   }, [journalId]);
-
+  // When journalId changes, set the active journal and reset active spread and page
   useEffect(() => {
     if (journal) {
       setActiveJournal(journal);
@@ -100,11 +105,11 @@ function JournalRoute({ journals, setJournals, activeJournal, setActiveJournal, 
       setJournalPage(p => Math.min(p, journal.spreads.length));
     }
   }, [journalId, journal, setActiveJournal, setActiveSpread, setJournalPage]);
-
+  // If journal doesn't exist (invalid ID), navigate back to shelf
   if (!journal) return <Navigate to="/shelf" replace />;
-
   return (
     <>
+    {/* Journal Page */}
       <JournalPage
         journals={journals}
         setJournals={setJournals}
@@ -127,6 +132,7 @@ function JournalRoute({ journals, setJournals, activeJournal, setActiveJournal, 
         onShowUpgrade={onShowUpgrade}
         unlockedCategory={unlockedCategory}
       />
+      {/* Pro Upgrade Modal */}
       {showUpgradePro && (
         <ProUpgradeModal userTier={userTier} onClose={() => setShowUpgradePro(false)}
           onUpgrade={onUpgrade} />
@@ -135,21 +141,22 @@ function JournalRoute({ journals, setJournals, activeJournal, setActiveJournal, 
   );
 }
 
+// Spread route also contains the upgrade modal
 function SpreadRoute({ journals, setJournals, activeJournal, setActiveJournal, setActiveSpread, navigate,
   showUpgradePro, setShowUpgradePro, userTier, onUpgrade }) {
   const { journalId, spreadId } = useParams();
   const journal = journals.find(j => j.id === journalId);
   const spread  = journal?.spreads.find(s => s.id === spreadId);
-
+  // When journal or spread changes, set the active journal and spread in state
   useEffect(() => {
     if (journal) setActiveJournal(journal);
     if (spread)  setActiveSpread(spread);
   }, [journal, spread, setActiveJournal, setActiveSpread]);
-
+  // If journal or spread doesn't exist (invalid ID), navigate back to shelf
   if (!journal || !spread) return <Navigate to="/shelf" replace />;
-
   return (
     <>
+    {/* Spread Editor Page */}
       <SpreadEditorPage
         journals={journals}
         setJournals={setJournals}
@@ -159,6 +166,7 @@ function SpreadRoute({ journals, setJournals, activeJournal, setActiveJournal, s
         onGoHome={() => navigate("/shelf")}
         onGoJournal={() => navigate(`/shelf/journal/${journal.id}`)}
       />
+      {/* Pro Upgrade Modal */}
       {showUpgradePro && (
         <ProUpgradeModal userTier={userTier} onClose={() => setShowUpgradePro(false)}
           onUpgrade={onUpgrade} />
@@ -167,8 +175,7 @@ function SpreadRoute({ journals, setJournals, activeJournal, setActiveJournal, s
   );
 }
 
-/* ─── Root App ──────────────────────────────────────────────── */
-
+/* Root App */
 export default function App() {
   const [journals,           setJournals]           = useState([]);
   const [activeJournal,      setActiveJournal]      = useState(null);
@@ -189,9 +196,10 @@ export default function App() {
 
   const navigate = useNavigate();
 
-  // ── Derive tier from AuthContext (single source of truth = Supabase profiles) ──
+  // Derive tier from AuthContext (single source of truth = Supabase profiles)
   const { user, tier: userTier } = useContext(AuthContext);
 
+  // Global click listener to close any open menu when clicking outside
   useEffect(() => {
     if (!menuOpen) return;
     const close = () => setMenuOpen(null);
@@ -199,31 +207,33 @@ export default function App() {
     return () => window.removeEventListener("click", close);
   }, [menuOpen]);
 
+  // When user changes (sign in/out), load journals or clear them
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/");
   };
 
+  // When deleting account, sign out and clear journals
   const handleDeleteAccount = async () => {
     await supabase.auth.signOut();
     setJournals([]);
     navigate("/auth");
   };
 
+  // if user is null, clear journals. If user exists, load their journals. 
   useEffect(() => {
     if (!user) {
       setJournals([]);
       return;
     }
-
     const load = async () => {
       const data = await getJournals();
       setJournals(data);
     };
-
     load();
   }, [user]);
 
+  // Handle redeeming a pack: mark as used, unlock the category, and show the pack animation
   const handleRedeem = (category) => {
     setRedeemUsed(true);
     setUnlockedCategory(category);
@@ -236,11 +246,13 @@ export default function App() {
     setShowUpgradePro(true);
   };
 
+  // When user clicks upgrade in the modal, navigate to payment page
   const handleGoToPayment = () => {
     setShowUpgradePro(false);
     navigate("/upgrade");
   };
 
+  // Props shared between Shelf and Journal routes 
   const sharedShelfProps = {
     journals, setJournals, activeJournal, setActiveJournal,
     showNewJournal, setShowNewJournal, journalForm, setJournalForm,
@@ -260,6 +272,7 @@ export default function App() {
     onUpgrade: handleGoToPayment,
   };
 
+  // Props shared between Journal and Spread routes
   const sharedJournalProps = {
     journals, setJournals, activeJournal, setActiveJournal,
     setActiveSpread, setJournalPage, navigate, journalPage,
@@ -283,13 +296,17 @@ export default function App() {
         <ProtectedRoute><PaymentPage /></ProtectedRoute>
       } />
 
-      {/* Protected routes */}
+      {/* Protected route to shelf */}
       <Route path="/shelf" element={
         <ProtectedRoute><ShelfRoute {...sharedShelfProps} /></ProtectedRoute>
       } />
+      
+      {/* Journal Page */}
       <Route path="/shelf/journal/:journalId" element={
         <ProtectedRoute><JournalRoute {...sharedJournalProps} /></ProtectedRoute>
       } />
+
+      {/* Spread Editor Page */}
       <Route path="/shelf/journal/:journalId/spread/:spreadId" element={
         <ProtectedRoute>
           <SpreadRoute
@@ -303,6 +320,7 @@ export default function App() {
         </ProtectedRoute>
       } />
 
+      {/* if no route matches, redirect to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
