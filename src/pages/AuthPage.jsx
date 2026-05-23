@@ -5,10 +5,12 @@ import { AuthContext } from "../context/AuthContext";
 import Field from "../components/Field.jsx";
 import "./AuthPage.css";
 
+// render login/signup form
 export default function AuthPage() {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
+  // states
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
@@ -21,10 +23,12 @@ export default function AuthPage() {
     }
   }, [user, navigate]);
 
+  // submit form
   const handleSubmit = async (e) => {
     e?.preventDefault();
     setError("");
 
+    // if fields are empty, show error
     if (!form.email || !form.password || (mode === "signup" && !form.name)) {
       setError("Please fill in all fields.");
       return;
@@ -32,6 +36,7 @@ export default function AuthPage() {
 
     setLoading(true);
 
+    // login with supabase
     if (mode === "login") {
       const { error: authError } = await supabase.auth.signInWithPassword({
         email: form.email,
@@ -41,7 +46,9 @@ export default function AuthPage() {
       setLoading(false);
       if (authError) return setError(authError.message);
 
-    } else {
+    } 
+    // signup with supabase
+    else {
       const { error: authError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
@@ -54,6 +61,7 @@ export default function AuthPage() {
       if (authError) return setError(authError.message);
     }
 
+    // on success, navigate to shelf
     navigate("/shelf");
   };
 
@@ -93,26 +101,31 @@ export default function AuthPage() {
 
           {/* Fields */}
           {mode === "signup" && (
+            // only show username field in signup mode
             <Field label="Username" placeholder=""
               value={form.name}
               onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
             />
           )}
 
+          {/* Email Field */}
           <Field label="Email" type="email" placeholder=""
             value={form.email}
             onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
           />
 
+          {/* Password Field */}
           <Field label="Password" type="password" placeholder=""
             value={form.password}
             onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
           />
 
+          {/* Error Message */}
           {error && (
             <div className="auth-error">{error}</div>
           )}
 
+          {/* Submit Button */}
           <button type="submit" disabled={loading} className="auth-submit">
             {loading
               ? (mode === "login" ? "Signing in…" : "Creating account…")

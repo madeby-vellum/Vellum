@@ -1,5 +1,4 @@
 import { Pencil, Trash2, Plus } from "lucide-react";
-
 import { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import SpreadCanvas from "../components/SpreadCanvas.jsx";
@@ -20,6 +19,8 @@ export default function JournalPage({
   renamingSpread, setRenamingSpread,
   onGoHome, onEditSpread, onShowUpgrade, unlockedCategory,
 }) {
+
+  // variables and states
   const { journalId } = useParams();
   const journal = journals.find(j => j.id === journalId);
   if (!journal) return <Navigate to="/shelf" replace />;
@@ -31,6 +32,7 @@ export default function JournalPage({
   const goLeft  = () => setJournalPage(p => Math.max(0, p - 1));
   const goRight = () => setJournalPage(p => Math.min(total - 1, p + 1));
 
+  // keyboard navigation
   useEffect(() => {
     const handler = e => {
       if (e.key==="ArrowRight"||e.key==="ArrowDown") setJournalPage(p=>Math.min(total-1,p+1));
@@ -40,12 +42,13 @@ export default function JournalPage({
     return () => window.removeEventListener("keydown", handler);
   }, [total]);
 
+  // create spread function
   const createSpread = async (template) => {
     const tmpl = template || TEMPLATES[0];
-
+    // get user info for spread ownership
     const { data: userData } = await supabase.auth.getUser();
     const user = userData.user;
-
+    // create new spread object with necessary fields
     const newSpread = {
       journal_id: activeJournal.id,
       user_id: user.id,
@@ -55,57 +58,52 @@ export default function JournalPage({
       template_image: tmpl.path,
       canvas: null
     };
-
+    // insert new spread into database and get the created record
     const { data, error } = await supabase
       .from("spreads")
       .insert(newSpread)
       .select()
       .single();
-
+    // handle any insertion errors
     if (error) {
       console.error("INSERT ERROR:", error.message, error.details);
       return;
     }
-
+    // update local state with the new spread
     const updated = {
       ...activeJournal,
       spreads: [...activeJournal.spreads, data]
     };
-
+    // update journals state, set active journal and spread, navigate to new spread
     setJournals(p => p.map(j => j.id === activeJournal.id ? updated : j));
     setActiveJournal(updated);
     setActiveSpread(data);
     setJournalPage(updated.spreads.length);
     setShowTemplatePicker(false);
-
+    // go to the new spread's page
     navigate(`/shelf/journal/${activeJournal.id}/spread/${data.id}`);
   };
 
-  // const renameSpread = (id, title) => {
-  //   if (!title.trim()) return;
-  //   const updated = { ...activeJournal, spreads:activeJournal.spreads.map(s => s.id===id ? {...s, title} : s) };
-  //   setJournals(p => p.map(j => j.id===activeJournal.id ? updated : j));
-  //   setActiveJournal(updated);
-  // };
-
+  // delete spread function
   const deleteSpread = async (id) => {
     try {
       await deleteSpreadDB(id);
-
+      // update local state by removing the deleted spread from the active journal
       const updated = {
         ...activeJournal,
         spreads: activeJournal.spreads.filter(s => s.id !== id)
       };
-
+      // update journals state, set active journal, and adjust journal page if necessary
       setJournals(p => p.map(j => j.id === activeJournal.id ? updated : j));
       setActiveJournal(updated);
       setJournalPage(p => Math.min(p, updated.spreads.length));
-
+      // navigate back to journal page if currently on the deleted spread
     } catch (err) {
       console.error("DELETE SPREAD ERROR:", err);
     }
   };
 
+  // navigation button 
   const navBtn = (label, onClick, disabled) => (
     <button onClick={onClick} disabled={disabled} className="journal-nav-btn">
       {label}
@@ -116,6 +114,7 @@ export default function JournalPage({
     <div className="journal-page">
       <nav className="nav-bar journal-nav">
         <div className="journal-nav-left">
+          {/* Back to home button */}
           <button
             onClick={onGoHome}
             className="journal-back-btn"
@@ -126,9 +125,11 @@ export default function JournalPage({
           <span className="journal-nav-separator">/</span>
           <span className="journal-nav-title">{journal.title}</span>
         </div>
+        {/* Help button */}
         <HelpButton onOpen={() => setShowHelp(true)} />
       </nav>
 
+      {/* Journal Content */}
       <div className="journal-content">
         {isCover && (
           <div key="cover" className="fi journal-cover-wrapper">
@@ -144,6 +145,7 @@ export default function JournalPage({
           </div>
         )}
 
+        {/* Journal Spread */}
         {!isCover && spread && (
           <div key={spread.id} className="fi journal-spread-wrapper">
             <div
@@ -152,6 +154,7 @@ export default function JournalPage({
             >
               <SpreadCanvas spread={spread} editMode={false} actionsRef={{ current: null }} />
             </div>
+            {/* Spread Metadata */}
             <div className="journal-spread-meta">
               {renamingSpread?.id === spread.id
                 ? <input
@@ -179,6 +182,7 @@ export default function JournalPage({
         )}
       </div>
 
+      {/* Journal Controls */}
       <div className="journal-controls">
         {navBtn("←", goLeft, journalPage === 0)}
         {!isCover && spread && (
@@ -196,7 +200,7 @@ export default function JournalPage({
         </button>
         {navBtn("→", goRight, journalPage === total - 1)}
       </div>
-
+      {/* Delete Spread Confirmation */}
       {confirmSpread && (
         <Modal title="Delete Spread" onClose={() => setConfirmSpread(null)}>
           <p className="journal-modal-body">
@@ -213,7 +217,7 @@ export default function JournalPage({
           </div>
         </Modal>
       )}
-
+      {/* Template Picker */}
       {showTemplatePicker && (
         <TemplatePicker
           userTier={userTier}
@@ -224,6 +228,7 @@ export default function JournalPage({
           unlockedCategory={unlockedCategory}
         />
       )}
+      {/* Help Modal */}
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} initialTab={1} />}
     </div>
   );

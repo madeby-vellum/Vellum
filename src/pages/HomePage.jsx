@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import "./HomePage.css";
 // import { AuthContext } from "../context/AuthContext";
 
+// features data for the features section
 const features = [
   {
     icon: "✦",
@@ -37,6 +38,7 @@ const features = [
   },
 ];
 
+// faqs data for the FAQ section
 const faqs = [
   {
     q: "Is my journal really private?",
@@ -64,36 +66,27 @@ const faqs = [
   },
 ];
 
+// icon for navbar
 const JournalIcon = ({ width = 18, height = 18, opacity = "0.4" }) => (
   <BookOpen size={18} strokeWidth={1.4} />
 );
 
-export function Logo({ size = 48 }) {
-  return (
-    <div
-      className="logo-box"
-      style={{ width: size, height: size }}
-    >
-      <svg width={size * 0.5} height={size * 0.5} viewBox="0 0 24 24" fill="none">
-        <rect x="3" y="3" width="18" height="18" rx="1" stroke="rgba(55,67,117,0.35)" strokeWidth="1.2"/>
-        <path d="M3 9h18M9 9v12" stroke="rgba(55,67,117,0.35)" strokeWidth="1.2" strokeLinecap="round"/>
-      </svg>
-    </div>
-  );
-}
-
 export default function HomePage() {
   const navigate = useNavigate();
+
+  // set up state for mobile nav, modal, and FAQ toggling
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
 
+  // close mobile nav on scroll for better UX
   useEffect(() => {
     const handleScroll = () => setMobileNavOpen(false);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // handle journal button click - show modal on small screens, navigate to auth on larger screens
   const handleJournalClick = (e) => {
     if (window.innerWidth < 768) {
       e.preventDefault();
@@ -103,6 +96,7 @@ export default function HomePage() {
     }
   };
 
+  // toggle FAQ answers - if the same question is clicked, close it; otherwise, open the new one
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
@@ -114,17 +108,17 @@ export default function HomePage() {
         <a href="/" className="navbar-logo">
           <img src="/logo/blue-logo.png" alt="Vellum" className="navbar-logo-img" />
         </a>
-
+        {/* NAVIGATION LINKS */}
         <div className="navbar-links">
           <a href="#about">About</a>
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
         </div>
-
+        {/* JOURNAL BUTTON */}
         <a href="/auth" className="journal-btn" onClick={handleJournalClick}>
           Journal
         </a>
-
+        {/* HAMBURGER MENU */}
         <button
           className="hamburger"
           aria-label="Menu"
@@ -143,7 +137,7 @@ export default function HomePage() {
         <a href="#pricing" onClick={() => setMobileNavOpen(false)}>Pricing</a>
       </div>
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section className="hero" id="home">
         <div className="hero-inner">
           <div className="hero-tagline">Welcome to</div>
@@ -151,6 +145,7 @@ export default function HomePage() {
           <p className="hero-sub">
             A minimal digital journaling website. Design freely, plan mindfully, track what matters — all in one place.
           </p>
+          {/* CTA BUTTON */}
           <a href="/auth" className="btn-primary" onClick={handleJournalClick}>
             Start Journaling
           </a>
@@ -190,7 +185,7 @@ export default function HomePage() {
           <p className="section-body">
             Vellum brings together thoughtful tools for writing, planning, and tracking — all wrapped in a cohesive, quiet aesthetic.
           </p>
-
+          {/* FEATURES GRID */}
           <div className="features-grid">
             {features.map((f, i) => (
               <div className="feature-card" key={i}>
@@ -213,9 +208,9 @@ export default function HomePage() {
           <p className="section-body">
             Start journaling for free with no commitment. Upgrade to Pro when you want more templates and unlimited space.
           </p>
-
+          {/* PRICING GRID */}
           <div className="pricing-grid">
-            {/* Free */}
+            {/* Free Version */}
             <div className="pricing-card">
               <div className="pricing-badge">Free</div>
               <div className="pricing-price">0 AED <span>/ forever</span></div>
@@ -235,14 +230,14 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
+              {/* Free Button */}
               <div className="pricing-footer">
                 <button className="pricing-cta" onClick={handleJournalClick}>
                   Get started
                 </button>
               </div>
             </div>
-
-            {/* Pro */}
+            {/* Pro Version */}
             <div className="pricing-card pro">
               <div className="pricing-badge">Pro</div>
               <div className="pricing-price">10 AED <span>/ mo</span></div>
@@ -261,6 +256,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
+              {/* Pro Button */}
               <div className="pricing-footer">
                 <button className="pricing-cta" onClick={handleJournalClick}>
                   Try Pro &nbsp;&rarr;
@@ -286,7 +282,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQs */}
+      {/* FAQs SECTION */}
       <section id="faq">
         <div className="section-inner">
           <div className="section-label">FAQs</div>
@@ -319,6 +315,7 @@ export default function HomePage() {
                 Questions or feedback?<br />
                 Reach us at <a href="mailto:madeby.vellum@gmail.com">madeby.vellum@gmail.com</a>
               </p>
+              {/* SOCIAL MEDIA LINKS */}
               <div className="footer-socials">
                 <a href="https://www.instagram.com/madeby.vellum/" className="social-icon" aria-label="Instagram" target="_blank" rel="noreferrer">
                   <img src="/images/icon_ig.png" alt="Instagram" />
@@ -338,11 +335,12 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-
+          {/* Terms and Conditions */}
           <div className="footer-bottom">
             <div className="footer-bottom-left">
               <span>© 2026 Vellum. All rights reserved.</span>
             </div>
+            {/* Back to Top Link */}
             <a href="#home" className="back-to-top">
               <ArrowUp size={18} strokeWidth={1.5} />
               Back to top
@@ -351,7 +349,7 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {/* SMALL SCREEN MODAL */}
+      {/* SMALL SCREEN LIMITING MODAL */}
       <div
         className={`modal-overlay${modalOpen ? " active" : ""}`}
         onClick={(e) => e.target === e.currentTarget && setModalOpen(false)}

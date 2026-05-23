@@ -9,6 +9,7 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const { user, refreshProfile } = useContext(AuthContext);
 
+  // Form state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
@@ -20,6 +21,7 @@ export default function PaymentPage() {
   const [expiry, setExpiry] = useState("12/27");
   const [cvv, setCvv] = useState("123");
 
+  // Confirmation handler simulates payment processing and upgrades the user to Pro
   const handleConfirm = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -27,17 +29,19 @@ export default function PaymentPage() {
 
     const { error: upgradeError } = await upgradeToPro();
 
+    // if upgrade fails, show error and stop
     if (upgradeError) {
       setError("Something went wrong. Please try again.");
       setLoading(false);
       return;
     }
-
+    // simulate delay for better UX
     await refreshProfile();
     setLoading(false);
     setConfirmed(true);
   };
 
+  // After confirming, user can proceed to their shelf
   const handleProceed = () => {
     navigate("/shelf");
   };
@@ -49,7 +53,7 @@ export default function PaymentPage() {
       <div className="pay-bg-blob pay-bg-blob--2" />
 
       <div className="pay-container">
-        {/* ── Left: Plan summary ── */}
+        {/* ── Left: Payment summary ── */}
         <div className="pay-summary">
           <div className="pay-logo" onClick={() => navigate("/")}>
             <img src="/logo/white-logo.png" alt="Vellum" className="pay-logo" />
@@ -79,7 +83,7 @@ export default function PaymentPage() {
               Your card will not be charged during the 14-day trial.
             </div>
           </div>
-
+          {/* Payment form */}
           <form className="pay-form" onSubmit={handleConfirm}>
             <div className="pay-field">
               <label className="pay-label">Email</label>
@@ -90,7 +94,7 @@ export default function PaymentPage() {
                 tabIndex={-1}
               />
             </div>
-
+            {/* Card Details */}
             <div className="pay-field">
               <label className="pay-label">Name on card</label>
               <input
@@ -100,7 +104,7 @@ export default function PaymentPage() {
                 required
               />
             </div>
-
+            {/* Card Number */}
             <div className="pay-field">
               <label className="pay-label">Card number</label>
               <div className="pay-input-icon-wrap">
@@ -116,7 +120,7 @@ export default function PaymentPage() {
                 </span>
               </div>
             </div>
-
+            {/* Expiry and CVV */}
             <div className="pay-row">
               <div className="pay-field">
                 <label className="pay-label">Expiry</label>
@@ -142,15 +146,15 @@ export default function PaymentPage() {
             </div>
 
             {error && <div className="pay-error">{error}</div>}
-
-            <button
+            {/* Submit Button */}
+            <button 
               type="submit"
               className="pay-submit"
               disabled={loading}
             >
               {loading ? "Processing…" : "Upgrade →"}
             </button>
-
+            {/* Terms and Conditions */}
             <div className="pay-terms">
               By confirming, you agree to our <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
               <br />No charge until your trial ends. Cancel any time.

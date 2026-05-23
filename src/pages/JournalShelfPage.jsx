@@ -8,19 +8,21 @@ import { PRESET_COVERS, getCoverStyle, uid, now } from "../constants.js";
 import { HelpModal, HelpButton } from "../components/HelpModal.jsx";
 import "./JournalShelfPage.css";
 
-/* ─── JournalShelfPage ─────────────────────────────────────── */
+/* render JournalShelfPage */
 export default function JournalShelfPage({ user, journals, setJournals, activeJournal, setActiveJournal,
     showNewJournal, setShowNewJournal, journalForm, setJournalForm,
     onOpenJournal, onSignOut, onDeleteAccount,
     menuOpen, setMenuOpen, renaming, setRenaming, confirmDelete, setConfirmDelete,
     onShowUpgrade, userTier, onShowRedeem, redeemUsed }) {
 
+  // refs and state
   const coverImgRef = useRef(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [confirmDeleteAcct, setConfirmDeleteAcct] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showUnsplash, setShowUnsplash] = useState(false);
 
+  // close user menu on outside click
   useEffect(() => {
     if (!userMenuOpen) return;
     const close = () => setUserMenuOpen(false);
@@ -28,10 +30,11 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
     return () => window.removeEventListener("mousedown", close);
   }, [userMenuOpen]);
 
+  // create journal function
   const createJournal = async () => {
     if (!journalForm.title.trim()) return;
     if (userTier === "free" && journals.length >= 3) return;
-
+    // add to supabase
     const { data, error } = await supabase
       .from("journals")
       .insert([{
@@ -43,12 +46,12 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
       }])
       .select()
       .single();
-
+    // handle error response
     if (error) {
       console.error("CREATE JOURNAL ERROR:", error);
       return;
     }
-
+    // add to local state
     setJournals(prev => [
       ...prev,
       {
@@ -61,50 +64,56 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         spreads: []
       }
     ]);
-
+    // reset form and close modal
     setShowNewJournal(false);
   };
 
+  // rename journal function
   const renameJournal = async (id, title) => {
     if (!title.trim()) return;
-
+    // update in supabase
     const { error } = await supabase
       .from("journals")
       .update({ name: title })
       .eq("id", id);
-
+    // handle error response
     if (error) {
       console.error("RENAME JOURNAL ERROR:", error);
       return;
     }
-
+    // update local state
     setJournals(prev => prev.map(j => j.id === id ? { ...j, title } : j));
   };
 
+  // delete journal function
   const deleteJournal = async (id) => {
     const { error } = await supabase
       .from("journals")
       .delete()
       .eq("id", id);
-
+    // handle error response
     if (error) {
       console.error("DELETE JOURNAL ERROR:", error);
       return;
     }
-
+    // update local state
     setJournals(prev => prev.filter(j => j.id !== id));
   };
 
+  // initial for avatar
   const initial = (user?.name || user?.email || "?")[0].toUpperCase();
 
+  // function to render unsplash image search popup
   function UnsplashCoverPopup({ onClose, onSelect }) {
     const [query, setQuery] = useState("nature");
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef(null);
 
+    // Unsplash API access key from environment variable
     const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
+    // function to search Unsplash API for images based on query
     const search = async (q) => {
       if (!q.trim()) return;
       setLoading(true);
@@ -121,6 +130,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
       setLoading(false);
     };
 
+    // perform initial search on mount and focus input
     useEffect(() => {
       search("nature");
       inputRef.current?.focus();
@@ -144,6 +154,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
               placeholder="Search photos…"
               className="unsplash-input"
             />
+            {/* Search Button */}
             <button onClick={() => search(query)} className="unsplash-search-btn">
               Search
             </button>
@@ -155,6 +166,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
             {loading ? (
               <div className="unsplash-loading">Loading…</div>
             ) : (
+              // display images in a grid, clicking an image selects it
               <div className="unsplash-grid">
                 {images.map(img => (
                   <div key={img.id} className="unsplash-img-cell" onClick={() => onSelect(img)}>
@@ -164,7 +176,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
               </div>
             )}
           </div>
-
+            {/* Footer */}
           <div className="unsplash-footer">Photos by Unsplash</div>
         </div>
       </div>
@@ -174,11 +186,13 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
   return (
     <div className="shelf-page">
       <nav className="shelf-nav">
+        {/* Logo */}
         <div className="shelf-nav-left">
           <a href="/" className="navbar-logo">
             <img src="/logo/blue-logo.png" alt="Vellum" className="shelf-nav-logo" />
           </a>
         </div>
+        {/* User Menu */}
         <div className="shelf-nav-right">
           {userTier !== "pro"
             ? <button onClick={onShowUpgrade} className="shelf-upgrade-btn">
@@ -189,6 +203,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
               </div>
           }
           <div className="shelf-user-menu-wrapper" onMouseDown={e => e.stopPropagation()}>
+            {/* User Avatar */}
             <button
               onClick={() => setUserMenuOpen(o => !o)}
               className="shelf-avatar-btn"
@@ -196,6 +211,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
             >
               {initial}
             </button>
+            {/* User Menu */}
             {userMenuOpen && (
               <div className="shelf-user-dropdown">
                 <div className="shelf-user-dropdown-header">
@@ -212,12 +228,14 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                     : <span className="shelf-redeem-badge shelf-redeem-badge--available">1 left</span>
                   }
                 </button>
+                {/* Sign Out Button */}
                 <button
                   onClick={() => { setUserMenuOpen(false); onSignOut(); }}
                   className="shelf-menu-btn"
                 >
                   Sign out
                 </button>
+                {/* Delete Account Button */}
                 <button
                   onClick={() => { setUserMenuOpen(false); setConfirmDeleteAcct(true); }}
                   className="shelf-menu-btn shelf-menu-btn--no-border shelf-menu-btn--danger"
@@ -230,12 +248,15 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         </div>
       </nav>
 
+      {/* Content */}
       <div className="shelf-content">
         <div className="fu shelf-header">
           <div>
             <div className="shelf-header-title">Your Journals</div>
+            {/* Journal Count */}
             <div className="shelf-header-count">
               {journals.length} journal{journals.length !== 1 ? "s" : ""}
+              {/* Free Tier Limit */}
               {userTier === "free" && (
                 <span className={`shelf-header-count-limit ${journals.length >= 3 ? "shelf-header-count-limit--warn" : "shelf-header-count-limit--ok"}`}>
                   · {journals.length}/3 free
@@ -243,6 +264,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
               )}
             </div>
           </div>
+          {/* Header Actions */}
           <div className="shelf-header-actions">
             <HelpButton onOpen={() => setShowHelp(true)} />
             <Pill dark onClick={() => {
@@ -252,6 +274,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
           </div>
         </div>
 
+        {/* Journal Grid */}
         {journals.length === 0
           ? <div className="fu shelf-empty">
               <div className="shelf-empty-text">No journals yet — create your first one</div>
@@ -265,20 +288,25 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                     onClick={() => onOpenJournal(j)}
                   />
                   <div className="shelf-journal-meta">
+                    {/* Journal Title */}
                     <div className="shelf-journal-title-btn" onClick={() => onOpenJournal(j)}>
                       <div className="shelf-journal-title">{j.title}</div>
                     </div>
+                    {/* Context Menu */}
                     <div className="shelf-context-menu-wrapper">
                       <button
                         onClick={e => { e.stopPropagation(); setMenuOpen(menuOpen === j.id ? null : j.id); }}
                         className="shelf-context-menu-trigger"
                       >···</button>
+                      {/* Context Menu Options */}
                       {menuOpen === j.id && (
                         <div onClick={e => e.stopPropagation()} className="fu shelf-context-menu">
+                          {/* Rename Option */}
                           <button
                             onClick={() => { setRenaming({ id: j.id, title: j.title }); setMenuOpen(null); }}
                             className="shelf-context-menu-btn"
                           >rename</button>
+                          {/* Delete Option */}
                           <button
                             onClick={() => { setConfirmDelete(j); setMenuOpen(null); }}
                             className="shelf-context-menu-btn shelf-context-menu-btn--no-border shelf-context-menu-btn--danger"
@@ -287,6 +315,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                       )}
                     </div>
                   </div>
+                  {/* Journal Footer */}
                   <div className="shelf-journal-footer">
                     <div className="shelf-journal-spreads">{j.spreads.length} spreads</div>
                     <div className="shelf-journal-date">{j.created}</div>
@@ -297,6 +326,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         }
       </div>
 
+      {/* Rename Journal Modal */}
       {renaming && (
         <Modal title="Rename Journal" onClose={() => setRenaming(null)}>
           <Field label="Title" value={renaming.title} autoFocus
@@ -309,6 +339,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         </Modal>
       )}
 
+      {/* Delete Journal Modal */}
       {confirmDelete && (
         <Modal title="Delete Journal" onClose={() => setConfirmDelete(null)}>
           <p className="shelf-modal-body">
@@ -324,6 +355,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         </Modal>
       )}
 
+      {/* New Journal Modal */}
       {showNewJournal && (
         <Modal title="New Journal" onClose={() => setShowNewJournal(false)} wide>
           <form onSubmit={e => { e.preventDefault(); createJournal(); }}>
@@ -342,6 +374,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                 ))}
               </div>
 
+              {/* Cover Options */}
               {journalForm.coverType === "preset" && (
                 <div className="cover-preset-grid">
                   {PRESET_COVERS.map(c => (
@@ -359,6 +392,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                 </div>
               )}
 
+              {/* Image Upload */}
               {journalForm.coverType === "image" && (
                 <div>
                   <div className="cover-upload-zone" onClick={() => coverImgRef.current.click()}>
@@ -383,6 +417,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                 </div>
               )}
 
+              {/* Unsplash Cover Search */}
               {journalForm.coverType === "unsplash" && (
                 <div className="cover-unsplash-zone" onClick={() => setShowUnsplash(true)}>
                   {journalForm.coverImg
@@ -392,6 +427,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
                 </div>
               )}
             </div>
+            {/* Modal Actions */}
             <div className="shelf-modal-actions">
               <button type="button" onClick={() => setShowNewJournal(false)} className="shelf-modal-cancel">cancel</button>
               <button type="submit" className="shelf-modal-save">create journal</button>
@@ -400,6 +436,7 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         </Modal>
       )}
 
+      {/* Delete Account Confirmation */}
       {confirmDeleteAcct && (
         <Modal title="Delete Account" onClose={() => setConfirmDeleteAcct(false)}>
           <p className="shelf-modal-body">Are you sure you want to delete your account?</p>
@@ -413,8 +450,10 @@ export default function JournalShelfPage({ user, journals, setJournals, activeJo
         </Modal>
       )}
 
+      {/* Help Modal */}
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} initialTab={0} />}
-
+      
+      {/* Unsplash Cover Popup */}
       {showUnsplash && (
         <UnsplashCoverPopup
           onClose={() => setShowUnsplash(false)}
