@@ -1,5 +1,6 @@
 import "./Modal.css";
 
+// modal for upgrading to Pro subscription
 export default function ProUpgradeModal({ onClose, onUpgrade, userTier }) {
   const features = [
     { icon: "✦", label: "Unlimited journals",  desc: "Create as many journals as you need, forever." },
@@ -8,6 +9,7 @@ export default function ProUpgradeModal({ onClose, onUpgrade, userTier }) {
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
+      {/* Modal Content */}
       <div className="modal-card" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <button onClick={onClose} className="modal-close modal-close--pro">✕</button>
@@ -16,6 +18,7 @@ export default function ProUpgradeModal({ onClose, onUpgrade, userTier }) {
           <div className="modal-copy">Everything in Free, plus much more.</div>
         </div>
 
+        {/* Features List */}
         <div className="modal-body">
           {features.map((f, i) => (
             <div key={i} className="modal-feature">
@@ -28,6 +31,7 @@ export default function ProUpgradeModal({ onClose, onUpgrade, userTier }) {
           ))}
         </div>
 
+        {/* Pricing and Upgrade Options */}
         <div className="modal-footer">
           <div className="modal-summary">
             <div className="modal-plan">10 AED<span>/mo</span></div>
@@ -37,6 +41,7 @@ export default function ProUpgradeModal({ onClose, onUpgrade, userTier }) {
             </div>
           </div>
 
+          {/* Upgrade Button */}
           {userTier === "pro"
             ? <div className="modal-pro-badge">✓ You're already on Pro</div>
             : <button onClick={onUpgrade} className="modal-button modal-button--primary">Upgrade to Pro →</button>

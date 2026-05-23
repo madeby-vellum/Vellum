@@ -7,7 +7,7 @@ import SelCtxBar from "./SelCtxBar.jsx";
 import { STICKERS } from "../constants.js";
 import "./SpreadEditor.css";
 
-/* ─── StickerPickerPopup ─────────────────────────────────────── */
+/* StickerPickerPopup on spread editor */
 function StickerPickerPopup({ onClose, actionsRef }) {
   const handlePick = (sticker) => {
     actionsRef.current?.addImageFromURL(sticker.src);
@@ -44,7 +44,7 @@ function StickerPickerPopup({ onClose, actionsRef }) {
   );
 }
 
-/* ─── UnsplashSearchPopup ───────────────────────────────────── */
+/* UnsplashSearchPopup on spread editor */
 function UnsplashSearchPopup({ onClose, actionsRef }) {
   const [query,   setQuery]   = useState("nature");
   const [images,  setImages]  = useState([]);
@@ -52,9 +52,11 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
   const inputRef = useRef(null);
   const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
+  // Search Unsplash API for photos matching the query
   const search = async (q) => {
     if (!q.trim()) return;
     setLoading(true);
+    // Using Unsplash's public API to search photos
     try {
       const res = await fetch(
         `https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=16&orientation=landscape`,
@@ -66,8 +68,10 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
     setLoading(false);
   };
 
+  // Focus the search input on mount 
   useEffect(() => { search("nature"); inputRef.current?.focus(); }, []);
 
+  // Handle picking an image: add it to the canvas and close the popup
   const handlePick = (img) => {
     actionsRef.current?.addImageFromURL(img.urls.regular);
     actionsRef.current?.addImageFromURL(img.urls.small);
@@ -76,8 +80,10 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
 
   return (
     <div onClick={onClose} className="unsplash-backdrop">
+      {/* Unsplash Search Popup */}
       <div onClick={e => e.stopPropagation()} className="unsplash-card fu">
         <div className="unsplash-search-bar">
+          {/* Search Icon */}
           <Search size={14} className="unsplash-search-icon" />
           <input
             ref={inputRef}
@@ -87,9 +93,11 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
             placeholder="Search photos…"
             className="unsplash-search-input"
           />
+          {/* Search Button */}
           <button onClick={() => search(query)} className="unsplash-search-btn">Search</button>
           <button onClick={onClose} className="unsplash-close">✕</button>
         </div>
+        {/* Image Grid */}
         <div className="unsplash-body">
           {loading ? (
             <div className="unsplash-status">Loading…</div>
@@ -105,28 +113,35 @@ function UnsplashSearchPopup({ onClose, actionsRef }) {
             </div>
           )}
         </div>
+        {/* Footer */}
         <div className="unsplash-footer">Photos by Unsplash</div>
       </div>
     </div>
   );
 }
 
-/* ─── ImageStrip ─────────────────────────────────────────────── */
+/* ImageStrip function */
 function ImageStrip({ actionsRef, onOpenUnsplash, onOpenStickers, hasImageSelected, imgOpacity, onImgOpacity, isCropping, onCrop, onFlipH, onFlipV }) {
   return (
     <div className="image-strip">
+      {/* Unsplash Search Button */}
       <IBtn onClick={onOpenUnsplash} title="Search Unsplash photos"><Search size={14} /></IBtn>
       <VDivider />
+      {/* Upload Image Button */}
       <IBtn onClick={() => actionsRef.current?.uploadImage()} title="Upload from device"><Upload size={15} /></IBtn>
       <VDivider />
+      {/* Sticker Button */}
       <IBtn onClick={onOpenStickers} title="Add sticker"><Smile size={15} /></IBtn>
 
       {hasImageSelected && <>
         <VDivider />
+        {/* Crop Button */}
         <IBtn active={isCropping} onClick={onCrop} title={isCropping ? "Apply crop" : "Crop image"}><Crop size={14} /></IBtn>
+        {/* Flip Buttons */}
         <IBtn onClick={onFlipH} title="Flip horizontal"><FlipHorizontal2 size={14} /></IBtn>
         <IBtn onClick={onFlipV} title="Flip vertical"><FlipVertical2 size={14} /></IBtn>
         <VDivider />
+        {/* Opacity Slider */}
         <div className="image-strip-opacity-group">
           <input
             type="range" min={0} max={1} step={0.05} value={imgOpacity ?? 1}
@@ -140,7 +155,7 @@ function ImageStrip({ actionsRef, onOpenUnsplash, onOpenStickers, hasImageSelect
   );
 }
 
-/* ─── SpreadEditor ──────────────────────────────────────────── */
+/* SpreadEditor function */
 export default function SpreadEditor({ spread, onUpdate, onSave }) {
   const [tool,         setTool]         = useState(null);
   const [activeBrush,  setActiveBrush]  = useState("pen");
@@ -158,10 +173,12 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
   const [showStickers, setShowStickers] = useState(false);
   const actionsRef = useRef(null);
 
+  // Zoom state and handlers
   const [zoom, setZoom] = useState(1);
   const zoomIn  = () => setZoom(z => Math.min(3,   parseFloat((z + 0.1).toFixed(1))));
   const zoomOut = () => setZoom(z => Math.max(0.3, parseFloat((z - 0.1).toFixed(1))));
 
+  // Initialize the save button in the toolbar
   useEffect(() => {
     const slot = document.getElementById("spread-editor-save-slot");
     if (!slot) return;
@@ -172,9 +189,9 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     btn.onclick = () => onSave({ ...spread, canvas: actionsRef.current?.save() });
     slot.appendChild(btn);
     return () => { slot.innerHTML = ""; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Keyboard shortcuts for undo, redo, and delete
   useEffect(() => {
     const handler = e => {
       const active = document.activeElement;
@@ -187,6 +204,7 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
+  // Determine the type of the selected object for context panel
   const selType = !selectedObj ? null
     : (selectedObj.type==="path"||selectedObj.type==="group") ? "drawing"
     : selectedObj.type==="image" ? "image"
@@ -194,12 +212,14 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     : (selectedObj.type==="i-text"||selectedObj.type==="text") ? "text"
     : null;
 
+  // Context panel visibility logic
   const hasSelection  = !!selType;
   const showPenStrip  = tool === "pen";
   const showImgStrip  = tool === "image" || selType === "image";
   const showSelBar    = !showPenStrip && !showImgStrip && !!selType && selType !== "image";
   const showCtxPanel  = showPenStrip || showImgStrip || showSelBar;
 
+  // Handle object selection on the canvas
   const handleSelect = obj => {
     if (tool === "pen") return;
     const o = obj && !obj.isTemplate && !obj.isEraserStroke && !obj._isCropRect ? obj : null;
@@ -211,6 +231,7 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     else if (o.type==="i-text"||o.type==="text") { setTextFont(o.fontFamily||"Libre Baskerville, serif"); setTextSize(o.fontSize||20); setTextColor(o.fill||"#1a1a18"); }
   };
 
+  // Handle tool selection from the toolbar
   const selectTool = id => {
     const canvas = window._fabricCanvas;
     if (canvas) { canvas.discardActiveObject(); canvas.renderAll(); }
@@ -224,6 +245,7 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     else { actionsRef.current?.setTool(next, {color:penColor,size:penSize}); }
   };
 
+  // Handle brush switching and parameter updates
   const switchBrush    = b => { setActiveBrush(b); actionsRef.current?.setTool(b, {color:penColor,size:penSize}); };
   const handlePenColor = c => { setPenColor(c);    actionsRef.current?.updateBrush?.(c, penSize); };
   const handlePenSize  = s => { setPenSize(s);     actionsRef.current?.updateBrush?.(penColor, s); };
@@ -232,6 +254,7 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
     <div className="spread-editor fi">
       <div className="spread-editor-stage">
         <div className="spread-editor-center">
+          {/* Canvas */}
           <div
             className="spread-editor-canvas-shell"
             style={{ transform: `scale(${zoom})` }}
@@ -316,6 +339,7 @@ export default function SpreadEditor({ spread, onUpdate, onSave }) {
         </div>
       </div>
 
+        {/* Popup Windows */}
       {showStickers && <StickerPickerPopup actionsRef={actionsRef} onClose={() => setShowStickers(false)} />}
       {showUnsplash && (
         <UnsplashSearchPopup actionsRef={actionsRef} onClose={() => setShowUnsplash(false)}

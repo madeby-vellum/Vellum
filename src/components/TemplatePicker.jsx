@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TEMPLATES, PRO_CATEGORIES } from "../constants.js";
 import "./TemplatePicker.css";
 
+// Component for picking a template when creating a new project
 export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClose, onShowUpgrade, unlockedCategory }) {
   const freeTmpl = TEMPLATES.filter(t => t.tier === "free");
   const [activeTab,      setActiveTab]      = useState("free");
@@ -13,9 +14,11 @@ export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClo
     <div onClick={onClose} className="tmpl-backdrop">
       <div onClick={e => e.stopPropagation()} className="tmpl-card fu">
 
+        {/* Template Picker Header */}
         <div className="tmpl-header">
           <h2 className="tmpl-title">Choose a Template</h2>
           <div className="tmpl-header-actions">
+            {/* Demo Toggle Button */}
             <button onClick={onToggleTier} className="tmpl-demo-btn">
               demo: {userTier === "free" ? "switch to pro ↑" : "switch to free ↓"}
             </button>
@@ -23,6 +26,7 @@ export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClo
           </div>
         </div>
 
+        {/* Template Tabs */}
         <div className="tmpl-tabs">
           <button onClick={() => setActiveTab("free")} className={`tmpl-tab${activeTab === "free" ? " active" : ""}`}>Free</button>
           <button onClick={() => setActiveTab("pro")}  className={`tmpl-tab${activeTab === "pro"  ? " active" : ""}`}>
@@ -30,6 +34,7 @@ export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClo
           </button>
         </div>
 
+        {/* Template Grid */}
         {activeTab === "free" && (
           <div className="tmpl-grid">
             {freeTmpl.map(t => (
@@ -46,6 +51,7 @@ export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClo
           </div>
         )}
 
+        {/* Pro Templates */}
         {activeTab === "pro" && <>
           {userTier === "free" && (
             <div className="tmpl-upgrade-row">
@@ -53,6 +59,7 @@ export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClo
             </div>
           )}
 
+          {/* Category Buttons */}
           <div className="tmpl-categories">
             {PRO_CATEGORIES.map(cat => (
               <button
@@ -68,6 +75,7 @@ export default function TemplatePicker({ userTier, onToggleTier, onSelect, onClo
             ))}
           </div>
 
+            {/* Template Grid */}
           <div className="tmpl-grid">
             {categoryTmpl.map(t => (
               <div

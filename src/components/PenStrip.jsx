@@ -2,8 +2,10 @@ import { Pen, Eraser } from "lucide-react";
 import { PaletteIcon } from "./Pill.jsx";
 import "./PenStrip.css";
 
+// Divider component for separating sections in the pen strip
 export const VDivider = () => <div className="pen-strip-divider" />;
 
+// Button component for pen strip actions (pen, eraser, color picker)
 export function IBtn({ children, active, disabled, onClick, title, danger }) {
   const classes = [
     "pen-ibtn",
@@ -12,6 +14,7 @@ export function IBtn({ children, active, disabled, onClick, title, danger }) {
     danger   ? "danger"   : "",
   ].filter(Boolean).join(" ");
 
+  // If the button is disabled, we don't attach the onClick handler
   return (
     <button
       onClick={disabled ? undefined : onClick}
@@ -23,6 +26,7 @@ export function IBtn({ children, active, disabled, onClick, title, danger }) {
   );
 }
 
+// Component for selecting pen color, showing a swatch and a color input
 export function ColorCol({ value, onChange }) {
   return (
     <div className="pen-color-col">
@@ -40,6 +44,7 @@ export function ColorCol({ value, onChange }) {
   );
 }
 
+// Predefined pen sizes with corresponding dot dimensions for the UI
 const SIZES = [
   { s: 1, d: 6 },
   { s: 2, d: 9 },
@@ -47,11 +52,14 @@ const SIZES = [
   { s: 8, d: 18 },
 ];
 
+// Main component for the pen strip
 export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush, onColorChange, onSizeChange }) {
   const isEraser = activeBrush === "eraser";
 
+  // Render the pen strip with buttons
   return (
     <div className="pen-strip">
+      {/* Pen and Eraser Buttons */}
       <IBtn active={activeBrush === "pen"} onClick={() => onSwitchBrush("pen")} title="Pen">
         <Pen size={14} />
       </IBtn>
@@ -61,6 +69,7 @@ export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush
 
       <VDivider />
 
+      {/* Color Picker */}
       {isEraser ? (
         <div className="pen-color-col--disabled">
           <div className="pen-color-swatch--disabled" />
@@ -74,6 +83,7 @@ export default function PenStrip({ activeBrush, penColor, penSize, onSwitchBrush
 
       <VDivider />
 
+      {/* Size Selectors */}
       {SIZES.map(({ s, d }) => (
         <div
           key={s}

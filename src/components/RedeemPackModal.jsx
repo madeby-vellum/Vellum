@@ -2,10 +2,12 @@ import { useState } from "react";
 import { PRO_CATEGORIES, PACK_DETAILS } from "../constants.js";
 import "./Modal.css";
 
+// modal for redeeming the free pack that comes with new accounts
 export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlockedCategory }) {
   const [selected,   setSelected]   = useState(null);
   const [confirming, setConfirming] = useState(false);
 
+  // if the user has already redeemed their free pack, show them what they got and encourage them to upgrade to pro
   if (redeemUsed) return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-card modal-card--small" onClick={e => e.stopPropagation()}>
@@ -22,6 +24,7 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
     </div>
   );
 
+  // if the user has selected a pack and is confirming their choice, show them a confirmation screen before they redeem
   if (confirming && selected) return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-card modal-card--small" onClick={e => e.stopPropagation()}>
@@ -42,6 +45,7 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
+      {/* Modal Content */}
       <div className="modal-card modal-card--large" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <button onClick={onClose} className="modal-close modal-close--pro">✕</button>
@@ -50,6 +54,7 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
           <div className="modal-copy">One pack per account. Choose wisely.</div>
         </div>
 
+        {/* Template Pack Options */}
         <div className="modal-body">
           <div className="redeem-grid">
             {PRO_CATEGORIES.map(cat => {
@@ -77,6 +82,7 @@ export default function RedeemPackModal({ onClose, onRedeem, redeemUsed, unlocke
             })}
           </div>
 
+          {/* Action Buttons */}
           <div className="modal-action-row">
             <button
               onClick={() => { if (selected) setConfirming(true); }}

@@ -3,18 +3,21 @@ import { IBtn, VDivider, ColorCol } from "./PenStrip.jsx";
 import { Crop, FlipHorizontal2, FlipVertical2 } from "lucide-react";
 import "./SelCtxBar.css";
 
+// website fonts
 const FONTS = [
   { label: "Serif", value: "Libre Baskerville, serif", cls: "sel-font-btn--serif" },
   { label: "Mono",  value: "Inter, sans-serif",        cls: "sel-font-btn--mono"  },
   { label: "Sans",  value: "system-ui, sans-serif",    cls: "sel-font-btn--sans"  },
 ];
 
+// preset sizes
 const SIZE_PRESETS = [
   { label: "S", value: 12 },
   { label: "M", value: 18 },
   { label: "L", value: 28 },
 ];
 
+// stroke sizes 
 const STROKE_SIZES = [
   { s: 1, d: 6  },
   { s: 2, d: 9  },
@@ -22,12 +25,14 @@ const STROKE_SIZES = [
   { s: 8, d: 18 },
 ];
 
+// context bar for selected objects, shows options based on type of selection (drawing, image, text)
 export default function SelCtxBar({
   selType, penColor, drawWidth, drawOpacity, imgOpacity,
   textFont, textSize, textColor, actionsRef, isCropping,
   onCrop, onCropCancel, onPenColor, onDrawWidth, onDrawOpacity,
   onImgOpacity, onTextFont, onTextSize, onTextColor,
 }) {
+  // if no selection, hide the bar
   if (!selType) return null;
 
   const apply = props => actionsRef.current?.applyToSelected(props);
@@ -36,6 +41,7 @@ export default function SelCtxBar({
   return (
     <div className="sel-ctx-bar">
 
+      {/* Drawing Options */}
       {selType === "drawing" && <>
         {STROKE_SIZES.map(({ s, d }) => (
           <div
@@ -49,6 +55,7 @@ export default function SelCtxBar({
 
         <VDivider />
 
+        {/* Opacity Control */}
         <div className="sel-opacity-group">
           <input
             type="range" min={0} max={1} step={0.05} value={drawOpacity}
@@ -62,6 +69,7 @@ export default function SelCtxBar({
         <ColorCol value={penColor} onChange={c => { onPenColor(c); apply({ stroke: c }); }} />
       </>}
 
+        {/* Image Options */}
       {selType === "image" && <>
         <IBtn active={isCropping} onClick={onCrop} title={isCropping ? "Apply crop" : "Crop image"}>
           <Crop size={14} />
@@ -75,6 +83,7 @@ export default function SelCtxBar({
 
         <VDivider />
 
+        {/* Opacity Control */}
         <div className="sel-opacity-group">
           <input
             type="range" min={0} max={1} step={0.05} value={imgOpacity}
@@ -85,6 +94,7 @@ export default function SelCtxBar({
         </div>
       </>}
 
+        {/* Text Options */}
       {selType === "text" && <>
         {FONTS.map(f => (
           <IBtn
@@ -100,6 +110,7 @@ export default function SelCtxBar({
 
         <VDivider />
 
+        {/* Size Presets */}
         {SIZE_PRESETS.map(({ label, value }) => (
           <IBtn
             key={value}
@@ -112,6 +123,7 @@ export default function SelCtxBar({
           </IBtn>
         ))}
 
+        {/* Custom Size Input */}
         <div className="sel-size-input-wrap">
           <input
             type="number" min={6} max={200}

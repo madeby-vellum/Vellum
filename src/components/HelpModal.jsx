@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Modal.css";
 
+// Dictionary of help content for each tab and step in the help modal. Each tab has an id, label and a list of steps. 
 const HELP_TABS = [
   {
     id: "getting-started", label: "Getting Started",
