@@ -1,6 +1,7 @@
 export const uid = () => Math.random().toString(36).slice(2, 9);
 export const now = () => new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
 
+// Preset cover options for new journals
 export const PRESET_COVERS = [
   { id:"book-cover", label:"Book Journal", style:{ backgroundImage:"url(/covers/book-journal.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
   { id:"cooking-cover", label:"Cooking Journal", style:{ backgroundImage:"url(/covers/cooking-journal.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
@@ -10,6 +11,7 @@ export const PRESET_COVERS = [
   { id:"paint-cover", label:"Paint Splotches", style:{ backgroundImage:"url(/covers/paint.jpeg)", backgroundSize:"cover", backgroundPosition:"center" } },
 ];
 
+// Template options for new pages 
 export const TEMPLATES = [
   { id:"dotted-1", label:"Dotted [Narrow]", tier:"free", path:"/templates/free/dotted-1.png"},
   { id:"dotted-2", label:"Dotted [Wide]", tier:"free", path:"/templates/free/dotted-2.png"},
@@ -54,8 +56,10 @@ export const TEMPLATES = [
   { id:"tracker-3", label:"100 Day Challenge Tracker", tier:"pro", category:"Tracker", path:"/templates/pro/tracker-3.png"},
 ];
 
+// Pro pack categories
 export const PRO_CATEGORIES = ["Planner", "Cooking", "Reading", "Movie", "Tracker", "Academic", "Mood", "Todo"];
 
+// Helper function to get cover style based on journal's cover type and data
 export function getCoverStyle(j) {
   if (j.coverType === "preset") {
     const preset = PRESET_COVERS.find(c => c.id === j.coverId);
@@ -73,6 +77,7 @@ export function getCoverStyle(j) {
   return {};
 }
 
+// Details for each Pro pack category, including description and associated templates
 export const PACK_DETAILS = {
   "Planner": {
     desc: "Daily, weekly & monthly planning spreads to organise your days.",
@@ -108,7 +113,7 @@ export const PACK_DETAILS = {
   },
 };
 
-/* Sticker images — add your own sticker URLs here */
+/* Sticker images list */
 export const STICKERS = [
   { id:"s1", src:"/stickers/cooking-1.png" },
   { id:"s2", src:"/stickers/cooking-2.png" },
