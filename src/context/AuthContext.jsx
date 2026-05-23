@@ -1,13 +1,16 @@
 import { createContext, useEffect, useState } from "react"
 import { supabase } from "../lib/supabase"
 
+// AuthContext provides user and profile data to the app, and listens for auth changes
 export const AuthContext = createContext()
 
+// AuthProvider wraps the app and manages auth state, fetching user and profile data
 export const AuthProvider = ({ children }) => {
   const [user,    setUser]    = useState(null)
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // On mount, get the current session and listen for auth state changes
   useEffect(() => {
     // Get current session on mount
     const getSession = async () => {
@@ -44,6 +47,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
+  // Fetch the user's profile from the "profiles" table using their user ID
   const fetchProfile = async (userId) => {
     const { data, error } = await supabase
       .from("profiles")
@@ -64,6 +68,7 @@ export const AuthProvider = ({ children }) => {
     if (user) await fetchProfile(user.id)
   }
 
+  // Provide user, profile, tier, loading state, and refreshProfile function to the app
   return (
     <AuthContext.Provider value={{ user, profile, tier, loading, refreshProfile }}>
       {children}
