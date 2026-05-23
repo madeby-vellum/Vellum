@@ -2,10 +2,11 @@ import { supabase } from './supabase';
 
 // create a new journal for current user
 export async function createJournal({ title, coverType, coverId, coverImg }) {
+  // get current user
   const { data: { user }, error: userError } = await supabase.auth.getUser();
-
+  // if no user, throw error
   if (userError || !user) throw userError || new Error("No user found");
-
+  // insert new journal into database
   const { data, error } = await supabase
     .from("journals")
     .insert([
@@ -19,9 +20,9 @@ export async function createJournal({ title, coverType, coverId, coverImg }) {
     ])
     .select()
     .single();
-
+  // if error, throw it
   if (error) throw error;
-
+  // return normalized journal data
   return normalizeJournal(data);
 }
 
@@ -34,9 +35,9 @@ export async function getJournals() {
       spreads (*)
     `)
     .order('created_at', { ascending: false });
-
+  // if error, throw it
   if (error) throw error;
-
+  // return normalized journal data with spreads
   return data.map(normalizeJournal);
 }
 
@@ -48,9 +49,9 @@ export async function renameJournal(id, title) {
     .eq('id', id)
     .select()
     .single();
-
+  // if error, throw it
   if (error) throw error;
-
+  // return normalized journal data
   return normalizeJournal(data);
 }
 
@@ -60,7 +61,7 @@ export async function deleteJournal(id) {
     .from('journals')
     .delete()
     .eq('id', id);
-
+  // if error, throw it
   if (error) throw error;
 }
 
@@ -80,7 +81,7 @@ function normalizeJournal(j) {
     created: j.created_at
       ? new Date(j.created_at).toLocaleDateString()
       : "",
-
+    // include spreads if they exist, otherwise default to empty array
     spreads: j.spreads || []
   };
 }
